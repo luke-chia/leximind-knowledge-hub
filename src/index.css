@@ -13,7 +13,7 @@
     --card-foreground: 222.2 84% 4.9%;
     --popover: 0 0% 100%;
     --popover-foreground: 222.2 84% 4.9%;
-    --primary: 217 91% 59%;
+    --primary: 280 100% 70%;
     --primary-foreground: 0 0% 100%;
     --secondary: 210 40% 96.1%;
     --secondary-foreground: 222.2 47.4% 11.2%;
@@ -25,7 +25,7 @@
     --destructive-foreground: 210 40% 98%;
     --border: 214.3 31.8% 91.4%;
     --input: 214.3 31.8% 91.4%;
-    --ring: 217 91% 59%;
+    --ring: 280 100% 70%;
     --radius: 0.75rem;
     
     --sidebar-background: 0 0% 98%;
@@ -49,7 +49,7 @@
     --popover: 225 25% 11%;
     --popover-foreground: 210 40% 98%;
     
-    --primary: 217 91% 59%;
+    --primary: 280 100% 70%;
     --primary-foreground: 222 47% 7%;
     
     --secondary: 225 20% 15%;
@@ -66,23 +66,23 @@
     
     --border: 225 15% 20%;
     --input: 225 15% 18%;
-    --ring: 217 91% 59%;
+    --ring: 280 100% 70%;
     
     /* Sidebar specific colors for banking professional look */
     --sidebar-background: 225 30% 8%;
     --sidebar-foreground: 210 20% 85%;
-    --sidebar-primary: 217 91% 59%;
+    --sidebar-primary: 280 100% 70%;
     --sidebar-primary-foreground: 222 47% 7%;
     --sidebar-accent: 225 20% 15%;
     --sidebar-accent-foreground: 210 20% 85%;
     --sidebar-border: 225 15% 20%;
-    --sidebar-ring: 217 91% 59%;
+    --sidebar-ring: 280 100% 70%;
     
     /* Banking portal specific colors */
-    --banking-primary: 217 91% 59%;
-    --banking-primary-glow: 217 91% 70%;
-    --banking-secondary: 270 91% 65%;
-    --banking-accent: 320 91% 65%;
+    --banking-primary: 280 100% 70%;
+    --banking-primary-glow: 280 100% 80%;
+    --banking-secondary: 270 85% 65%;
+    --banking-accent: 300 85% 70%;
     --banking-neutral: 225 15% 25%;
     --banking-surface: 225 25% 11%;
     --banking-surface-hover: 225 20% 15%;

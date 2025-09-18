@@ -1,4 +1,4 @@
-import { Bell, Sun, Moon, Sparkles } from "lucide-react";
+import { Bell, Sun, Moon, Sparkles, Menu } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
@@ -10,6 +10,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Badge } from "@/components/ui/badge";
+import { SidebarTrigger } from "@/components/ui/sidebar";
 import { useState, useEffect } from "react";
 
 export function TopBar() {
@@ -28,24 +29,17 @@ export function TopBar() {
   return (
     <header className="h-16 border-b border-sidebar-border bg-sidebar/50 backdrop-blur-sm">
       <div className="flex h-full items-center justify-between px-6">
-        {/* Logo/Brand */}
-        <div className="flex items-center space-x-3">
-          <div className="flex items-center space-x-2">
-            <div className="relative">
-              <Sparkles className="h-6 w-6 text-banking-primary" />
-              <div className="absolute -top-1 -right-1 h-3 w-3 bg-gradient-banking rounded-full animate-pulse" />
-            </div>
-            <span className="text-xl font-bold bg-gradient-banking bg-clip-text text-transparent">
-              LexiMind
-            </span>
-          </div>
+        {/* Left side - Sidebar Toggle and New Chat */}
+        <div className="flex items-center space-x-4">
+          <SidebarTrigger className="h-10 w-10 text-sidebar-foreground hover:text-banking-primary hover:bg-banking-surface-hover" />
+          <Button variant="outline" className="btn-banking-primary h-10 px-6 font-medium">
+            <Sparkles className="mr-2 h-4 w-4" />
+            New Chat
+          </Button>
         </div>
 
-        {/* Center - New Chat Button */}
-        <Button variant="outline" className="btn-banking-primary h-10 px-6 font-medium">
-          <Sparkles className="mr-2 h-4 w-4" />
-          New Chat
-        </Button>
+        {/* Center spacer */}
+        <div className="flex-1" />
 
         {/* Right side actions */}
         <div className="flex items-center space-x-4">

@@ -44,13 +44,14 @@ const chatHistoryItems = [
   { title: "Historical", items: ["Legacy Documents", "Archived Chats"] },
 ];
 
-const bottomItems = [
+const middleItems = [
   { title: "Documents", url: "/documents", icon: FileText },
   { title: "Users", url: "/users", icon: Users },
   { title: "Reports", url: "/reports", icon: BarChart3 },
   { title: "Favorites", url: "/favorites", icon: Star },
-  { title: "Logout", url: "/logout", icon: LogOut },
 ];
+
+const logoutItem = { title: "Logout", url: "/logout", icon: LogOut };
 
 export function AppSidebar() {
   const { state } = useSidebar();
@@ -69,8 +70,8 @@ export function AppSidebar() {
   
   const getNavClassName = ({ isActive: active }: { isActive: boolean }) =>
     active 
-      ? "bg-banking-surface border-l-2 border-banking-primary text-banking-primary font-medium" 
-      : "text-sidebar-foreground hover:bg-banking-surface-hover hover:text-banking-primary transition-all duration-200";
+      ? "bg-banking-surface text-white font-medium" 
+      : "text-white hover:bg-banking-surface-hover hover:text-white transition-all duration-200";
 
   const toggleGroup = (groupKey: string) => {
     setOpenGroups(prev => ({ ...prev, [groupKey]: !prev[groupKey] }));
@@ -109,7 +110,7 @@ export function AppSidebar() {
         <SidebarGroup>
           <Collapsible open={openGroups.chats} onOpenChange={() => toggleGroup("chats")}>
             <CollapsibleTrigger asChild>
-              <SidebarMenuButton className="h-10 text-sidebar-foreground hover:bg-banking-surface-hover">
+              <SidebarMenuButton className="h-10 text-white hover:bg-banking-surface-hover">
                 <MessageSquare className="h-5 w-5" />
                 {!isCollapsed && (
                   <>
@@ -135,7 +136,7 @@ export function AppSidebar() {
                       <SidebarMenuSubItem key={group.title}>
                         <Collapsible open={openGroups[groupKey]} onOpenChange={() => toggleGroup(groupKey)}>
                           <CollapsibleTrigger asChild>
-                            <SidebarMenuSubButton className="text-muted-foreground hover:text-banking-primary">
+                            <SidebarMenuSubButton className="text-white hover:text-white hover:bg-banking-surface-hover">
                               <IconComponent className="h-4 w-4" />
                               <span>{group.title}</span>
                               {openGroups[groupKey] ? (
@@ -151,7 +152,7 @@ export function AppSidebar() {
                               {group.items.map((item, index) => (
                                 <div
                                   key={index}
-                                  className="text-sm text-muted-foreground hover:text-banking-primary cursor-pointer py-1 px-2 rounded hover:bg-banking-surface-hover transition-colors"
+                                  className="text-sm text-white hover:text-white cursor-pointer py-1 px-2 rounded hover:bg-banking-surface-hover transition-colors"
                                 >
                                   {item}
                                 </div>
@@ -168,10 +169,10 @@ export function AppSidebar() {
           </Collapsible>
         </SidebarGroup>
 
-        {/* Bottom Navigation */}
-        <SidebarGroup className="mt-auto">
+        {/* Middle Navigation */}
+        <SidebarGroup>
           <SidebarMenu>
-            {bottomItems.map((item) => (
+            {middleItems.map((item) => (
               <SidebarMenuItem key={item.title}>
                 <SidebarMenuButton asChild className="h-10">
                   <NavLink to={item.url} className={getNavClassName}>
@@ -181,6 +182,20 @@ export function AppSidebar() {
                 </SidebarMenuButton>
               </SidebarMenuItem>
             ))}
+          </SidebarMenu>
+        </SidebarGroup>
+
+        {/* Logout at Bottom */}
+        <SidebarGroup className="mt-auto">
+          <SidebarMenu>
+            <SidebarMenuItem>
+              <SidebarMenuButton asChild className="h-10">
+                <NavLink to={logoutItem.url} className={getNavClassName}>
+                  <logoutItem.icon className="h-5 w-5" />
+                  {!isCollapsed && <span className="font-medium">{logoutItem.title}</span>}
+                </NavLink>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
           </SidebarMenu>
         </SidebarGroup>
       </SidebarContent>
