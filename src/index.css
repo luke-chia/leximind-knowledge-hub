@@ -2,95 +2,151 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
-All colors MUST be HSL.
-*/
+/* LexiMind Banking Portal Design System - Professional Dark Theme */
 
 @layer base {
   :root {
+    /* Light theme (fallback) */
     --background: 0 0% 100%;
     --foreground: 222.2 84% 4.9%;
-
     --card: 0 0% 100%;
     --card-foreground: 222.2 84% 4.9%;
-
     --popover: 0 0% 100%;
     --popover-foreground: 222.2 84% 4.9%;
-
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
-
+    --primary: 217 91% 59%;
+    --primary-foreground: 0 0% 100%;
     --secondary: 210 40% 96.1%;
     --secondary-foreground: 222.2 47.4% 11.2%;
-
     --muted: 210 40% 96.1%;
     --muted-foreground: 215.4 16.3% 46.9%;
-
     --accent: 210 40% 96.1%;
     --accent-foreground: 222.2 47.4% 11.2%;
-
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
-
     --border: 214.3 31.8% 91.4%;
     --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
-
-    --radius: 0.5rem;
-
+    --ring: 217 91% 59%;
+    --radius: 0.75rem;
+    
     --sidebar-background: 0 0% 98%;
-
     --sidebar-foreground: 240 5.3% 26.1%;
-
     --sidebar-primary: 240 5.9% 10%;
-
     --sidebar-primary-foreground: 0 0% 98%;
-
     --sidebar-accent: 240 4.8% 95.9%;
-
     --sidebar-accent-foreground: 240 5.9% 10%;
-
     --sidebar-border: 220 13% 91%;
-
     --sidebar-ring: 217.2 91.2% 59.8%;
   }
 
   .dark {
-    --background: 222.2 84% 4.9%;
+    /* Professional Banking Dark Theme */
+    --background: 222 47% 7%;
     --foreground: 210 40% 98%;
-
-    --card: 222.2 84% 4.9%;
+    
+    --card: 225 25% 11%;
     --card-foreground: 210 40% 98%;
-
-    --popover: 222.2 84% 4.9%;
+    
+    --popover: 225 25% 11%;
     --popover-foreground: 210 40% 98%;
-
-    --primary: 210 40% 98%;
-    --primary-foreground: 222.2 47.4% 11.2%;
-
-    --secondary: 217.2 32.6% 17.5%;
+    
+    --primary: 217 91% 59%;
+    --primary-foreground: 222 47% 7%;
+    
+    --secondary: 225 20% 15%;
     --secondary-foreground: 210 40% 98%;
-
-    --muted: 217.2 32.6% 17.5%;
+    
+    --muted: 225 15% 18%;
     --muted-foreground: 215 20.2% 65.1%;
-
-    --accent: 217.2 32.6% 17.5%;
+    
+    --accent: 225 20% 15%;
     --accent-foreground: 210 40% 98%;
-
-    --destructive: 0 62.8% 30.6%;
+    
+    --destructive: 0 62.8% 50.6%;
     --destructive-foreground: 210 40% 98%;
+    
+    --border: 225 15% 20%;
+    --input: 225 15% 18%;
+    --ring: 217 91% 59%;
+    
+    /* Sidebar specific colors for banking professional look */
+    --sidebar-background: 225 30% 8%;
+    --sidebar-foreground: 210 20% 85%;
+    --sidebar-primary: 217 91% 59%;
+    --sidebar-primary-foreground: 222 47% 7%;
+    --sidebar-accent: 225 20% 15%;
+    --sidebar-accent-foreground: 210 20% 85%;
+    --sidebar-border: 225 15% 20%;
+    --sidebar-ring: 217 91% 59%;
+    
+    /* Banking portal specific colors */
+    --banking-primary: 217 91% 59%;
+    --banking-primary-glow: 217 91% 70%;
+    --banking-secondary: 270 91% 65%;
+    --banking-accent: 320 91% 65%;
+    --banking-neutral: 225 15% 25%;
+    --banking-surface: 225 25% 11%;
+    --banking-surface-hover: 225 20% 15%;
+    
+    /* Gradients for sophisticated banking look */
+    --gradient-primary: linear-gradient(135deg, hsl(var(--banking-primary)), hsl(var(--banking-secondary)));
+    --gradient-accent: linear-gradient(135deg, hsl(var(--banking-secondary)), hsl(var(--banking-accent)));
+    --gradient-surface: linear-gradient(180deg, hsl(var(--banking-surface)), hsl(225 20% 13%));
+    
+    /* Shadows with banking primary color */
+    --shadow-banking: 0 10px 30px -10px hsl(var(--banking-primary) / 0.2);
+    --shadow-glow: 0 0 40px hsl(var(--banking-primary-glow) / 0.15);
+    
+    /* Transitions */
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+}
 
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
-    --sidebar-background: 240 5.9% 10%;
-    --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 224.3 76.3% 48%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 3.7% 15.9%;
-    --sidebar-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+  
+  .dark {
+    color-scheme: dark;
+  }
+  
+  /* Banking portal background pattern */
+  .banking-pattern {
+    background-image: 
+      radial-gradient(circle at 25% 25%, hsl(var(--banking-primary) / 0.05) 0%, transparent 50%),
+      radial-gradient(circle at 75% 75%, hsl(var(--banking-secondary) / 0.05) 0%, transparent 50%),
+      linear-gradient(45deg, transparent 25%, hsl(var(--banking-primary) / 0.02) 25%, hsl(var(--banking-primary) / 0.02) 50%, transparent 50%);
+  }
+}
+
+@layer components {
+  /* Banking button variants */
+  .btn-banking-primary {
+    @apply bg-gradient-to-r from-[hsl(var(--banking-primary))] to-[hsl(var(--banking-secondary))] text-white;
+    @apply hover:shadow-[var(--shadow-banking)] transition-[var(--transition-smooth)];
+  }
+  
+  .btn-banking-ghost {
+    @apply bg-transparent border border-[hsl(var(--banking-primary)/0.3)] text-[hsl(var(--banking-primary))];
+    @apply hover:bg-[hsl(var(--banking-primary)/0.1)] hover:border-[hsl(var(--banking-primary))] transition-[var(--transition-smooth)];
+  }
+  
+  /* Search input banking style */
+  .input-banking {
+    @apply bg-[hsl(var(--banking-surface))] border-[hsl(var(--banking-primary)/0.3)] text-foreground;
+    @apply focus:border-[hsl(var(--banking-primary))] focus:ring-[hsl(var(--banking-primary)/0.2)] focus:shadow-[var(--shadow-glow)];
+    @apply transition-[var(--transition-smooth)];
+  }
+  
+  /* Card banking style */
+  .card-banking {
+    @apply bg-[hsl(var(--banking-surface))] border-[hsl(var(--banking-primary)/0.2)];
+    @apply hover:border-[hsl(var(--banking-primary)/0.4)] transition-[var(--transition-smooth)];
   }
 }
 
