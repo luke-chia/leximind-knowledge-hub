@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Send, Mic, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -13,6 +13,28 @@ interface SearchInterfaceProps {
 export function SearchInterface({ onSearch, isLoading = false, minimal = false }: SearchInterfaceProps) {
   const [query, setQuery] = useState("");
   const [isListening, setIsListening] = useState(false);
+  const [currentPlaceholder, setCurrentPlaceholder] = useState(0);
+
+  const placeholderTexts = [
+    "Ask me what you need...",
+    "¿Qué normativas de la CNBV aplican?",
+    "Explícame los procedimientos de compliance",
+    "¿Cómo funciona la gestión de riesgos?",
+    "Políticas de onboarding de clientes",
+    "Procedimientos contables y financieros",
+    "Regulaciones de prevención de lavado",
+    "Manuales operativos internos",
+  ];
+
+  // Cycle through placeholder texts
+  useEffect(() => {
+    if (!query) { // Only animate when input is empty
+      const interval = setInterval(() => {
+        setCurrentPlaceholder((prev) => (prev + 1) % placeholderTexts.length);
+      }, 3000);
+      return () => clearInterval(interval);
+    }
+  }, [query, placeholderTexts.length]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -61,8 +83,8 @@ export function SearchInterface({ onSearch, isLoading = false, minimal = false }
           <Input
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            placeholder="Ask me what you need..."
-            className="input-banking h-12 text-base pr-24 pl-4 rounded-xl"
+            placeholder={placeholderTexts[currentPlaceholder]}
+            className="input-banking h-12 text-base pr-24 pl-4 rounded-xl placeholder:transition-all placeholder:duration-500"
             disabled={isLoading}
           />
           
@@ -119,8 +141,8 @@ export function SearchInterface({ onSearch, isLoading = false, minimal = false }
             <Input
               value={query}
               onChange={(e) => setQuery(e.target.value)}
-              placeholder="Ask me what you need..."
-              className="input-banking h-14 text-lg pr-24 pl-6 rounded-xl"
+              placeholder={placeholderTexts[currentPlaceholder]}
+              className="input-banking h-14 text-lg pr-24 pl-6 rounded-xl placeholder:transition-all placeholder:duration-500"
               disabled={isLoading}
             />
             
