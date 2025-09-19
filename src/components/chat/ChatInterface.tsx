@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { ThumbsUp, ThumbsDown, Download, Copy, Eye, Infinity } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -22,7 +22,9 @@ interface ChatInterfaceProps {
 export function ChatInterface({ query, onNewChat }: ChatInterfaceProps) {
   const [messages, setMessages] = useState<Message[]>([]);
   const [isTyping, setIsTyping] = useState(false);
+  const [activeResponseId, setActiveResponseId] = useState<string | null>(null);
   const { toast } = useToast();
+  const scrollAreaRef = useRef<HTMLDivElement>(null);
 
   const handleNewSearch = (newQuery: string) => {
     simulateResponse(newQuery);
@@ -48,6 +50,7 @@ export function ChatInterface({ query, onNewChat }: ChatInterfaceProps) {
     };
 
     setMessages(prev => [...prev, userMessage, loadingMessage]);
+    setActiveResponseId(loadingMessage.id);
 
     // Simulate network delay
     await new Promise(resolve => setTimeout(resolve, 2000));
@@ -85,6 +88,7 @@ export function ChatInterface({ query, onNewChat }: ChatInterfaceProps) {
     }
 
     setIsTyping(false);
+    setActiveResponseId(null);
   };
 
   // Initialize with the query
@@ -93,6 +97,16 @@ export function ChatInterface({ query, onNewChat }: ChatInterfaceProps) {
       simulateResponse(query);
     }
   }, [query]);
+
+  // Auto scroll to bottom when messages change
+  useEffect(() => {
+    if (scrollAreaRef.current) {
+      const scrollElement = scrollAreaRef.current.querySelector('[data-radix-scroll-area-viewport]');
+      if (scrollElement) {
+        scrollElement.scrollTop = scrollElement.scrollHeight;
+      }
+    }
+  }, [messages]);
 
   const handleFeedback = (messageId: string, positive: boolean) => {
     toast({
@@ -121,7 +135,7 @@ export function ChatInterface({ query, onNewChat }: ChatInterfaceProps) {
 
   return (
     <div className="flex-1 flex flex-col h-full max-w-4xl mx-auto px-6">
-      <ScrollArea className="flex-1 py-6">
+      <ScrollArea ref={scrollAreaRef} className="flex-1 py-6">
         <div className="space-y-6">
           {messages.map((message) => (
             <div key={message.id} className="space-y-4">
@@ -151,7 +165,7 @@ export function ChatInterface({ query, onNewChat }: ChatInterfaceProps) {
                         <div className="prose prose-invert max-w-none">
                           <p className="text-base leading-relaxed text-card-foreground mb-0">
                             {message.content}
-                            {isTyping && (
+                            {isTyping && activeResponseId === message.id && (
                               <span className="inline-block w-2 h-5 ml-1 bg-banking-primary animate-typing"></span>
                             )}
                           </p>
