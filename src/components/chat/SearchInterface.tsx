@@ -14,6 +14,8 @@ export function SearchInterface({ onSearch, isLoading = false, minimal = false }
   const [query, setQuery] = useState("");
   const [isListening, setIsListening] = useState(false);
   const [currentPlaceholder, setCurrentPlaceholder] = useState(0);
+  const [displayedText, setDisplayedText] = useState("");
+  const [isTyping, setIsTyping] = useState(false);
 
   const placeholderTexts = [
     "Ask me what you need...",
@@ -26,15 +28,32 @@ export function SearchInterface({ onSearch, isLoading = false, minimal = false }
     "Manuales operativos internos",
   ];
 
-  // Cycle through placeholder texts
+  // Typing animation effect
   useEffect(() => {
-    if (!query) { // Only animate when input is empty
-      const interval = setInterval(() => {
-        setCurrentPlaceholder((prev) => (prev + 1) % placeholderTexts.length);
-      }, 3000);
-      return () => clearInterval(interval);
+    if (!query) {
+      const currentText = placeholderTexts[currentPlaceholder];
+      setIsTyping(true);
+      setDisplayedText("");
+      
+      let index = 0;
+      const typeText = () => {
+        if (index <= currentText.length) {
+          setDisplayedText(currentText.slice(0, index));
+          index++;
+          setTimeout(typeText, 50 + Math.random() * 50); // Random typing speed
+        } else {
+          setIsTyping(false);
+          // Wait before starting next text
+          setTimeout(() => {
+            setCurrentPlaceholder((prev) => (prev + 1) % placeholderTexts.length);
+          }, 2000);
+        }
+      };
+      
+      const timeout = setTimeout(typeText, 500);
+      return () => clearTimeout(timeout);
     }
-  }, [query, placeholderTexts.length]);
+  }, [currentPlaceholder, query, placeholderTexts.length]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -83,8 +102,8 @@ export function SearchInterface({ onSearch, isLoading = false, minimal = false }
           <Input
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            placeholder={placeholderTexts[currentPlaceholder]}
-            className="input-banking h-12 text-base pr-24 pl-4 rounded-xl placeholder:transition-all placeholder:duration-500"
+            placeholder={displayedText + (isTyping ? "|" : "")}
+            className="input-banking h-12 text-base pr-24 pl-4 rounded-xl"
             disabled={isLoading}
           />
           
@@ -141,8 +160,8 @@ export function SearchInterface({ onSearch, isLoading = false, minimal = false }
             <Input
               value={query}
               onChange={(e) => setQuery(e.target.value)}
-              placeholder={placeholderTexts[currentPlaceholder]}
-              className="input-banking h-14 text-lg pr-24 pl-6 rounded-xl placeholder:transition-all placeholder:duration-500"
+              placeholder={displayedText + (isTyping ? "|" : "")}
+              className="input-banking h-14 text-lg pr-24 pl-6 rounded-xl"
               disabled={isLoading}
             />
             

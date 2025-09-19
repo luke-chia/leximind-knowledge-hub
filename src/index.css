@@ -140,7 +140,7 @@
   /* Search input banking style */
   .input-banking {
     @apply bg-card border-[hsl(var(--banking-primary)/0.3)] text-foreground;
-    @apply focus-visible:outline-none focus:ring-0 focus:ring-offset-0;
+    @apply focus-visible:outline-none focus:ring-0 focus:ring-offset-0 focus:border-[hsl(var(--banking-primary)/0.3)];
     @apply transition-[var(--transition-smooth)];
   }
   
