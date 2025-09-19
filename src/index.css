@@ -28,6 +28,7 @@
     --ring: 280 100% 70%;
     --radius: 0.75rem;
     
+    /* Sidebar light mode */
     --sidebar-background: 0 0% 98%;
     --sidebar-foreground: 240 5.3% 26.1%;
     --sidebar-primary: 240 5.9% 10%;
@@ -68,7 +69,7 @@
     --input: 225 15% 18%;
     --ring: 280 100% 70%;
     
-    /* Sidebar specific colors for banking professional look */
+    /* Sidebar dark mode - FIXED for better visibility */
     --sidebar-background: 225 30% 8%;
     --sidebar-foreground: 210 40% 98%;
     --sidebar-primary: 280 100% 70%;
@@ -98,12 +99,6 @@
     
     /* Transitions */
     --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  }
-  
-  /* Light mode sidebar fixes */
-  :root {
-    --sidebar-foreground: 222.2 84% 4.9%;
-    --sidebar-accent-foreground: 222.2 84% 4.9%;
   }
 }
 
@@ -174,15 +169,5 @@
   
   .animate-typing {
     animation: typing 1.5s ease-in-out infinite;
-  }
-}
-
-@layer base {
-  * {
-    @apply border-border;
-  }
-
-  body {
-    @apply bg-background text-foreground;
   }
 }

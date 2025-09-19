@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useToast } from "@/hooks/use-toast";
+import { SearchInterface } from "./SearchInterface";
 
 interface Message {
   id: string;
@@ -22,6 +23,10 @@ export function ChatInterface({ query, onNewChat }: ChatInterfaceProps) {
   const [messages, setMessages] = useState<Message[]>([]);
   const [isTyping, setIsTyping] = useState(false);
   const { toast } = useToast();
+
+  const handleNewSearch = (newQuery: string) => {
+    simulateResponse(newQuery);
+  };
 
   // Simulate AI response
   const simulateResponse = async (userQuery: string) => {
@@ -42,13 +47,13 @@ export function ChatInterface({ query, onNewChat }: ChatInterfaceProps) {
       isLoading: true,
     };
 
-    setMessages([userMessage, loadingMessage]);
+    setMessages(prev => [...prev, userMessage, loadingMessage]);
 
     // Simulate network delay
     await new Promise(resolve => setTimeout(resolve, 2000));
 
     // Remove loading message and start typing
-    setMessages([userMessage]);
+    setMessages(prev => [...prev.slice(0, -1)]);
     setIsTyping(true);
 
     // Simulate typing response
@@ -67,7 +72,7 @@ export function ChatInterface({ query, onNewChat }: ChatInterfaceProps) {
         timestamp: new Date(),
       };
 
-      setMessages([userMessage, assistantMessage]);
+      setMessages(prev => [...prev.slice(0, -1), assistantMessage]);
       
       // Random delay between words to simulate natural typing
       await new Promise(resolve => setTimeout(resolve, Math.random() * 100 + 50));
@@ -197,6 +202,15 @@ export function ChatInterface({ query, onNewChat }: ChatInterfaceProps) {
           ))}
         </div>
       </ScrollArea>
+      
+      {/* Continue searching */}
+      <div className="border-t border-border pt-6 pb-4">
+        <div className="mb-4">
+          <h3 className="text-lg font-medium text-foreground mb-2">Ask me what you need</h3>
+          <p className="text-sm text-muted-foreground">Continue the conversation or ask a new question</p>
+        </div>
+        <SearchInterface onSearch={handleNewSearch} />
+      </div>
     </div>
   );
 }
