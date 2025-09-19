@@ -203,12 +203,8 @@ export function ChatInterface({ query, onNewChat }: ChatInterfaceProps) {
         </div>
       </ScrollArea>
       
-      {/* Continue searching */}
-      <div className="border-t border-border pt-6 pb-4">
-        <div className="mb-4">
-          <h3 className="text-lg font-medium text-foreground mb-2">Ask me what you need</h3>
-          <p className="text-sm text-muted-foreground">Continue the conversation or ask a new question</p>
-        </div>
+      {/* Continue searching - styled like reference image */}
+      <div className="border-t border-border pt-4 pb-4">
         <SearchInterface onSearch={handleNewSearch} />
       </div>
     </div>
