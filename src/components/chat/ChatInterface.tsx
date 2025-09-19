@@ -53,7 +53,7 @@ export function ChatInterface({ query, onNewChat }: ChatInterfaceProps) {
     await new Promise(resolve => setTimeout(resolve, 2000));
 
     // Remove loading message and start typing
-    setMessages(prev => [...prev.slice(0, -1)]);
+    setMessages(prev => prev.slice(0, -1));
     setIsTyping(true);
 
     // Simulate typing response
@@ -72,7 +72,13 @@ export function ChatInterface({ query, onNewChat }: ChatInterfaceProps) {
         timestamp: new Date(),
       };
 
-      setMessages(prev => [...prev.slice(0, -1), assistantMessage]);
+      setMessages(prev => {
+        // Keep all messages except replace the last assistant message (if any)
+        const messagesWithoutLastAssistant = prev.filter((msg, index) => 
+          !(index === prev.length - 1 && msg.type === "assistant")
+        );
+        return [...messagesWithoutLastAssistant, assistantMessage];
+      });
       
       // Random delay between words to simulate natural typing
       await new Promise(resolve => setTimeout(resolve, Math.random() * 100 + 50));
