@@ -194,6 +194,13 @@ export function ChatInterface({ query, onNewChat }: ChatInterfaceProps) {
                           Ver Referencias
                         </Button>
                       </div>
+                      
+                      {/* Continue searching - only show after response is complete */}
+                      {!isTyping && message.id === messages[messages.length - 1]?.id && (
+                        <div className="mt-6 px-2">
+                          <SearchInterface onSearch={handleNewSearch} minimal={true} />
+                        </div>
+                      )}
                     </>
                   )}
                 </div>
@@ -202,11 +209,6 @@ export function ChatInterface({ query, onNewChat }: ChatInterfaceProps) {
           ))}
         </div>
       </ScrollArea>
-      
-      {/* Continue searching - styled like reference image */}
-      <div className="border-t border-border pt-4 pb-4">
-        <SearchInterface onSearch={handleNewSearch} minimal={true} />
-      </div>
     </div>
   );
 }
