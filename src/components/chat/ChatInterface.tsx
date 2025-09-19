@@ -152,54 +152,58 @@ export function ChatInterface({ query, onNewChat }: ChatInterfaceProps) {
                         </div>
                       </Card>
                       
-                      {/* Action buttons */}
-                      <div className="flex items-center gap-2 px-2">
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          onClick={() => handleFeedback(message.id, true)}
-                          className="h-8 w-8 p-0 hover:bg-banking-primary/10"
-                        >
-                          <ThumbsUp className="h-4 w-4" />
-                        </Button>
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          onClick={() => handleFeedback(message.id, false)}
-                          className="h-8 w-8 p-0 hover:bg-banking-primary/10"
-                        >
-                          <ThumbsDown className="h-4 w-4" />
-                        </Button>
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          className="h-8 w-8 p-0 hover:bg-banking-primary/10"
-                        >
-                          <Download className="h-4 w-4" />
-                        </Button>
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          onClick={() => handleCopy(message.content)}
-                          className="h-8 w-8 p-0 hover:bg-banking-primary/10"
-                        >
-                          <Copy className="h-4 w-4" />
-                        </Button>
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          className="text-sm px-3 h-8 hover:bg-banking-primary/10 text-muted-foreground"
-                        >
-                          <Eye className="h-4 w-4 mr-1" />
-                          Ver Referencias
-                        </Button>
-                      </div>
-                      
-                      {/* Continue searching - only show after response is complete */}
-                      {!isTyping && message.id === messages[messages.length - 1]?.id && (
-                        <div className="mt-6 px-2">
-                          <SearchInterface onSearch={handleNewSearch} minimal={true} />
-                        </div>
+                      {/* Action buttons - only show after response is complete */}
+                      {!isTyping && (
+                        <>
+                          <div className="flex items-center gap-2 px-2">
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              onClick={() => handleFeedback(message.id, true)}
+                              className="h-8 w-8 p-0 hover:bg-banking-primary/10"
+                            >
+                              <ThumbsUp className="h-4 w-4" />
+                            </Button>
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              onClick={() => handleFeedback(message.id, false)}
+                              className="h-8 w-8 p-0 hover:bg-banking-primary/10"
+                            >
+                              <ThumbsDown className="h-4 w-4" />
+                            </Button>
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              className="h-8 w-8 p-0 hover:bg-banking-primary/10"
+                            >
+                              <Download className="h-4 w-4" />
+                            </Button>
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              onClick={() => handleCopy(message.content)}
+                              className="h-8 w-8 p-0 hover:bg-banking-primary/10"
+                            >
+                              <Copy className="h-4 w-4" />
+                            </Button>
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              className="text-sm px-3 h-8 hover:bg-banking-primary/10 text-muted-foreground"
+                            >
+                              <Eye className="h-4 w-4 mr-1" />
+                              Ver Referencias
+                            </Button>
+                          </div>
+                          
+                          {/* Continue searching - only show after response is complete */}
+                          {message.id === messages[messages.length - 1]?.id && (
+                            <div className="mt-6 px-2">
+                              <SearchInterface onSearch={handleNewSearch} minimal={true} />
+                            </div>
+                          )}
+                        </>
                       )}
                     </>
                   )}
