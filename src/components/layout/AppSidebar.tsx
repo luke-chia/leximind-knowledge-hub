@@ -48,7 +48,13 @@ const middleItems = [
   { title: "Documents", url: "/documents", icon: FileText },
   { title: "Users", url: "/users", icon: Users },
   { title: "Reports", url: "/reports", icon: BarChart3 },
-  { title: "Favorites", url: "/favorites", icon: Star },
+];
+
+const favoriteDocuments = [
+  { title: "Manual One", url: "/documents/manual-one" },
+  { title: "Manual Two", url: "/documents/manual-two" },
+  { title: "CNBV Regulations", url: "/documents/cnbv" },
+  { title: "IT Security Policy", url: "/documents/it-security" },
 ];
 
 const logoutItem = { title: "Logout", url: "/logout", icon: LogOut };
@@ -63,6 +69,7 @@ export function AppSidebar() {
     "last-week": false,
     "last-month": false,
     historical: false,
+    favorites: false,
   });
 
   const isCollapsed = state === "collapsed";
@@ -70,8 +77,8 @@ export function AppSidebar() {
   
   const getNavClassName = ({ isActive: active }: { isActive: boolean }) =>
     active 
-      ? "bg-banking-surface text-white font-medium" 
-      : "text-white hover:bg-banking-surface-hover hover:text-white transition-all duration-200";
+      ? "bg-sidebar-accent text-sidebar-accent-foreground font-medium" 
+      : "text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground transition-all duration-200";
 
   const toggleGroup = (groupKey: string) => {
     setOpenGroups(prev => ({ ...prev, [groupKey]: !prev[groupKey] }));
@@ -110,7 +117,7 @@ export function AppSidebar() {
         <SidebarGroup>
           <Collapsible open={openGroups.chats} onOpenChange={() => toggleGroup("chats")}>
             <CollapsibleTrigger asChild>
-              <SidebarMenuButton className="h-10 text-white hover:bg-banking-surface-hover">
+              <SidebarMenuButton className="h-10 text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground">
                 <MessageSquare className="h-5 w-5" />
                 {!isCollapsed && (
                   <>
@@ -136,7 +143,7 @@ export function AppSidebar() {
                       <SidebarMenuSubItem key={group.title}>
                         <Collapsible open={openGroups[groupKey]} onOpenChange={() => toggleGroup(groupKey)}>
                           <CollapsibleTrigger asChild>
-                            <SidebarMenuSubButton className="text-white hover:text-white hover:bg-banking-surface-hover">
+                            <SidebarMenuSubButton className="text-sidebar-foreground hover:text-sidebar-accent-foreground hover:bg-sidebar-accent">
                               <IconComponent className="h-4 w-4" />
                               <span>{group.title}</span>
                               {openGroups[groupKey] ? (
@@ -152,7 +159,7 @@ export function AppSidebar() {
                               {group.items.map((item, index) => (
                                 <div
                                   key={index}
-                                  className="text-sm text-white hover:text-white cursor-pointer py-1 px-2 rounded hover:bg-banking-surface-hover transition-colors"
+                                  className="text-sm text-sidebar-foreground hover:text-sidebar-accent-foreground cursor-pointer py-1 px-2 rounded hover:bg-sidebar-accent transition-colors"
                                 >
                                   {item}
                                 </div>
@@ -183,6 +190,44 @@ export function AppSidebar() {
               </SidebarMenuItem>
             ))}
           </SidebarMenu>
+        </SidebarGroup>
+
+        {/* Favorites Section */}
+        <SidebarGroup>
+          <Collapsible open={openGroups.favorites} onOpenChange={() => toggleGroup("favorites")}>
+            <CollapsibleTrigger asChild>
+              <SidebarMenuButton className="h-10 text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground">
+                <Star className="h-5 w-5" />
+                {!isCollapsed && (
+                  <>
+                    <span className="font-medium">Favorites</span>
+                    {openGroups.favorites ? (
+                      <ChevronDown className="ml-auto h-4 w-4" />
+                    ) : (
+                      <ChevronRight className="ml-auto h-4 w-4" />
+                    )}
+                  </>
+                )}
+              </SidebarMenuButton>
+            </CollapsibleTrigger>
+            
+            {!isCollapsed && (
+              <CollapsibleContent>
+                <SidebarMenuSub>
+                  {favoriteDocuments.map((doc) => (
+                    <SidebarMenuSubItem key={doc.title}>
+                      <SidebarMenuSubButton asChild className="text-sidebar-foreground hover:text-sidebar-accent-foreground hover:bg-sidebar-accent">
+                        <NavLink to={doc.url}>
+                          <FileText className="h-4 w-4" />
+                          <span>{doc.title}</span>
+                        </NavLink>
+                      </SidebarMenuSubButton>
+                    </SidebarMenuSubItem>
+                  ))}
+                </SidebarMenuSub>
+              </CollapsibleContent>
+            )}
+          </Collapsible>
         </SidebarGroup>
 
         {/* Logout at Bottom */}

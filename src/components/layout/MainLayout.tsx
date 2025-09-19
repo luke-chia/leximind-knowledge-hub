@@ -4,16 +4,17 @@ import { TopBar } from "./TopBar";
 
 interface MainLayoutProps {
   children: React.ReactNode;
+  onNewChat?: () => void;
 }
 
-export function MainLayout({ children }: MainLayoutProps) {
+export function MainLayout({ children, onNewChat }: MainLayoutProps) {
   return (
     <SidebarProvider defaultOpen>
       <div className="min-h-screen flex w-full bg-background">
         <AppSidebar />
         
         <div className="flex-1 flex flex-col min-w-0">
-          <TopBar />
+          <TopBar onNewChat={onNewChat} />
           
           <main className="flex-1 banking-pattern relative">
             {/* Sidebar trigger for mobile */}

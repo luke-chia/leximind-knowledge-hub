@@ -70,11 +70,11 @@
     
     /* Sidebar specific colors for banking professional look */
     --sidebar-background: 225 30% 8%;
-    --sidebar-foreground: 210 20% 85%;
+    --sidebar-foreground: 210 40% 98%;
     --sidebar-primary: 280 100% 70%;
     --sidebar-primary-foreground: 222 47% 7%;
     --sidebar-accent: 225 20% 15%;
-    --sidebar-accent-foreground: 210 20% 85%;
+    --sidebar-accent-foreground: 210 40% 98%;
     --sidebar-border: 225 15% 20%;
     --sidebar-ring: 280 100% 70%;
     
@@ -98,6 +98,12 @@
     
     /* Transitions */
     --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  /* Light mode sidebar fixes */
+  :root {
+    --sidebar-foreground: 222.2 84% 4.9%;
+    --sidebar-accent-foreground: 222.2 84% 4.9%;
   }
 }
 
@@ -138,15 +144,36 @@
   
   /* Search input banking style */
   .input-banking {
-    @apply bg-[hsl(var(--banking-surface))] border-[hsl(var(--banking-primary)/0.3)] text-foreground;
+    @apply bg-card border-[hsl(var(--banking-primary)/0.3)] text-foreground;
     @apply focus:border-[hsl(var(--banking-primary))] focus:ring-[hsl(var(--banking-primary)/0.2)] focus:shadow-[var(--shadow-glow)];
     @apply transition-[var(--transition-smooth)];
   }
   
   /* Card banking style */
   .card-banking {
-    @apply bg-[hsl(var(--banking-surface))] border-[hsl(var(--banking-primary)/0.2)];
+    @apply bg-card border-[hsl(var(--banking-primary)/0.2)];
     @apply hover:border-[hsl(var(--banking-primary)/0.4)] transition-[var(--transition-smooth)];
+  }
+  
+  /* Infinity spinner animation */
+  @keyframes infinity-spin {
+    0% { transform: rotate(0deg) scale(1); }
+    50% { transform: rotate(180deg) scale(1.1); }
+    100% { transform: rotate(360deg) scale(1); }
+  }
+  
+  .animate-infinity {
+    animation: infinity-spin 2s ease-in-out infinite;
+  }
+  
+  /* Typing animation */
+  @keyframes typing {
+    0%, 50% { opacity: 1; }
+    51%, 100% { opacity: 0; }
+  }
+  
+  .animate-typing {
+    animation: typing 1.5s ease-in-out infinite;
   }
 }
 

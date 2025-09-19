@@ -13,7 +13,11 @@ import { Badge } from "@/components/ui/badge";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { useState, useEffect } from "react";
 
-export function TopBar() {
+interface TopBarProps {
+  onNewChat?: () => void;
+}
+
+export function TopBar({ onNewChat }: TopBarProps) {
   const [isDark, setIsDark] = useState(true);
 
   useEffect(() => {
@@ -32,7 +36,11 @@ export function TopBar() {
         {/* Left side - Sidebar Toggle and New Chat */}
         <div className="flex items-center space-x-4">
           <SidebarTrigger className="h-10 w-10 text-sidebar-foreground hover:text-banking-primary hover:bg-banking-surface-hover" />
-          <Button variant="outline" className="btn-banking-primary h-10 px-6 font-medium">
+          <Button 
+            variant="outline" 
+            className="btn-banking-primary h-10 px-6 font-medium"
+            onClick={onNewChat}
+          >
             <Sparkles className="mr-2 h-4 w-4" />
             New Chat
           </Button>
