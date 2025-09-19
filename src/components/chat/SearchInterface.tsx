@@ -155,28 +155,6 @@ export function SearchInterface({ onSearch, isLoading = false, minimal = false }
             </Button>
           </div>
 
-          {/* Quick action suggestions */}
-          <div className="flex flex-wrap gap-2 justify-center pt-4">
-            {[
-              "CNBV regulations",
-              "Compliance manual",
-              "IT policies",
-              "Accounting procedures",
-              "Risk management",
-              "Customer onboarding",
-            ].map((suggestion) => (
-              <Button
-                key={suggestion}
-                variant="outline"
-                size="sm"
-                className="btn-banking-ghost text-sm"
-                onClick={() => setQuery(suggestion)}
-                disabled={isLoading}
-              >
-                {suggestion}
-              </Button>
-            ))}
-          </div>
         </form>
       </Card>
 
