@@ -205,7 +205,7 @@ export function ChatInterface({ query, onNewChat }: ChatInterfaceProps) {
       
       {/* Continue searching - styled like reference image */}
       <div className="border-t border-border pt-4 pb-4">
-        <SearchInterface onSearch={handleNewSearch} />
+        <SearchInterface onSearch={handleNewSearch} minimal={true} />
       </div>
     </div>
   );

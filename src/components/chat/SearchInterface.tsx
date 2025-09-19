@@ -7,9 +7,10 @@ import { Card } from "@/components/ui/card";
 interface SearchInterfaceProps {
   onSearch: (query: string) => void;
   isLoading?: boolean;
+  minimal?: boolean;
 }
 
-export function SearchInterface({ onSearch, isLoading = false }: SearchInterfaceProps) {
+export function SearchInterface({ onSearch, isLoading = false, minimal = false }: SearchInterfaceProps) {
   const [query, setQuery] = useState("");
   const [isListening, setIsListening] = useState(false);
 
@@ -51,6 +52,53 @@ export function SearchInterface({ onSearch, isLoading = false }: SearchInterface
       recognition.start();
     }
   };
+
+  // If minimal mode, show only the input
+  if (minimal) {
+    return (
+      <div className="w-full">
+        <form onSubmit={handleSubmit} className="relative">
+          <Input
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            placeholder="Ask me what you need..."
+            className="input-banking h-12 text-base pr-24 pl-4 rounded-xl"
+            disabled={isLoading}
+          />
+          
+          {/* Voice input button */}
+          <Button
+            type="button"
+            variant="ghost"
+            size="icon"
+            className="absolute right-14 top-1/2 -translate-y-1/2 h-8 w-8 text-muted-foreground hover:text-banking-primary"
+            onClick={handleVoiceInput}
+            disabled={isLoading || isListening}
+          >
+            {isListening ? (
+              <div className="h-4 w-4 rounded-full bg-red-500 animate-pulse" />
+            ) : (
+              <Mic className="h-4 w-4" />
+            )}
+          </Button>
+
+          {/* Send button */}
+          <Button
+            type="submit"
+            size="icon"
+            className="absolute right-2 top-1/2 -translate-y-1/2 h-8 w-8 btn-banking-primary rounded-lg"
+            disabled={!query.trim() || isLoading}
+          >
+            {isLoading ? (
+              <Loader2 className="h-4 w-4 animate-spin" />
+            ) : (
+              <Send className="h-4 w-4" />
+            )}
+          </Button>
+        </form>
+      </div>
+    );
+  }
 
   return (
     <div className="w-full max-w-4xl mx-auto px-6">
