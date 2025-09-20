@@ -6,13 +6,7 @@ import { Card } from '@/components/ui/card'
 import { Drawer, DrawerContent, DrawerTrigger } from '@/components/ui/drawer'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Badge } from '@/components/ui/badge'
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 
 interface SearchInterfaceProps {
   onSearch: (searchParams: {
@@ -52,19 +46,12 @@ function FilterPanel({ filters, onFiltersChange, onClose }: FilterPanelProps) {
     area: ['Compliance', 'Core', 'TI'],
     categoria: ['Normativa', 'Operativo', 'Técnico'],
     fuente: ['CNBV', 'IFRS9', 'Manual Interno'],
-    tags: [
-      'PLD',
-      'Desarrollo Seguro',
-      'Reservas IFRS9',
-      'KYC',
-      'AML',
-      'Riesgo Operacional',
-    ],
+    tags: ['PLD', 'Desarrollo Seguro', 'Reservas IFRS9', 'KYC', 'AML', 'Riesgo Operacional']
   }
 
   const handleAreaChange = (value: string) => {
     const updatedArea = filters.area.includes(value)
-      ? filters.area.filter((v) => v !== value)
+      ? filters.area.filter(v => v !== value)
       : [...filters.area, value]
     onFiltersChange({ ...filters, area: updatedArea })
   }
@@ -84,9 +71,9 @@ function FilterPanel({ filters, onFiltersChange, onClose }: FilterPanelProps) {
   }
 
   const removeTag = (tagToRemove: string) => {
-    onFiltersChange({
-      ...filters,
-      tags: filters.tags.filter((t) => t !== tagToRemove),
+    onFiltersChange({ 
+      ...filters, 
+      tags: filters.tags.filter(t => t !== tagToRemove) 
     })
   }
 
@@ -97,7 +84,7 @@ function FilterPanel({ filters, onFiltersChange, onClose }: FilterPanelProps) {
   return (
     <div className="max-w-sm w-full p-6 bg-background">
       <div className="font-bold text-lg mb-4">🔧 Filtros de búsqueda</div>
-
+      
       {/* Área - ComboBox */}
       <div className="mb-4">
         <div className="font-semibold mb-2">Área</div>
@@ -107,27 +94,20 @@ function FilterPanel({ filters, onFiltersChange, onClose }: FilterPanelProps) {
           </SelectTrigger>
           <SelectContent>
             {filterOptions.area.map((opt) => (
-              <SelectItem key={opt} value={opt}>
-                {opt}
-              </SelectItem>
+              <SelectItem key={opt} value={opt}>{opt}</SelectItem>
             ))}
           </SelectContent>
         </Select>
         {/* Mostrar áreas seleccionadas */}
         <div className="flex gap-1 flex-wrap mt-2">
           {filters.area.map((area) => (
-            <Badge
-              key={area}
-              className="bg-banking-primary/20 text-banking-primary px-2 py-1"
-            >
+            <Badge key={area} className="bg-banking-primary/20 text-banking-primary px-2 py-1">
               {area}
               <button
                 type="button"
                 className="ml-1 text-xs hover:text-red-400"
                 onClick={() => handleAreaChange(area)}
-              >
-                ✕
-              </button>
+              >✕</button>
             </Badge>
           ))}
         </div>
@@ -173,30 +153,21 @@ function FilterPanel({ filters, onFiltersChange, onClose }: FilterPanelProps) {
             <SelectValue placeholder="Agregar tag" />
           </SelectTrigger>
           <SelectContent>
-            {filterOptions.tags
-              .filter((tag) => !filters.tags.includes(tag))
-              .map((tag) => (
-                <SelectItem key={tag} value={tag}>
-                  {tag}
-                </SelectItem>
-              ))}
+            {filterOptions.tags.filter(tag => !filters.tags.includes(tag)).map((tag) => (
+              <SelectItem key={tag} value={tag}>{tag}</SelectItem>
+            ))}
           </SelectContent>
         </Select>
         {/* Mostrar tags seleccionados */}
         <div className="flex gap-1 flex-wrap mt-2">
           {filters.tags.map((tag) => (
-            <Badge
-              key={tag}
-              className="bg-banking-primary text-white px-2 py-1"
-            >
+            <Badge key={tag} className="bg-banking-primary text-white px-2 py-1">
               {tag}
               <button
                 type="button"
                 className="ml-1 text-xs text-white hover:text-red-400"
                 onClick={() => removeTag(tag)}
-              >
-                ✕
-              </button>
+              >✕</button>
             </Badge>
           ))}
         </div>
@@ -248,23 +219,6 @@ export function SearchInterface({
     Array<{ key: string; value: string }>
   >([])
 
-  // Opciones de filtros
-  const filterOptions = {
-    area: ['Compliance', 'Core', 'TI'],
-    categoria: ['Normativa', 'Operativo', 'Técnico'],
-    fuente: ['CNBV', 'IFRS9', 'Manual Interno'],
-  }
-
-  // Handler para checkboxes
-  const handleCheckbox = (key: keyof typeof filters, value: string) => {
-    setFilters((prev) => {
-      const exists = prev[key].includes(value)
-      const updated = exists
-        ? prev[key].filter((v) => v !== value)
-        : [...prev[key], value]
-      return { ...prev, [key]: updated }
-    })
-  }
   // Typing animation effect
   useEffect(() => {
     if (!query) {
@@ -439,9 +393,52 @@ export function SearchInterface({
                   ))}
                 </div>
               </div>
-              {/* Tags existentes */}
+              {/* Año / Vigencia */}
               <div className="mb-4">
-                <div className="font-semibold mb-2">Tags</div>
+                <div className="font-semibold mb-2">Año / Vigencia</div>
+                <div className="flex gap-4">
+                  {filterOptions.anio.map((opt) => (
+                    <label key={opt} className="flex items-center gap-2">
+                      <Checkbox
+                        checked={filters.anio.includes(opt)}
+                        onCheckedChange={() => handleCheckbox('anio', opt)}
+                      />
+                      {opt}
+                    </label>
+                  ))}
+                </div>
+              </div>
+              {/* Tags dinámicos */}
+              <div className="mb-4">
+                <div className="font-semibold mb-2">
+                  Tags (etiquetas libres)
+                </div>
+                <form
+                  onSubmit={(e) => {
+                    e.preventDefault()
+                    if (
+                      tagInput.trim() &&
+                      !filters.tags.includes(tagInput.trim())
+                    ) {
+                      setFilters((prev) => ({
+                        ...prev,
+                        tags: [...prev.tags, tagInput.trim()],
+                      }))
+                      setTagInput('')
+                    }
+                  }}
+                  className="flex gap-2 mb-2"
+                >
+                  <Input
+                    value={tagInput}
+                    onChange={(e) => setTagInput(e.target.value)}
+                    placeholder="Agregar Tag"
+                    className="w-full"
+                  />
+                  <Button type="submit" size="sm" variant="secondary">
+                    +
+                  </Button>
+                </form>
                 <div className="flex gap-2 flex-wrap">
                   {filters.tags.map((tag, idx) => (
                     <Badge
@@ -476,6 +473,7 @@ export function SearchInterface({
                       area: [],
                       categoria: [],
                       fuente: [],
+                      anio: [],
                       tags: [],
                     })
                   }

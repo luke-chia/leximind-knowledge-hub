@@ -1,0 +1,28 @@
+@startuml arquitectura_tecnica_ia
+!theme plain
+title 🌐 Arquitectura Técnica - IA para Core Bancario
+
+actor "👩‍💼 Usuario de Negocio\n(Product Manager, Crédito)" as User
+actor "👨‍💻 Equipo Contabilidad" as Contabilidad
+actor "👮 Regulador\n(CNBV / IFRS9)" as Regulador
+
+package "Core Bancario" {
+  component [Módulo de Configuración de Productos] as ModProd
+  component [Módulo Contable\n(Catálogo IFRS9)] as ModContab
+  component [Motor de Integración APIs] as API
+}
+
+package "IA" {
+  component [Copiloto IA\n(OpenAI GPT-4/5 API)] as Copiloto
+  component [Vector DB\n(Pinecone / Weaviate)] as Pinecone
+  component [ML Models\n(Scikit, TensorFlow, PyTorch)] as ML
+}
+
+User --> Copiloto : Describe producto en lenguaje natural
+Copiloto --> Pinecone : Busca embeddings / reglas contables
+Copiloto --> ML : Sugerencias paramétricas (tasas, riesgo)
+Copiloto --> ModProd : Genera sandbox de producto
+Copiloto --> ModContab : Propone catálogo contable IFRS9
+Contabilidad --> ModContab : Valida cuentas y provisiones
+ModContab --> Regulador : Reportes normativos
+@enduml

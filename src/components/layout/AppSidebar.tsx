@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { NavLink, useLocation } from "react-router-dom";
+import { useState, useEffect } from 'react'
+import { NavLink, useLocation } from 'react-router-dom'
 import {
   Home,
   Search,
@@ -14,7 +14,7 @@ import {
   Clock,
   Calendar,
   Archive,
-} from "lucide-react";
+} from 'lucide-react'
 
 import {
   Sidebar,
@@ -29,74 +29,129 @@ import {
   SidebarMenuSubButton,
   SidebarMenuSubItem,
   useSidebar,
-} from "@/components/ui/sidebar";
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
+} from '@/components/ui/sidebar'
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from '@/components/ui/collapsible'
 
 const navigationItems = [
-  { title: "Dashboard", url: "/", icon: Home },
-  { title: "Search", url: "/search", icon: Search },
-];
+  { title: 'Dashboard', url: '/', icon: Home },
+  { title: 'Search', url: '/search', icon: Search },
+]
 
 const chatHistoryItems = [
-  { title: "Today", items: ["Account Queries", "Compliance Questions"] },
-  { title: "Last Week", items: ["CNBV Regulations", "IT Policy Review"] },
-  { title: "Last Month", items: ["Operational Manual", "Accounting Procedures"] },
-  { title: "Historical", items: ["Legacy Documents", "Archived Chats"] },
-];
+  { title: 'Today', items: ['Account Queries', 'Compliance Questions'] },
+  { title: 'Last Week', items: ['CNBV Regulations', 'IT Policy Review'] },
+  {
+    title: 'Last Month',
+    items: ['Operational Manual', 'Accounting Procedures'],
+  },
+  { title: 'Historical', items: ['Legacy Documents', 'Archived Chats'] },
+]
 
 const middleItems = [
-  { title: "Documents", url: "/documents", icon: FileText },
-  { title: "Users", url: "/users", icon: Users },
-  { title: "Reports", url: "/reports", icon: BarChart3 },
-];
+  { title: 'Documents', url: '/documents', icon: FileText },
+  { title: 'Users', url: '/users', icon: Users },
+  { title: 'Reports', url: '/reports', icon: BarChart3 },
+]
 
 const favoriteDocuments = [
-  { title: "Manual One", url: "/documents/manual-one" },
-  { title: "Manual Two", url: "/documents/manual-two" },
-  { title: "CNBV Regulations", url: "/documents/cnbv" },
-  { title: "IT Security Policy", url: "/documents/it-security" },
-];
+  { title: 'Manual One', url: '/documents/manual-one' },
+  { title: 'Manual Two', url: '/documents/manual-two' },
+  { title: 'CNBV Regulations', url: '/documents/cnbv' },
+  { title: 'IT Security Policy', url: '/documents/it-security' },
+]
 
-const logoutItem = { title: "Logout", url: "/logout", icon: LogOut };
+const logoutItem = { title: 'Logout', url: '/logout', icon: LogOut }
 
 export function AppSidebar() {
-  const { state } = useSidebar();
-  const location = useLocation();
-  const currentPath = location.pathname;
+  const { state } = useSidebar()
+  const location = useLocation()
+  const currentPath = location.pathname
+  const [isDarkMode, setIsDarkMode] = useState(true)
   const [openGroups, setOpenGroups] = useState<Record<string, boolean>>({
     chats: true,
     today: false,
-    "last-week": false,
-    "last-month": false,
+    'last-week': false,
+    'last-month': false,
     historical: false,
     favorites: false,
-  });
+  })
 
-  const isCollapsed = state === "collapsed";
-  const isActive = (path: string) => currentPath === path;
-  
+  // Detect dark/light mode changes
+  useEffect(() => {
+    const checkTheme = () => {
+      setIsDarkMode(document.documentElement.classList.contains('dark'))
+    }
+
+    // Check initial theme
+    checkTheme()
+
+    // Watch for theme changes
+    const observer = new MutationObserver(checkTheme)
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['class'],
+    })
+
+    return () => observer.disconnect()
+  }, [])
+
+  const isCollapsed = state === 'collapsed'
+  const isActive = (path: string) => currentPath === path
+
   const getNavClassName = ({ isActive: active }: { isActive: boolean }) =>
-    active 
-      ? "bg-sidebar-accent text-sidebar-accent-foreground font-medium" 
-      : "text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground transition-all duration-200";
+    active
+      ? 'bg-sidebar-accent text-sidebar-accent-foreground font-medium'
+      : 'text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground transition-all duration-200'
 
   const toggleGroup = (groupKey: string) => {
-    setOpenGroups(prev => ({ ...prev, [groupKey]: !prev[groupKey] }));
-  };
+    setOpenGroups((prev) => ({ ...prev, [groupKey]: !prev[groupKey] }))
+  }
 
   const getTimeIcon = (title: string) => {
     switch (title.toLowerCase()) {
-      case "today": return Clock;
-      case "last week": return Calendar;
-      case "last month": return Calendar;
-      case "historical": return Archive;
-      default: return Clock;
+      case 'today':
+        return Clock
+      case 'last week':
+        return Calendar
+      case 'last month':
+        return Calendar
+      case 'historical':
+        return Archive
+      default:
+        return Clock
     }
-  };
+  }
 
   return (
-    <Sidebar className="border-r border-sidebar-border bg-sidebar" collapsible="icon">
+    <Sidebar
+      className="border-r border-sidebar-border bg-sidebar"
+      collapsible="icon"
+    >
       <SidebarContent className="px-2 py-4">
+        {/* LexiMind Logo */}
+        <div className="flex items-center justify-center mb-6 mt-2">
+          {isCollapsed ? (
+            <div className="flex items-center justify-center h-8 w-8 text-lg font-bold">
+              <span className={isDarkMode ? 'text-white' : 'text-black'}>
+                L
+              </span>
+              <span className="text-[#6667AB]">M</span>
+            </div>
+          ) : (
+            <img
+              src={
+                isDarkMode ? '/Logo_Lexi_710.png' : '/Logo_Lexi_710_MClaro.png'
+              }
+              alt="LexiMind"
+              className="h-12 w-auto max-w-[160px] transition-all duration-200"
+            />
+          )}
+        </div>
+
         {/* Main Navigation */}
         <SidebarGroup>
           <SidebarMenu>
@@ -105,7 +160,9 @@ export function AppSidebar() {
                 <SidebarMenuButton asChild className="h-10">
                   <NavLink to={item.url} className={getNavClassName}>
                     <item.icon className="h-5 w-5" />
-                    {!isCollapsed && <span className="font-medium">{item.title}</span>}
+                    {!isCollapsed && (
+                      <span className="font-medium">{item.title}</span>
+                    )}
                   </NavLink>
                 </SidebarMenuButton>
               </SidebarMenuItem>
@@ -115,7 +172,10 @@ export function AppSidebar() {
 
         {/* My Chats Section */}
         <SidebarGroup>
-          <Collapsible open={openGroups.chats} onOpenChange={() => toggleGroup("chats")}>
+          <Collapsible
+            open={openGroups.chats}
+            onOpenChange={() => toggleGroup('chats')}
+          >
             <CollapsibleTrigger asChild>
               <SidebarMenuButton className="h-10 text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground">
                 <MessageSquare className="h-5 w-5" />
@@ -131,17 +191,20 @@ export function AppSidebar() {
                 )}
               </SidebarMenuButton>
             </CollapsibleTrigger>
-            
+
             {!isCollapsed && (
               <CollapsibleContent>
                 <SidebarMenuSub>
                   {chatHistoryItems.map((group) => {
-                    const IconComponent = getTimeIcon(group.title);
-                    const groupKey = group.title.toLowerCase().replace(" ", "-");
-                    
+                    const IconComponent = getTimeIcon(group.title)
+                    const groupKey = group.title.toLowerCase().replace(' ', '-')
+
                     return (
                       <SidebarMenuSubItem key={group.title}>
-                        <Collapsible open={openGroups[groupKey]} onOpenChange={() => toggleGroup(groupKey)}>
+                        <Collapsible
+                          open={openGroups[groupKey]}
+                          onOpenChange={() => toggleGroup(groupKey)}
+                        >
                           <CollapsibleTrigger asChild>
                             <SidebarMenuSubButton className="text-sidebar-foreground hover:text-sidebar-accent-foreground hover:bg-sidebar-accent">
                               <IconComponent className="h-4 w-4" />
@@ -153,7 +216,7 @@ export function AppSidebar() {
                               )}
                             </SidebarMenuSubButton>
                           </CollapsibleTrigger>
-                          
+
                           <CollapsibleContent>
                             <div className="ml-6 space-y-1">
                               {group.items.map((item, index) => (
@@ -168,7 +231,7 @@ export function AppSidebar() {
                           </CollapsibleContent>
                         </Collapsible>
                       </SidebarMenuSubItem>
-                    );
+                    )
                   })}
                 </SidebarMenuSub>
               </CollapsibleContent>
@@ -184,7 +247,9 @@ export function AppSidebar() {
                 <SidebarMenuButton asChild className="h-10">
                   <NavLink to={item.url} className={getNavClassName}>
                     <item.icon className="h-5 w-5" />
-                    {!isCollapsed && <span className="font-medium">{item.title}</span>}
+                    {!isCollapsed && (
+                      <span className="font-medium">{item.title}</span>
+                    )}
                   </NavLink>
                 </SidebarMenuButton>
               </SidebarMenuItem>
@@ -194,7 +259,10 @@ export function AppSidebar() {
 
         {/* Favorites Section */}
         <SidebarGroup>
-          <Collapsible open={openGroups.favorites} onOpenChange={() => toggleGroup("favorites")}>
+          <Collapsible
+            open={openGroups.favorites}
+            onOpenChange={() => toggleGroup('favorites')}
+          >
             <CollapsibleTrigger asChild>
               <SidebarMenuButton className="h-10 text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground">
                 <Star className="h-5 w-5" />
@@ -210,13 +278,16 @@ export function AppSidebar() {
                 )}
               </SidebarMenuButton>
             </CollapsibleTrigger>
-            
+
             {!isCollapsed && (
               <CollapsibleContent>
                 <SidebarMenuSub>
                   {favoriteDocuments.map((doc) => (
                     <SidebarMenuSubItem key={doc.title}>
-                      <SidebarMenuSubButton asChild className="text-sidebar-foreground hover:text-sidebar-accent-foreground hover:bg-sidebar-accent">
+                      <SidebarMenuSubButton
+                        asChild
+                        className="text-sidebar-foreground hover:text-sidebar-accent-foreground hover:bg-sidebar-accent"
+                      >
                         <NavLink to={doc.url}>
                           <FileText className="h-4 w-4" />
                           <span>{doc.title}</span>
@@ -237,7 +308,9 @@ export function AppSidebar() {
               <SidebarMenuButton asChild className="h-10">
                 <NavLink to={logoutItem.url} className={getNavClassName}>
                   <logoutItem.icon className="h-5 w-5" />
-                  {!isCollapsed && <span className="font-medium">{logoutItem.title}</span>}
+                  {!isCollapsed && (
+                    <span className="font-medium">{logoutItem.title}</span>
+                  )}
                 </NavLink>
               </SidebarMenuButton>
             </SidebarMenuItem>
@@ -245,5 +318,5 @@ export function AppSidebar() {
         </SidebarGroup>
       </SidebarContent>
     </Sidebar>
-  );
+  )
 }
