@@ -1,4 +1,5 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo, useRef } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Send, Mic, Loader2, Filter } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -29,22 +30,41 @@ interface SearchInterfaceProps {
   minimal?: boolean
 }
 
-const placeholderTexts = [
-  'Ask me what you need...',
-  '¿Qué normativas de la CNBV aplican?',
-  'Explícame los procedimientos de compliance',
-  '¿Cómo funciona la gestión de riesgos?',
-  'Políticas de onboarding de clientes',
-  'Procedimientos contables y financieros',
-  'Regulaciones de prevención de lavado',
-  'Manuales operativos internos',
-]
+function getSpeechRecognition():
+  | typeof window.SpeechRecognition
+  | typeof window.webkitSpeechRecognition
+  | undefined {
+  if (typeof window !== 'undefined') {
+    return (
+      (window as any).SpeechRecognition ||
+      (window as any).webkitSpeechRecognition
+    )
+  }
+  return undefined
+}
 
 export function SearchInterface({
   onSearch,
   isLoading = false,
   minimal = false,
 }: SearchInterfaceProps) {
+  const { t, i18n } = useTranslation()
+
+  // Get translated placeholders for current language
+  const placeholderTexts = useMemo(() => {
+    const keys = [
+      'search_placeholder',
+      'placeholder_cnbv',
+      'placeholder_compliance',
+      'placeholder_risk',
+      'placeholder_onboarding',
+      'placeholder_accounting',
+      'placeholder_aml',
+      'placeholder_manuals',
+    ]
+    return keys.map((key) => t(key))
+  }, [t])
+
   const [query, setQuery] = useState('')
   const [isListening, setIsListening] = useState(false)
   const [currentPlaceholder, setCurrentPlaceholder] = useState(0)
@@ -63,11 +83,20 @@ export function SearchInterface({
     Array<{ key: string; value: string }>
   >([])
 
+  // Refs para manejar timeouts
+  const timeoutRefs = useRef<NodeJS.Timeout[]>([])
+
   // Typing animation effect
   useEffect(() => {
+    // Limpiar timeouts anteriores
+    timeoutRefs.current.forEach((timeout) => clearTimeout(timeout))
+    timeoutRefs.current = []
+
     // Solo mostrar la animación si el usuario no ha interactuado y no hay texto
     if (!query && !userInteracted) {
       const currentText = placeholderTexts[currentPlaceholder]
+      if (!currentText) return // Guard para texto vacío
+
       setIsTyping(true)
       setDisplayedText('')
 
@@ -76,27 +105,32 @@ export function SearchInterface({
         if (index <= currentText.length) {
           setDisplayedText(currentText.slice(0, index))
           index++
-          setTimeout(typeText, 50 + Math.random() * 50) // Random typing speed
+          const timeout = setTimeout(typeText, 50 + Math.random() * 50)
+          timeoutRefs.current.push(timeout)
         } else {
           setIsTyping(false)
-          // Wait before starting next text
-          setTimeout(() => {
+          const timeout = setTimeout(() => {
             setCurrentPlaceholder(
               (prev) => (prev + 1) % placeholderTexts.length
             )
           }, 2000)
+          timeoutRefs.current.push(timeout)
         }
       }
 
-      const timeout = setTimeout(typeText, 500)
-      return () => clearTimeout(timeout)
-    }
-    // Si el usuario ha interactuado, limpiar el texto del placeholder
-    else if (userInteracted) {
+      const initialTimeout = setTimeout(typeText, 500)
+      timeoutRefs.current.push(initialTimeout)
+    } else if (userInteracted) {
       setDisplayedText('')
       setIsTyping(false)
     }
-  }, [currentPlaceholder, query, userInteracted])
+
+    // Cleanup function
+    return () => {
+      timeoutRefs.current.forEach((timeout) => clearTimeout(timeout))
+      timeoutRefs.current = []
+    }
+  }, [currentPlaceholder, query, userInteracted, placeholderTexts])
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
@@ -121,33 +155,20 @@ export function SearchInterface({
   }, [filters])
 
   const handleVoiceInput = () => {
-    if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
-      const SpeechRecognition =
-        window.webkitSpeechRecognition || window.SpeechRecognition
+    const SpeechRecognition = getSpeechRecognition()
+    if (SpeechRecognition) {
       const recognition = new SpeechRecognition()
-
       recognition.continuous = false
       recognition.interimResults = false
       recognition.lang = 'es-ES'
-
-      recognition.onstart = () => {
-        setIsListening(true)
-      }
-
-      recognition.onresult = (event) => {
+      recognition.onstart = () => setIsListening(true)
+      recognition.onresult = (event: SpeechRecognitionEvent) => {
         const transcript = event.results[0][0].transcript
         setQuery(transcript)
         setIsListening(false)
       }
-
-      recognition.onerror = () => {
-        setIsListening(false)
-      }
-
-      recognition.onend = () => {
-        setIsListening(false)
-      }
-
+      recognition.onerror = () => setIsListening(false)
+      recognition.onend = () => setIsListening(false)
       recognition.start()
     }
   }
@@ -168,7 +189,9 @@ export function SearchInterface({
                 setUserInteracted(false)
               }
             }}
-            placeholder={displayedText + (isTyping ? '|' : '')}
+            placeholder={
+              t(placeholderTexts[currentPlaceholder]) + (isTyping ? '|' : '')
+            }
             className="input-banking h-12 text-base pr-24 pl-4 rounded-xl"
             disabled={isLoading}
           />
@@ -233,7 +256,9 @@ export function SearchInterface({
                 key={idx}
                 className="bg-banking-primary text-white px-3 py-1 flex items-center gap-1"
               >
-                {chip.key}: {chip.value}
+                {chip.key === 'tags'
+                  ? chip.value
+                  : `${t('filters.' + chip.key)}: ${chip.value}`}
                 <button
                   type="button"
                   className="ml-1 text-xs text-white hover:text-red-400"
@@ -262,11 +287,10 @@ export function SearchInterface({
       {/* Main greeting */}
       <div className="text-center mb-12 animate-fade-in">
         <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-4">
-          What do you want to consult today...?
+          {t('main_greeting')}
         </h1>
         <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-          Ask me about regulatory laws, compliance manuals, operational
-          procedures, or any banking documentation you need help with.
+          {t('main_description')}
         </p>
       </div>
 
@@ -379,7 +403,7 @@ export function SearchInterface({
 
       {/* Recent activity hint */}
       <div className="text-center mt-8 text-sm text-muted-foreground">
-        <p>Your recent chats and documents are available in the sidebar</p>
+        <p>{t('recent_activity_hint')}</p>
       </div>
     </div>
   )

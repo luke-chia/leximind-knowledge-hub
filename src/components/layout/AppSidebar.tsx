@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { NavLink, useLocation } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import {
   Home,
   Search,
@@ -36,37 +37,8 @@ import {
   CollapsibleTrigger,
 } from '@/components/ui/collapsible'
 
-const navigationItems = [
-  { title: 'Dashboard', url: '/', icon: Home },
-  { title: 'Search', url: '/search', icon: Search },
-]
-
-const chatHistoryItems = [
-  { title: 'Today', items: ['Account Queries', 'Compliance Questions'] },
-  { title: 'Last Week', items: ['CNBV Regulations', 'IT Policy Review'] },
-  {
-    title: 'Last Month',
-    items: ['Operational Manual', 'Accounting Procedures'],
-  },
-  { title: 'Historical', items: ['Legacy Documents', 'Archived Chats'] },
-]
-
-const middleItems = [
-  { title: 'Documents', url: '/documents', icon: FileText },
-  { title: 'Users', url: '/users', icon: Users },
-  { title: 'Reports', url: '/reports', icon: BarChart3 },
-]
-
-const favoriteDocuments = [
-  { title: 'Manual One', url: '/documents/manual-one' },
-  { title: 'Manual Two', url: '/documents/manual-two' },
-  { title: 'CNBV Regulations', url: '/documents/cnbv' },
-  { title: 'IT Security Policy', url: '/documents/it-security' },
-]
-
-const logoutItem = { title: 'Logout', url: '/logout', icon: LogOut }
-
 export function AppSidebar() {
+  const { t } = useTranslation()
   const { state } = useSidebar()
   const location = useLocation()
   const currentPath = location.pathname
@@ -79,6 +51,50 @@ export function AppSidebar() {
     historical: false,
     favorites: false,
   })
+
+  // Dynamic navigation items with translations
+  const navigationItems = [
+    { title: t('sidebar.dashboard'), url: '/', icon: Home },
+    { title: t('sidebar.search'), url: '/search', icon: Search },
+  ]
+
+  const chatHistoryItems = [
+    {
+      title: t('sidebar.today'),
+      items: ['Account Queries', 'Compliance Questions'],
+    },
+    {
+      title: t('sidebar.last_week'),
+      items: ['CNBV Regulations', 'IT Policy Review'],
+    },
+    {
+      title: t('sidebar.last_month'),
+      items: ['Operational Manual', 'Accounting Procedures'],
+    },
+    {
+      title: t('sidebar.historical'),
+      items: ['Legacy Documents', 'Archived Chats'],
+    },
+  ]
+
+  const middleItems = [
+    { title: t('sidebar.documents'), url: '/documents', icon: FileText },
+    { title: t('sidebar.users'), url: '/users', icon: Users },
+    { title: t('sidebar.reports'), url: '/reports', icon: BarChart3 },
+  ]
+
+  const favoriteDocuments = [
+    { title: 'Manual One', url: '/documents/manual-one' },
+    { title: 'Manual Two', url: '/documents/manual-two' },
+    { title: 'CNBV Regulations', url: '/documents/cnbv' },
+    { title: 'IT Security Policy', url: '/documents/it-security' },
+  ]
+
+  const logoutItem = {
+    title: t('sidebar.logout'),
+    url: '/logout',
+    icon: LogOut,
+  }
 
   // Detect dark/light mode changes
   useEffect(() => {
@@ -181,7 +197,7 @@ export function AppSidebar() {
                 <MessageSquare className="h-5 w-5" />
                 {!isCollapsed && (
                   <>
-                    <span className="font-medium">My Chats</span>
+                    <span className="font-medium">{t('sidebar.chats')}</span>
                     {openGroups.chats ? (
                       <ChevronDown className="ml-auto h-4 w-4" />
                     ) : (
@@ -268,7 +284,9 @@ export function AppSidebar() {
                 <Star className="h-5 w-5" />
                 {!isCollapsed && (
                   <>
-                    <span className="font-medium">Favorites</span>
+                    <span className="font-medium">
+                      {t('sidebar.favorites')}
+                    </span>
                     {openGroups.favorites ? (
                       <ChevronDown className="ml-auto h-4 w-4" />
                     ) : (

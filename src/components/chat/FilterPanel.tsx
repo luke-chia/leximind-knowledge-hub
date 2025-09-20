@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Checkbox } from '@/components/ui/checkbox'
@@ -31,6 +32,7 @@ export function FilterPanel({
   onFiltersChange,
   onClose,
 }: FilterPanelProps) {
+  const { t } = useTranslation()
   const [localTagInput, setLocalTagInput] = useState('')
 
   const filterOptions = {
@@ -81,14 +83,14 @@ export function FilterPanel({
 
   return (
     <div className="max-w-sm w-full p-6 bg-background">
-      <div className="font-bold text-lg mb-4">🔧 Filtros de búsqueda</div>
+      <div className="font-bold text-lg mb-4">{t('filters.title')}</div>
 
       {/* Área - ComboBox */}
       <div className="mb-4">
-        <div className="font-semibold mb-2">Área</div>
+        <div className="font-semibold mb-2">{t('filters.area')}</div>
         <Select onValueChange={handleAreaChange}>
           <SelectTrigger className="w-full">
-            <SelectValue placeholder="Seleccionar área" />
+            <SelectValue placeholder={t('filters.select_area')} />
           </SelectTrigger>
           <SelectContent>
             {filterOptions.area.map((opt) => (
@@ -120,7 +122,7 @@ export function FilterPanel({
 
       {/* Categoría - Checkboxes */}
       <div className="mb-4">
-        <div className="font-semibold mb-2">Categoría</div>
+        <div className="font-semibold mb-2">{t('filters.category')}</div>
         <div className="flex flex-col gap-2">
           {filterOptions.categoria.map((opt) => (
             <label key={opt} className="flex items-center gap-2">
@@ -136,7 +138,7 @@ export function FilterPanel({
 
       {/* Fuente / Regulador - Checkboxes */}
       <div className="mb-4">
-        <div className="font-semibold mb-2">Fuente / Regulador</div>
+        <div className="font-semibold mb-2">{t('filters.source')}</div>
         <div className="flex flex-col gap-2">
           {filterOptions.fuente.map((opt) => (
             <label key={opt} className="flex items-center gap-2">
@@ -152,10 +154,10 @@ export function FilterPanel({
 
       {/* Tags - ComboBox */}
       <div className="mb-4">
-        <div className="font-semibold mb-2">Tags</div>
+        <div className="font-semibold mb-2">{t('filters.tags')}</div>
         <Select onValueChange={handleTagChange}>
           <SelectTrigger className="w-full">
-            <SelectValue placeholder="Agregar tag" />
+            <SelectValue placeholder={t('filters.add_tag')} />
           </SelectTrigger>
           <SelectContent>
             {filterOptions.tags
@@ -190,10 +192,10 @@ export function FilterPanel({
       {/* Botones de acción */}
       <div className="flex gap-4 mt-6">
         <Button variant="default" onClick={onClose}>
-          Aplicar Filtros
+          {t('filters.apply')}
         </Button>
         <Button variant="ghost" onClick={clearAllFilters}>
-          Limpiar Todo
+          {t('filters.clear')}
         </Button>
       </div>
     </div>

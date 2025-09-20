@@ -8,6 +8,7 @@ import {
   Infinity as InfinityIcon, // No change needed here
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import { useTranslation } from 'react-i18next'
 import { Card } from '@/components/ui/card'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { useToast } from '@/hooks/use-toast'
@@ -27,6 +28,7 @@ interface ChatInterfaceProps {
 }
 
 export function ChatInterface({ query, onNewChat }: ChatInterfaceProps) {
+  const { t } = useTranslation()
   const [messages, setMessages] = useState<Message[]>([])
   const [isTyping, setIsTyping] = useState(false)
   const [activeResponseId, setActiveResponseId] = useState<string | null>(null)
@@ -132,18 +134,18 @@ export function ChatInterface({ query, onNewChat }: ChatInterfaceProps) {
 
   const handleFeedback = (messageId: string, positive: boolean) => {
     toast({
-      title: 'Feedback recorded',
-      description: `Thank you for your ${
-        positive ? 'positive' : 'negative'
-      } feedback!`,
+      title: t('actions.feedback_' + (positive ? 'positive' : 'negative')),
+      description: t(
+        'actions.feedback_' + (positive ? 'positive' : 'negative')
+      ),
     })
   }
 
   const handleCopy = (content: string) => {
     navigator.clipboard.writeText(content)
     toast({
-      title: 'Copied',
-      description: 'Response copied to clipboard',
+      title: t('actions.copied'),
+      description: t('actions.copied'),
     })
   }
 
@@ -182,7 +184,7 @@ export function ChatInterface({ query, onNewChat }: ChatInterfaceProps) {
                         <InfinityIcon className="w-4 h-4 text-white animate-infinity" />
                       </div>
                       <div className="text-muted-foreground">
-                        LexiMind is thinking...
+                        {t('messages.thinking')}
                       </div>
                     </div>
                   ) : (
@@ -239,7 +241,7 @@ export function ChatInterface({ query, onNewChat }: ChatInterfaceProps) {
                               className="text-sm px-3 h-8 hover:bg-banking-primary/10 text-muted-foreground"
                             >
                               <Eye className="h-4 w-4 mr-1" />
-                              Ver Referencias
+                              {t('actions.references')}
                             </Button>
                           </div>
 

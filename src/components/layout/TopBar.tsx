@@ -1,4 +1,5 @@
 import { Bell, Sun, Moon, Sparkles, Menu } from 'lucide-react'
+import { LanguageSwitcher } from './LanguageSwitcher'
 import { Button } from '@/components/ui/button'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import {
@@ -60,6 +61,9 @@ export function TopBar({ onNewChat }: TopBarProps) {
 
         {/* Right side actions */}
         <div className="flex items-center space-x-4">
+          {/* Language Switcher */}
+          <LanguageSwitcher />
+
           {/* Theme Toggle */}
           <Button
             variant="ghost"

@@ -1,0 +1,48 @@
+{
+  "search_placeholder": "Search regulations, compliance...",
+  "filters": {
+    "title": "🔧 Search Filters",
+    "area": "Area",
+    "select_area": "Select area",
+    "category": "Category",
+    "source": "Source / Regulator",
+    "tags": "Tags",
+    "add_tag": "Add tag",
+    "apply": "Apply Filters",
+    "clear": "Clear All"
+  },
+  "main_greeting": "What do you want to consult today...?",
+  "main_description": "Ask me about regulatory laws, compliance manuals, operational procedures, or any banking documentation you need help with.",
+  "recent_activity_hint": "Your recent chats and documents are available in the sidebar.",
+  "placeholder_cnbv": "What CNBV regulations apply?",
+  "placeholder_compliance": "Explain compliance procedures",
+  "placeholder_risk": "How does risk management work?",
+  "placeholder_onboarding": "Client onboarding policies",
+  "placeholder_accounting": "Accounting and financial procedures",
+  "placeholder_aml": "Anti-money laundering regulations",
+  "placeholder_manuals": "Internal operational manuals",
+  "actions": {
+    "new_chat": "New Chat",
+    "feedback_positive": "Thank you for your positive feedback!",
+    "feedback_negative": "Thank you for your negative feedback!",
+    "copied": "Response copied to clipboard",
+    "references": "View References"
+  },
+  "messages": {
+    "thinking": "LexiMind is thinking..."
+  },
+  "sidebar": {
+    "dashboard": "Dashboard",
+    "search": "Search",
+    "documents": "Documents",
+    "users": "Users",
+    "reports": "Reports",
+    "logout": "Logout",
+    "chats": "Chats",
+    "favorites": "Favorites",
+    "today": "Today",
+    "last_week": "Last Week",
+    "last_month": "Last Month",
+    "historical": "Historical"
+  }
+}
