@@ -1,6 +1,6 @@
-import { Bell, Sun, Moon, Sparkles, Menu } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Bell, Sun, Moon, Sparkles, Menu } from 'lucide-react'
+import { Button } from '@/components/ui/button'
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -8,27 +8,36 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { Badge } from "@/components/ui/badge";
-import { SidebarTrigger } from "@/components/ui/sidebar";
-import { useState, useEffect } from "react";
+} from '@/components/ui/dropdown-menu'
+import { Badge } from '@/components/ui/badge'
+import { SidebarTrigger } from '@/components/ui/sidebar'
+import { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 interface TopBarProps {
-  onNewChat?: () => void;
+  onNewChat?: () => void
 }
 
 export function TopBar({ onNewChat }: TopBarProps) {
-  const [isDark, setIsDark] = useState(true);
+  const [isDark, setIsDark] = useState(true)
+  const navigate = useNavigate()
 
   useEffect(() => {
     // Set dark mode on mount
-    document.documentElement.classList.add("dark");
-  }, []);
+    document.documentElement.classList.add('dark')
+  }, [])
 
   const toggleTheme = () => {
-    setIsDark(!isDark);
-    document.documentElement.classList.toggle("dark");
-  };
+    setIsDark(!isDark)
+    document.documentElement.classList.toggle('dark')
+  }
+
+  const handleNewChat = () => {
+    // Always navigate to search page
+    navigate('/search')
+    // Call optional callback if provided
+    onNewChat?.()
+  }
 
   return (
     <header className="h-16 border-b border-sidebar-border bg-sidebar/50 backdrop-blur-sm">
@@ -36,10 +45,10 @@ export function TopBar({ onNewChat }: TopBarProps) {
         {/* Left side - Sidebar Toggle and New Chat */}
         <div className="flex items-center space-x-4">
           <SidebarTrigger className="h-10 w-10 text-sidebar-foreground hover:text-banking-primary hover:bg-banking-surface-hover" />
-          <Button 
-            variant="outline" 
+          <Button
+            variant="outline"
             className="btn-banking-primary h-10 px-6 font-medium"
-            onClick={onNewChat}
+            onClick={handleNewChat}
           >
             <Sparkles className="mr-2 h-4 w-4" />
             New Chat
@@ -58,7 +67,11 @@ export function TopBar({ onNewChat }: TopBarProps) {
             onClick={toggleTheme}
             className="h-10 w-10 text-sidebar-foreground hover:text-banking-primary hover:bg-banking-surface-hover"
           >
-            {isDark ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
+            {isDark ? (
+              <Sun className="h-5 w-5" />
+            ) : (
+              <Moon className="h-5 w-5" />
+            )}
           </Button>
 
           {/* Notifications */}
@@ -81,7 +94,10 @@ export function TopBar({ onNewChat }: TopBarProps) {
           {/* User Menu */}
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="h-10 px-2 hover:bg-banking-surface-hover">
+              <Button
+                variant="ghost"
+                className="h-10 px-2 hover:bg-banking-surface-hover"
+              >
                 <div className="flex items-center space-x-3">
                   <Avatar className="h-8 w-8 border-2 border-banking-primary/30">
                     <AvatarImage src="/api/placeholder/32/32" alt="User" />
@@ -90,8 +106,12 @@ export function TopBar({ onNewChat }: TopBarProps) {
                     </AvatarFallback>
                   </Avatar>
                   <div className="hidden md:block text-left">
-                    <p className="text-sm font-medium text-sidebar-foreground">Tom Cook</p>
-                    <p className="text-xs text-muted-foreground">Bank Analyst</p>
+                    <p className="text-sm font-medium text-sidebar-foreground">
+                      Tom Cook
+                    </p>
+                    <p className="text-xs text-muted-foreground">
+                      Bank Analyst
+                    </p>
                   </div>
                 </div>
               </Button>
@@ -111,5 +131,5 @@ export function TopBar({ onNewChat }: TopBarProps) {
         </div>
       </div>
     </header>
-  );
+  )
 }

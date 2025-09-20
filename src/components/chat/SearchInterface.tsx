@@ -13,6 +13,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
+import { FilterPanel } from './FilterPanel'
 
 interface SearchInterfaceProps {
   onSearch: (searchParams: {
@@ -26,193 +27,6 @@ interface SearchInterfaceProps {
   }) => void
   isLoading?: boolean
   minimal?: boolean
-}
-
-interface FilterPanelProps {
-  filters: {
-    area: string[]
-    categoria: string[]
-    fuente: string[]
-    tags: string[]
-  }
-  onFiltersChange: (filters: {
-    area: string[]
-    categoria: string[]
-    fuente: string[]
-    tags: string[]
-  }) => void
-  onClose?: () => void
-}
-
-// Componente FilterPanel separado para reutilización
-function FilterPanel({ filters, onFiltersChange, onClose }: FilterPanelProps) {
-  const [localTagInput, setLocalTagInput] = useState('')
-
-  const filterOptions = {
-    area: ['Compliance', 'Core', 'TI'],
-    categoria: ['Normativa', 'Operativo', 'Técnico'],
-    fuente: ['CNBV', 'IFRS9', 'Manual Interno'],
-    tags: [
-      'PLD',
-      'Desarrollo Seguro',
-      'Reservas IFRS9',
-      'KYC',
-      'AML',
-      'Riesgo Operacional',
-    ],
-  }
-
-  const handleAreaChange = (value: string) => {
-    const updatedArea = filters.area.includes(value)
-      ? filters.area.filter((v) => v !== value)
-      : [...filters.area, value]
-    onFiltersChange({ ...filters, area: updatedArea })
-  }
-
-  const handleCheckbox = (key: 'categoria' | 'fuente', value: string) => {
-    const exists = filters[key].includes(value)
-    const updated = exists
-      ? filters[key].filter((v) => v !== value)
-      : [...filters[key], value]
-    onFiltersChange({ ...filters, [key]: updated })
-  }
-
-  const handleTagChange = (value: string) => {
-    if (!filters.tags.includes(value)) {
-      onFiltersChange({ ...filters, tags: [...filters.tags, value] })
-    }
-  }
-
-  const removeTag = (tagToRemove: string) => {
-    onFiltersChange({
-      ...filters,
-      tags: filters.tags.filter((t) => t !== tagToRemove),
-    })
-  }
-
-  const clearAllFilters = () => {
-    onFiltersChange({ area: [], categoria: [], fuente: [], tags: [] })
-  }
-
-  return (
-    <div className="max-w-sm w-full p-6 bg-background">
-      <div className="font-bold text-lg mb-4">🔧 Filtros de búsqueda</div>
-
-      {/* Área - ComboBox */}
-      <div className="mb-4">
-        <div className="font-semibold mb-2">Área</div>
-        <Select onValueChange={handleAreaChange}>
-          <SelectTrigger className="w-full">
-            <SelectValue placeholder="Seleccionar área" />
-          </SelectTrigger>
-          <SelectContent>
-            {filterOptions.area.map((opt) => (
-              <SelectItem key={opt} value={opt}>
-                {opt}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-        {/* Mostrar áreas seleccionadas */}
-        <div className="flex gap-1 flex-wrap mt-2">
-          {filters.area.map((area) => (
-            <Badge
-              key={area}
-              className="bg-banking-primary/20 text-banking-primary px-2 py-1"
-            >
-              {area}
-              <button
-                type="button"
-                className="ml-1 text-xs hover:text-red-400"
-                onClick={() => handleAreaChange(area)}
-              >
-                ✕
-              </button>
-            </Badge>
-          ))}
-        </div>
-      </div>
-
-      {/* Categoría - Checkboxes */}
-      <div className="mb-4">
-        <div className="font-semibold mb-2">Categoría</div>
-        <div className="flex flex-col gap-2">
-          {filterOptions.categoria.map((opt) => (
-            <label key={opt} className="flex items-center gap-2">
-              <Checkbox
-                checked={filters.categoria.includes(opt)}
-                onCheckedChange={() => handleCheckbox('categoria', opt)}
-              />
-              <span className="text-sm">{opt}</span>
-            </label>
-          ))}
-        </div>
-      </div>
-
-      {/* Fuente / Regulador - Checkboxes */}
-      <div className="mb-4">
-        <div className="font-semibold mb-2">Fuente / Regulador</div>
-        <div className="flex flex-col gap-2">
-          {filterOptions.fuente.map((opt) => (
-            <label key={opt} className="flex items-center gap-2">
-              <Checkbox
-                checked={filters.fuente.includes(opt)}
-                onCheckedChange={() => handleCheckbox('fuente', opt)}
-              />
-              <span className="text-sm">{opt}</span>
-            </label>
-          ))}
-        </div>
-      </div>
-
-      {/* Tags - ComboBox */}
-      <div className="mb-4">
-        <div className="font-semibold mb-2">Tags</div>
-        <Select onValueChange={handleTagChange}>
-          <SelectTrigger className="w-full">
-            <SelectValue placeholder="Agregar tag" />
-          </SelectTrigger>
-          <SelectContent>
-            {filterOptions.tags
-              .filter((tag) => !filters.tags.includes(tag))
-              .map((tag) => (
-                <SelectItem key={tag} value={tag}>
-                  {tag}
-                </SelectItem>
-              ))}
-          </SelectContent>
-        </Select>
-        {/* Mostrar tags seleccionados */}
-        <div className="flex gap-1 flex-wrap mt-2">
-          {filters.tags.map((tag) => (
-            <Badge
-              key={tag}
-              className="bg-banking-primary text-white px-2 py-1"
-            >
-              {tag}
-              <button
-                type="button"
-                className="ml-1 text-xs text-white hover:text-red-400"
-                onClick={() => removeTag(tag)}
-              >
-                ✕
-              </button>
-            </Badge>
-          ))}
-        </div>
-      </div>
-
-      {/* Botones de acción */}
-      <div className="flex gap-4 mt-6">
-        <Button variant="default" onClick={onClose}>
-          Aplicar Filtros
-        </Button>
-        <Button variant="ghost" onClick={clearAllFilters}>
-          Limpiar Todo
-        </Button>
-      </div>
-    </div>
-  )
 }
 
 const placeholderTexts = [
@@ -236,6 +50,7 @@ export function SearchInterface({
   const [currentPlaceholder, setCurrentPlaceholder] = useState(0)
   const [displayedText, setDisplayedText] = useState('')
   const [isTyping, setIsTyping] = useState(false)
+  const [userInteracted, setUserInteracted] = useState(false) // Nueva variable para controlar interacción
   // Filtros y chips
   const [drawerOpen, setDrawerOpen] = useState(false)
   const [filters, setFilters] = useState({
@@ -248,26 +63,10 @@ export function SearchInterface({
     Array<{ key: string; value: string }>
   >([])
 
-  // Opciones de filtros
-  const filterOptions = {
-    area: ['Compliance', 'Core', 'TI'],
-    categoria: ['Normativa', 'Operativo', 'Técnico'],
-    fuente: ['CNBV', 'IFRS9', 'Manual Interno'],
-  }
-
-  // Handler para checkboxes
-  const handleCheckbox = (key: keyof typeof filters, value: string) => {
-    setFilters((prev) => {
-      const exists = prev[key].includes(value)
-      const updated = exists
-        ? prev[key].filter((v) => v !== value)
-        : [...prev[key], value]
-      return { ...prev, [key]: updated }
-    })
-  }
   // Typing animation effect
   useEffect(() => {
-    if (!query) {
+    // Solo mostrar la animación si el usuario no ha interactuado y no hay texto
+    if (!query && !userInteracted) {
       const currentText = placeholderTexts[currentPlaceholder]
       setIsTyping(true)
       setDisplayedText('')
@@ -292,7 +91,12 @@ export function SearchInterface({
       const timeout = setTimeout(typeText, 500)
       return () => clearTimeout(timeout)
     }
-  }, [currentPlaceholder, query])
+    // Si el usuario ha interactuado, limpiar el texto del placeholder
+    else if (userInteracted) {
+      setDisplayedText('')
+      setIsTyping(false)
+    }
+  }, [currentPlaceholder, query, userInteracted])
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
@@ -356,6 +160,14 @@ export function SearchInterface({
           <Input
             value={query}
             onChange={(e) => setQuery(e.target.value)}
+            onClick={() => setUserInteracted(true)}
+            onFocus={() => setUserInteracted(true)}
+            onBlur={() => {
+              // Reactivar la animación solo si el input está vacío
+              if (!query.trim()) {
+                setUserInteracted(false)
+              }
+            }}
             placeholder={displayedText + (isTyping ? '|' : '')}
             className="input-banking h-12 text-base pr-24 pl-4 rounded-xl"
             disabled={isLoading}
@@ -390,99 +202,12 @@ export function SearchInterface({
                 <Filter className="h-4 w-4" />
               </Button>
             </DrawerTrigger>
-            <DrawerContent className="max-w-sm w-full p-6 bg-background">
-              <div className="font-bold text-lg mb-4">
-                🔧 Filtros de búsqueda
-              </div>
-              {/* Área */}
-              <div className="mb-4">
-                <div className="font-semibold mb-2">Área</div>
-                <div className="flex gap-4">
-                  {filterOptions.area.map((opt) => (
-                    <label key={opt} className="flex items-center gap-2">
-                      <Checkbox
-                        checked={filters.area.includes(opt)}
-                        onCheckedChange={() => handleCheckbox('area', opt)}
-                      />
-                      {opt}
-                    </label>
-                  ))}
-                </div>
-              </div>
-              {/* Categoría */}
-              <div className="mb-4">
-                <div className="font-semibold mb-2">Categoría</div>
-                <div className="flex gap-4">
-                  {filterOptions.categoria.map((opt) => (
-                    <label key={opt} className="flex items-center gap-2">
-                      <Checkbox
-                        checked={filters.categoria.includes(opt)}
-                        onCheckedChange={() => handleCheckbox('categoria', opt)}
-                      />
-                      {opt}
-                    </label>
-                  ))}
-                </div>
-              </div>
-              {/* Fuente / Regulador */}
-              <div className="mb-4">
-                <div className="font-semibold mb-2">Fuente / Regulador</div>
-                <div className="flex gap-4">
-                  {filterOptions.fuente.map((opt) => (
-                    <label key={opt} className="flex items-center gap-2">
-                      <Checkbox
-                        checked={filters.fuente.includes(opt)}
-                        onCheckedChange={() => handleCheckbox('fuente', opt)}
-                      />
-                      {opt}
-                    </label>
-                  ))}
-                </div>
-              </div>
-              {/* Tags existentes */}
-              <div className="mb-4">
-                <div className="font-semibold mb-2">Tags</div>
-                <div className="flex gap-2 flex-wrap">
-                  {filters.tags.map((tag, idx) => (
-                    <Badge
-                      key={idx}
-                      className="bg-banking-primary text-white px-2 py-1 flex items-center gap-1"
-                    >
-                      {tag}
-                      <button
-                        type="button"
-                        className="ml-1 text-xs text-white hover:text-red-400"
-                        onClick={() =>
-                          setFilters((prev) => ({
-                            ...prev,
-                            tags: prev.tags.filter((t) => t !== tag),
-                          }))
-                        }
-                      >
-                        ✕
-                      </button>
-                    </Badge>
-                  ))}
-                </div>
-              </div>
-              <div className="flex gap-4 mt-6">
-                <Button variant="default" onClick={() => setDrawerOpen(false)}>
-                  Aplicar Filtros
-                </Button>
-                <Button
-                  variant="ghost"
-                  onClick={() =>
-                    setFilters({
-                      area: [],
-                      categoria: [],
-                      fuente: [],
-                      tags: [],
-                    })
-                  }
-                >
-                  Limpiar Todo
-                </Button>
-              </div>
+            <DrawerContent>
+              <FilterPanel
+                filters={filters}
+                onFiltersChange={setFilters}
+                onClose={() => setDrawerOpen(false)}
+              />
             </DrawerContent>
           </Drawer>
 
@@ -552,6 +277,14 @@ export function SearchInterface({
             <Input
               value={query}
               onChange={(e) => setQuery(e.target.value)}
+              onClick={() => setUserInteracted(true)}
+              onFocus={() => setUserInteracted(true)}
+              onBlur={() => {
+                // Reactivar la animación solo si el input está vacío
+                if (!query.trim()) {
+                  setUserInteracted(false)
+                }
+              }}
               placeholder={displayedText + (isTyping ? '|' : '')}
               className="input-banking h-14 text-lg pr-32 pl-6 rounded-xl"
               disabled={isLoading}
@@ -586,48 +319,12 @@ export function SearchInterface({
                   <Filter className="h-5 w-5" />
                 </Button>
               </DrawerTrigger>
-              <DrawerContent className="max-w-sm w-full p-6 bg-background">
-                <div className="font-bold text-lg mb-4">
-                  🔧 Filtros de búsqueda
-                </div>
-                {/* Secciones de filtros aquí */}
-                <div className="mb-4">
-                  <div className="font-semibold mb-2">Área</div>
-                  <Checkbox /> Compliance
-                  <Checkbox /> Core
-                  <Checkbox /> TI
-                </div>
-                <div className="mb-4">
-                  <div className="font-semibold mb-2">Categoría</div>
-                  <Checkbox /> Normativa
-                  <Checkbox /> Operativo
-                  <Checkbox /> Técnico
-                </div>
-                <div className="mb-4">
-                  <div className="font-semibold mb-2">Fuente / Regulador</div>
-                  <Checkbox /> CNBV
-                  <Checkbox /> IFRS9
-                  <Checkbox /> Manual Interno
-                </div>
-                <div className="mb-4">
-                  <div className="font-semibold mb-2">Año / Vigencia</div>
-                  <Checkbox /> 2023
-                  <Checkbox /> 2024
-                  <Checkbox /> 2025
-                </div>
-                <div className="mb-4">
-                  <div className="font-semibold mb-2">
-                    Tags (etiquetas libres)
-                  </div>
-                  <Input placeholder="Agregar Tag" className="mb-2" />
-                  <div className="flex gap-2 flex-wrap">
-                    {/* Aquí se mostrarán los tags dinámicos */}
-                  </div>
-                </div>
-                <div className="flex gap-4 mt-6">
-                  <Button variant="default">Aplicar Filtros</Button>
-                  <Button variant="ghost">Limpiar Todo</Button>
-                </div>
+              <DrawerContent>
+                <FilterPanel
+                  filters={filters}
+                  onFiltersChange={setFilters}
+                  onClose={() => setDrawerOpen(false)}
+                />
               </DrawerContent>
             </Drawer>
 
