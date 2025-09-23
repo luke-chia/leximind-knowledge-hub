@@ -44,5 +44,21 @@
     "last_week": "Semana pasada",
     "last_month": "Mes pasado",
     "historical": "Historial"
+  },
+  "auth": {
+    "signInTitle": "Inicia sesión en tu cuenta",
+    "signInSubtitle": "¡Bienvenido de Vuelta!",
+    "email": "Correo electrónico",
+    "enterEmail": "Ingresa tu correo",
+    "password": "Contraseña",
+    "enterPassword": "Contraseña",
+    "rememberMe": "Recordar por 30 días",
+    "logIn": "Iniciar Sesión",
+    "signingIn": "Iniciando sesión...",
+    "or": "O",
+    "metamaskDescription": "Usando extensión del navegador",
+    "noAccount": "¿No tienes una cuenta?",
+    "signUp": "Registrarse",
+    "forgotPassword": "¿Olvidaste tu contraseña?"
   }
 }

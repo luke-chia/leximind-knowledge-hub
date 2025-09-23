@@ -44,5 +44,21 @@
     "last_week": "Last Week",
     "last_month": "Last Month",
     "historical": "Historical"
+  },
+  "auth": {
+    "signInTitle": "Sign in to your account",
+    "signInSubtitle": "Welcome back! Please enter your details.",
+    "email": "Email",
+    "enterEmail": "Enter your email",
+    "password": "Password",
+    "enterPassword": "Password",
+    "rememberMe": "Remember for 30 days",
+    "logIn": "Log In",
+    "signingIn": "Signing in...",
+    "or": "Or",
+    "metamaskDescription": "Using a browser extension",
+    "noAccount": "Don't have an account?",
+    "signUp": "Sign up",
+    "forgotPassword": "Forgot Password?"
   }
 }

@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
-import { NavLink, useLocation } from 'react-router-dom'
+import { NavLink, useLocation, useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
+import { auth } from '@/lib/supabase'
 import {
   Home,
   Search,
@@ -41,6 +42,7 @@ export function AppSidebar() {
   const { t } = useTranslation()
   const { state } = useSidebar()
   const location = useLocation()
+  const navigate = useNavigate()
   const currentPath = location.pathname
   const [isDarkMode, setIsDarkMode] = useState(true)
   const [openGroups, setOpenGroups] = useState<Record<string, boolean>>({
@@ -51,6 +53,22 @@ export function AppSidebar() {
     historical: false,
     favorites: false,
   })
+
+  // Handle logout function
+  const handleLogout = async () => {
+    try {
+      const { error } = await auth.signOut()
+      if (error) {
+        console.error('Error logging out:', error.message)
+      } else {
+        navigate('/')
+      }
+    } catch (err) {
+      console.error('Logout error:', err)
+      // Even if there's an error, redirect to login
+      navigate('/')
+    }
+  }
 
   // Dynamic navigation items with translations
   const navigationItems = [
@@ -92,7 +110,7 @@ export function AppSidebar() {
 
   const logoutItem = {
     title: t('sidebar.logout'),
-    url: '/logout',
+    url: '/',
     icon: LogOut,
   }
 
@@ -324,12 +342,17 @@ export function AppSidebar() {
           <SidebarMenu>
             <SidebarMenuItem>
               <SidebarMenuButton asChild className="h-10">
-                <NavLink to={logoutItem.url} className={getNavClassName}>
-                  <logoutItem.icon className="h-5 w-5" />
+                <button
+                  onClick={handleLogout}
+                  className="flex items-center w-full h-full px-3 py-2 text-left rounded-md transition-colors hover:bg-gray-700 text-gray-300 hover:text-white"
+                >
+                  <LogOut className="h-5 w-5" />
                   {!isCollapsed && (
-                    <span className="font-medium">{logoutItem.title}</span>
+                    <span className="font-medium ml-3">
+                      {t('sidebar.logout')}
+                    </span>
                   )}
-                </NavLink>
+                </button>
               </SidebarMenuButton>
             </SidebarMenuItem>
           </SidebarMenu>
