@@ -1,10 +1,14 @@
+import { useState } from "react";
 import { MainLayout } from "@/components/layout/MainLayout";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { FileText, Upload, Star, Clock, Filter } from "lucide-react";
+import { DocumentUploadPanel } from "@/components/documents/DocumentUploadPanel";
 
 const Documents = () => {
+  const [uploadPanelOpen, setUploadPanelOpen] = useState(false);
+  
   const documents = [
     {
       title: "CNBV Regulatory Framework 2024",
@@ -54,7 +58,10 @@ const Documents = () => {
               <Filter className="mr-2 h-4 w-4" />
               Filter
             </Button>
-            <Button className="btn-banking-primary">
+            <Button 
+              className="btn-banking-primary"
+              onClick={() => setUploadPanelOpen(true)}
+            >
               <Upload className="mr-2 h-4 w-4" />
               Upload Document
             </Button>
@@ -134,6 +141,12 @@ const Documents = () => {
             </Card>
           ))}
         </div>
+        
+        {/* Document Upload Panel */}
+        <DocumentUploadPanel
+          open={uploadPanelOpen}
+          onOpenChange={setUploadPanelOpen}
+        />
       </div>
     </MainLayout>
   );
