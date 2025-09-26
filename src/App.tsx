@@ -9,6 +9,8 @@ import Search from './pages/Search'
 import Documents from './pages/Documents'
 import NotFound from './pages/NotFound'
 import { useEffect } from 'react'
+import { PDFViewerProvider } from '@/contexts/PDFViewerContext'
+import { AppInitializer } from '@/components/AppInitializer'
 
 const queryClient = new QueryClient()
 
@@ -20,20 +22,24 @@ const App = () => {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <TooltipProvider>
-        <Toaster />
-        <Sonner />
-        <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<SignIn />} />
-            <Route path="/dashboard" element={<Index />} />
-            <Route path="/search" element={<Search />} />
-            <Route path="/documents" element={<Documents />} />
-            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </BrowserRouter>
-      </TooltipProvider>
+      <AppInitializer>
+        <TooltipProvider>
+          <PDFViewerProvider>
+            <Toaster />
+            <Sonner />
+            <BrowserRouter>
+              <Routes>
+                <Route path="/" element={<SignIn />} />
+                <Route path="/dashboard" element={<Index />} />
+                <Route path="/search" element={<Search />} />
+                <Route path="/documents" element={<Documents />} />
+                {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+            </BrowserRouter>
+          </PDFViewerProvider>
+        </TooltipProvider>
+      </AppInitializer>
     </QueryClientProvider>
   )
 }

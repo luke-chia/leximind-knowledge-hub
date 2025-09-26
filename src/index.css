@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+/* React PDF Viewer styles */
+@import '@react-pdf-viewer/core/lib/styles/index.css';
+@import '@react-pdf-viewer/default-layout/lib/styles/index.css';
+
 /* LexiMind Banking Portal Design System - Professional Dark Theme */
 
 @layer base {
@@ -27,7 +31,7 @@
     --input: 214.3 31.8% 91.4%;
     --ring: 280 100% 70%;
     --radius: 0.75rem;
-    
+
     /* Sidebar light mode */
     --sidebar-background: 0 0% 98%;
     --sidebar-foreground: 240 5.3% 26.1%;
@@ -43,32 +47,32 @@
     /* Professional Banking Dark Theme */
     --background: 222 47% 7%;
     --foreground: 210 40% 98%;
-    
+
     --card: 225 25% 11%;
     --card-foreground: 210 40% 98%;
-    
+
     --popover: 225 25% 11%;
     --popover-foreground: 210 40% 98%;
-    
+
     --primary: 280 100% 70%;
     --primary-foreground: 222 47% 7%;
-    
+
     --secondary: 225 20% 15%;
     --secondary-foreground: 210 40% 98%;
-    
+
     --muted: 225 15% 18%;
     --muted-foreground: 215 20.2% 65.1%;
-    
+
     --accent: 225 20% 15%;
     --accent-foreground: 210 40% 98%;
-    
+
     --destructive: 0 62.8% 50.6%;
     --destructive-foreground: 210 40% 98%;
-    
+
     --border: 225 15% 20%;
     --input: 225 15% 18%;
     --ring: 280 100% 70%;
-    
+
     /* Sidebar dark mode - FIXED for better visibility */
     --sidebar-background: 225 30% 8%;
     --sidebar-foreground: 210 40% 98%;
@@ -78,7 +82,7 @@
     --sidebar-accent-foreground: 210 40% 98%;
     --sidebar-border: 225 15% 20%;
     --sidebar-ring: 280 100% 70%;
-    
+
     /* Banking portal specific colors */
     --banking-primary: 280 100% 70%;
     --banking-primary-glow: 280 100% 80%;
@@ -87,16 +91,28 @@
     --banking-neutral: 225 15% 25%;
     --banking-surface: 225 25% 11%;
     --banking-surface-hover: 225 20% 15%;
-    
+
     /* Gradients for sophisticated banking look */
-    --gradient-primary: linear-gradient(135deg, hsl(var(--banking-primary)), hsl(var(--banking-secondary)));
-    --gradient-accent: linear-gradient(135deg, hsl(var(--banking-secondary)), hsl(var(--banking-accent)));
-    --gradient-surface: linear-gradient(180deg, hsl(var(--banking-surface)), hsl(225 20% 13%));
-    
+    --gradient-primary: linear-gradient(
+      135deg,
+      hsl(var(--banking-primary)),
+      hsl(var(--banking-secondary))
+    );
+    --gradient-accent: linear-gradient(
+      135deg,
+      hsl(var(--banking-secondary)),
+      hsl(var(--banking-accent))
+    );
+    --gradient-surface: linear-gradient(
+      180deg,
+      hsl(var(--banking-surface)),
+      hsl(225 20% 13%)
+    );
+
     /* Shadows with banking primary color */
     --shadow-banking: 0 10px 30px -10px hsl(var(--banking-primary) / 0.2);
     --shadow-glow: 0 0 40px hsl(var(--banking-primary-glow) / 0.15);
-    
+
     /* Transitions */
     --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
@@ -109,19 +125,32 @@
 
   body {
     @apply bg-background text-foreground;
-    font-feature-settings: "rlig" 1, "calt" 1;
+    font-feature-settings: 'rlig' 1, 'calt' 1;
   }
-  
+
   .dark {
     color-scheme: dark;
   }
-  
+
   /* Banking portal background pattern */
   .banking-pattern {
-    background-image: 
-      radial-gradient(circle at 25% 25%, hsl(var(--banking-primary) / 0.05) 0%, transparent 50%),
-      radial-gradient(circle at 75% 75%, hsl(var(--banking-secondary) / 0.05) 0%, transparent 50%),
-      linear-gradient(45deg, transparent 25%, hsl(var(--banking-primary) / 0.02) 25%, hsl(var(--banking-primary) / 0.02) 50%, transparent 50%);
+    background-image: radial-gradient(
+        circle at 25% 25%,
+        hsl(var(--banking-primary) / 0.05) 0%,
+        transparent 50%
+      ),
+      radial-gradient(
+        circle at 75% 75%,
+        hsl(var(--banking-secondary) / 0.05) 0%,
+        transparent 50%
+      ),
+      linear-gradient(
+        45deg,
+        transparent 25%,
+        hsl(var(--banking-primary) / 0.02) 25%,
+        hsl(var(--banking-primary) / 0.02) 50%,
+        transparent 50%
+      );
   }
 }
 
@@ -131,42 +160,54 @@
     @apply bg-gradient-to-r from-[hsl(var(--banking-primary))] to-[hsl(var(--banking-secondary))] text-white;
     @apply hover:shadow-[var(--shadow-banking)] transition-[var(--transition-smooth)];
   }
-  
+
   .btn-banking-ghost {
     @apply bg-transparent border border-[hsl(var(--banking-primary)/0.3)] text-[hsl(var(--banking-primary))];
     @apply hover:bg-[hsl(var(--banking-primary)/0.1)] hover:border-[hsl(var(--banking-primary))] transition-[var(--transition-smooth)];
   }
-  
+
   /* Search input banking style */
   .input-banking {
     @apply bg-card border-[hsl(var(--banking-primary)/0.3)] text-foreground;
     @apply focus-visible:outline-none focus:ring-0 focus:ring-offset-0 focus:border-[hsl(var(--banking-primary)/0.3)];
     @apply transition-[var(--transition-smooth)];
   }
-  
+
   /* Card banking style */
   .card-banking {
     @apply bg-card border-[hsl(var(--banking-primary)/0.2)];
     @apply hover:border-[hsl(var(--banking-primary)/0.4)] transition-[var(--transition-smooth)];
   }
-  
+
   /* Infinity spinner animation */
   @keyframes infinity-spin {
-    0% { transform: rotate(0deg) scale(1); }
-    50% { transform: rotate(180deg) scale(1.1); }
-    100% { transform: rotate(360deg) scale(1); }
+    0% {
+      transform: rotate(0deg) scale(1);
+    }
+    50% {
+      transform: rotate(180deg) scale(1.1);
+    }
+    100% {
+      transform: rotate(360deg) scale(1);
+    }
   }
-  
+
   .animate-infinity {
     animation: infinity-spin 2s ease-in-out infinite;
   }
-  
+
   /* Typing animation */
   @keyframes typing {
-    0%, 50% { opacity: 1; }
-    51%, 100% { opacity: 0; }
+    0%,
+    50% {
+      opacity: 1;
+    }
+    51%,
+    100% {
+      opacity: 0;
+    }
   }
-  
+
   .animate-typing {
     animation: typing 1.5s ease-in-out infinite;
   }

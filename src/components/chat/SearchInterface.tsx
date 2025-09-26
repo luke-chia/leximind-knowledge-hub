@@ -225,7 +225,7 @@ export function SearchInterface({
                 <Filter className="h-4 w-4" />
               </Button>
             </DrawerTrigger>
-            <DrawerContent>
+            <DrawerContent className="w-fit min-w-80 max-w-md h-[75vh] ml-0 mr-auto p-0">
               <FilterPanel
                 filters={filters}
                 onFiltersChange={setFilters}
@@ -343,7 +343,7 @@ export function SearchInterface({
                   <Filter className="h-5 w-5" />
                 </Button>
               </DrawerTrigger>
-              <DrawerContent>
+              <DrawerContent className="w-fit min-w-80 max-w-md h-[75vh] ml-0 mr-auto p-0">
                 <FilterPanel
                   filters={filters}
                   onFiltersChange={setFilters}

@@ -6,6 +6,7 @@
     "select_area": "Seleccionar área",
     "category": "Categoría",
     "source": "Fuente / Regulador",
+    "select_source": "Seleccionar fuente",
     "tags": "Etiquetas",
     "add_tag": "Agregar tag",
     "apply": "Aplicar Filtros",
@@ -26,7 +27,15 @@
     "feedback_positive": "¡Gracias por tu feedback positivo!",
     "feedback_negative": "¡Gracias por tu feedback negativo!",
     "copied": "Respuesta copiada al portapapeles",
-    "references": "Ver Referencias"
+    "references": "Ver Referencias",
+    "view_document": "Ver documento",
+    "pdf_viewer": {
+      "zoom_in": "Acercar",
+      "zoom_out": "Alejar",
+      "download": "Descargar",
+      "maximize": "Maximizar",
+      "close": "Cerrar"
+    }
   },
   "messages": {
     "thinking": "LexiMind está pensando..."

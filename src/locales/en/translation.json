@@ -6,6 +6,7 @@
     "select_area": "Select area",
     "category": "Category",
     "source": "Source / Regulator",
+    "select_source": "Select source",
     "tags": "Tags",
     "add_tag": "Add tag",
     "apply": "Apply Filters",
@@ -26,7 +27,15 @@
     "feedback_positive": "Thank you for your positive feedback!",
     "feedback_negative": "Thank you for your negative feedback!",
     "copied": "Response copied to clipboard",
-    "references": "View References"
+    "references": "View References",
+    "view_document": "View document",
+    "pdf_viewer": {
+      "zoom_in": "Zoom In",
+      "zoom_out": "Zoom Out",
+      "download": "Download",
+      "maximize": "Maximize",
+      "close": "Close"
+    }
   },
   "messages": {
     "thinking": "LexiMind is thinking..."

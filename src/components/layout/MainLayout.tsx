@@ -1,6 +1,7 @@
 import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar'
 import { AppSidebar } from './AppSidebar'
 import { TopBar } from './TopBar'
+import { PDFViewerManager } from '@/components/pdf/PDFViewerManager'
 
 interface MainLayoutProps {
   children: React.ReactNode
@@ -28,6 +29,9 @@ export function MainLayout({ children, onNewChat }: MainLayoutProps) {
           </main>
         </div>
       </div>
+
+      {/* PDF Viewer Modal Global */}
+      <PDFViewerManager />
     </SidebarProvider>
   )
 }

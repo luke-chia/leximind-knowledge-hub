@@ -7,7 +7,7 @@ const Index = () => {
   const [isSearching, setIsSearching] = useState(false);
   const { toast } = useToast();
 
-  const handleSearch = async (query: string) => {
+  const handleSearch = async (searchParams: { query: string; filters?: { area: string[]; categoria: string[]; fuente: string[]; anio: string[]; tags: string[]; } }) => {
     setIsSearching(true);
     
     // Simulate API call
@@ -16,7 +16,7 @@ const Index = () => {
       
       toast({
         title: "Search completed",
-        description: `Found relevant information for: "${query}"`,
+        description: `Found relevant information for: "${searchParams.query}"`,
       });
     } catch (error) {
       toast({
