@@ -4,16 +4,7 @@ import { Send, Mic, Loader2, Filter } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Card } from '@/components/ui/card'
-import { Drawer, DrawerContent, DrawerTrigger } from '@/components/ui/drawer'
-import { Checkbox } from '@/components/ui/checkbox'
 import { Badge } from '@/components/ui/badge'
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select'
 import { FilterPanel } from './FilterPanel'
 
 interface SearchInterfaceProps {
@@ -54,13 +45,14 @@ export function SearchInterface({
   const placeholderTexts = useMemo(() => {
     const keys = [
       'search_placeholder',
+      'placeholder_ahorro',
+      'placeholder_core_banking',
+      'placeholder_safi',
+      'placeholder_onboarding_app',
+      'placeholder_cierres_contables',
+      'placeholder_ifrs9',
+      'placeholder_mesa_control',
       'placeholder_cnbv',
-      'placeholder_compliance',
-      'placeholder_risk',
-      'placeholder_onboarding',
-      'placeholder_accounting',
-      'placeholder_aml',
-      'placeholder_manuals',
     ]
     return keys.map((key) => t(key))
   }, [t])
@@ -72,7 +64,7 @@ export function SearchInterface({
   const [isTyping, setIsTyping] = useState(false)
   const [userInteracted, setUserInteracted] = useState(false) // Nueva variable para controlar interacción
   // Filtros y chips
-  const [drawerOpen, setDrawerOpen] = useState(false)
+  const [isFilterSidebarOpen, setFilterSidebarOpen] = useState(false)
   const [filters, setFilters] = useState({
     area: [] as string[],
     categoria: [] as string[],
@@ -212,27 +204,16 @@ export function SearchInterface({
             )}
           </Button>
 
-          {/* Filtro Drawer Trigger */}
-          <Drawer open={drawerOpen} onOpenChange={setDrawerOpen}>
-            <DrawerTrigger asChild>
-              <Button
-                type="button"
-                variant="ghost"
-                size="icon"
-                className="absolute right-24 top-1/2 -translate-y-1/2 h-8 w-8 text-muted-foreground hover:text-banking-primary"
-                onClick={() => setDrawerOpen(true)}
-              >
-                <Filter className="h-4 w-4" />
-              </Button>
-            </DrawerTrigger>
-            <DrawerContent className="w-fit min-w-80 max-w-md h-[75vh] ml-0 mr-auto p-0">
-              <FilterPanel
-                filters={filters}
-                onFiltersChange={setFilters}
-                onClose={() => setDrawerOpen(false)}
-              />
-            </DrawerContent>
-          </Drawer>
+          {/* Filtro Button */}
+          <Button
+            type="button"
+            variant="ghost"
+            size="icon"
+            className="absolute right-24 top-1/2 -translate-y-1/2 h-8 w-8 text-muted-foreground hover:text-banking-primary"
+            onClick={() => setFilterSidebarOpen(true)}
+          >
+            <Filter className="h-4 w-4" />
+          </Button>
 
           {/* Send button */}
           <Button
@@ -248,6 +229,12 @@ export function SearchInterface({
             )}
           </Button>
         </form>
+        <FilterPanel
+          isOpen={isFilterSidebarOpen}
+          onClose={() => setFilterSidebarOpen(false)}
+          filters={filters}
+          onFiltersChange={setFilters}
+        />
         {/* Chips de filtros activos */}
         {activeChips.length > 0 && (
           <div className="flex flex-wrap gap-2 mt-2">
@@ -330,27 +317,16 @@ export function SearchInterface({
               )}
             </Button>
 
-            {/* Filtro Drawer Trigger */}
-            <Drawer open={drawerOpen} onOpenChange={setDrawerOpen}>
-              <DrawerTrigger asChild>
-                <Button
-                  type="button"
-                  variant="ghost"
-                  size="icon"
-                  className="absolute right-16 top-1/2 -translate-y-1/2 h-10 w-10 text-muted-foreground hover:text-banking-primary"
-                  onClick={() => setDrawerOpen(true)}
-                >
-                  <Filter className="h-5 w-5" />
-                </Button>
-              </DrawerTrigger>
-              <DrawerContent className="w-fit min-w-80 max-w-md h-[75vh] ml-0 mr-auto p-0">
-                <FilterPanel
-                  filters={filters}
-                  onFiltersChange={setFilters}
-                  onClose={() => setDrawerOpen(false)}
-                />
-              </DrawerContent>
-            </Drawer>
+            {/* Filtro Button */}
+            <Button
+              type="button"
+              variant="ghost"
+              size="icon"
+              className="absolute right-16 top-1/2 -translate-y-1/2 h-10 w-10 text-muted-foreground hover:text-banking-primary"
+              onClick={() => setFilterSidebarOpen(true)}
+            >
+              <Filter className="h-5 w-5" />
+            </Button>
 
             {/* Send button */}
             <Button
@@ -368,6 +344,13 @@ export function SearchInterface({
           </div>
         </form>
       </Card>
+
+      <FilterPanel
+        isOpen={isFilterSidebarOpen}
+        onClose={() => setFilterSidebarOpen(false)}
+        filters={filters}
+        onFiltersChange={setFilters}
+      />
 
       {/* Chips de filtros activos */}
       {activeChips.length > 0 && (

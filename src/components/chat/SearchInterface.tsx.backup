@@ -71,9 +71,9 @@ function FilterPanel({ filters, onFiltersChange, onClose }: FilterPanelProps) {
   }
 
   const removeTag = (tagToRemove: string) => {
-    onFiltersChange({ 
-      ...filters, 
-      tags: filters.tags.filter(t => t !== tagToRemove) 
+    onFiltersChange({
+      ...filters,
+      tags: filters.tags.filter(t => t !== tagToRemove)
     })
   }
 
@@ -84,7 +84,7 @@ function FilterPanel({ filters, onFiltersChange, onClose }: FilterPanelProps) {
   return (
     <div className="max-w-sm w-full p-6 bg-background">
       <div className="font-bold text-lg mb-4">🔧 Filtros de búsqueda</div>
-      
+
       {/* Área - ComboBox */}
       <div className="mb-4">
         <div className="font-semibold mb-2">Área</div>
@@ -188,13 +188,13 @@ function FilterPanel({ filters, onFiltersChange, onClose }: FilterPanelProps) {
 
 const placeholderTexts = [
   'Ask me what you need...',
-  '¿Qué normativas de la CNBV aplican?',
-  'Explícame los procedimientos de compliance',
-  '¿Cómo funciona la gestión de riesgos?',
-  'Políticas de onboarding de clientes',
-  'Procedimientos contables y financieros',
-  'Regulaciones de prevención de lavado',
-  'Manuales operativos internos',
+  '¿Cuáles son los niveles de las cuentas de ahorro?',
+  'Explícame los estandares de la base de datos del Core Banking',
+  '¿Cómo se dan de alta los Clientes en SAFI?',
+  'Explicame el Proceso de Onbarding Digital en la App',
+  'Como y donde se ejecutan los cierres del periodo contables',
+  'Cuantas etapas existen de acuerdo a IFRS9 y como funcionan',
+  'Cuales son las obligaciones de la mesa de control en el otorgamiento de creditos ',
 ]
 
 export function SearchInterface({
