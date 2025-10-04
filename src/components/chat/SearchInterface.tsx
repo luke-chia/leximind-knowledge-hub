@@ -11,7 +11,7 @@ interface SearchInterfaceProps {
   onSearch: (searchParams: {
     query: string
     filters?: {
-      area: string[]
+      area: string
       categoria: string[]
       fuente: string[]
       tags: string[]
@@ -66,7 +66,7 @@ export function SearchInterface({
   // Filtros y chips
   const [isFilterSidebarOpen, setFilterSidebarOpen] = useState(false)
   const [filters, setFilters] = useState({
-    area: [] as string[],
+    area: '' as string,
     categoria: [] as string[],
     fuente: [] as string[],
     tags: [] as string[],

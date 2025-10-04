@@ -6,7 +6,7 @@ export interface UseChatReturn {
   processMessage: (
     message: string,
     filters?: {
-      area: string[]
+      area: string
       categoria: string[]
       fuente: string[]
       anio: string[]
@@ -33,7 +33,7 @@ export function useChat(): UseChatReturn {
     async (
       message: string,
       filters?: {
-        area: string[]
+        area: string
         categoria: string[]
         fuente: string[]
         anio: string[]
@@ -50,7 +50,7 @@ export function useChat(): UseChatReturn {
         console.log('=============================================')
 
         // Usar los filtros tal como vienen o arrays vacíos si no hay filtros
-        const area = filters?.area || []
+        const area = filters?.area ? [filters.area] : []
         const category = filters?.categoria || []
         const source = filters?.fuente || []
         const tags = filters?.tags || []

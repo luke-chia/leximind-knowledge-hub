@@ -19,13 +19,13 @@ interface FilterPanelProps {
   isOpen: boolean
   onClose: () => void
   filters: {
-    area: string[]
+    area: string // Cambiado de string[] a string
     categoria: string[]
     fuente: string[]
     tags: string[]
   }
   onFiltersChange: (filters: {
-    area: string[]
+    area: string // Cambiado de string[] a string
     categoria: string[]
     fuente: string[]
     tags: string[]
@@ -53,10 +53,7 @@ export function FilterPanel({
   }
 
   const handleAreaChange = (value: string) => {
-    const updatedArea = filters.area.includes(value)
-      ? filters.area.filter((v) => v !== value)
-      : [...filters.area, value]
-    onFiltersChange({ ...filters, area: updatedArea })
+    onFiltersChange({ ...filters, area: value })
   }
 
   const handleSourceChange = (value: string) => {
@@ -84,15 +81,19 @@ export function FilterPanel({
     type: 'area' | 'categoria' | 'fuente' | 'tags',
     value: string
   ) => {
-    const updatedFilters = {
-      ...filters,
-      [type]: filters[type].filter((item) => item !== value),
+    if (type === 'area') {
+      onFiltersChange({ ...filters, area: '' })
+    } else {
+      const updatedFilters = {
+        ...filters,
+        [type]: filters[type].filter((item) => item !== value),
+      }
+      onFiltersChange(updatedFilters)
     }
-    onFiltersChange(updatedFilters)
   }
 
   const clearAllFilters = () => {
-    onFiltersChange({ area: [], categoria: [], fuente: [], tags: [] })
+    onFiltersChange({ area: '', categoria: [], fuente: [], tags: [] })
     setResetKey((prev) => prev + 1) // Forzar reset de Select components
   }
 
@@ -134,7 +135,11 @@ export function FilterPanel({
             <div className="font-semibold mb-2 text-purple-300">
               {t('filters.area')}
             </div>
-            <Select key={`area-${resetKey}`} onValueChange={handleAreaChange}>
+            <Select
+              key={`area-${resetKey}`}
+              onValueChange={handleAreaChange}
+              value={filters.area}
+            >
               <SelectTrigger className="w-full border-pink-500/30 focus:border-pink-400">
                 <SelectValue placeholder={t('filters.select_area')} />
               </SelectTrigger>
@@ -146,24 +151,21 @@ export function FilterPanel({
                 ))}
               </SelectContent>
             </Select>
-            {/* Mostrar áreas seleccionadas */}
-            <div className="flex gap-1 flex-wrap mt-2">
-              {filters.area.map((area) => (
-                <Badge
-                  key={area}
-                  className="bg-pink-500/20 text-pink-400 border-pink-500/30 px-2 py-1"
-                >
-                  {area}
+            {/* Mostrar área seleccionada */}
+            {filters.area && (
+              <div className="flex gap-1 flex-wrap mt-2">
+                <Badge className="bg-pink-500/20 text-pink-400 border-pink-500/30 px-2 py-1">
+                  {filters.area}
                   <button
                     type="button"
                     className="ml-1 text-xs hover:text-red-400"
-                    onClick={() => removeFilter('area', area)}
+                    onClick={() => removeFilter('area', filters.area)}
                   >
                     ✕
                   </button>
                 </Badge>
-              ))}
-            </div>
+              </div>
+            )}
           </div>
 
           {/* Categoría - Radio Buttons en grupos de 2 */}

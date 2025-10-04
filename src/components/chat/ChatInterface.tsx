@@ -81,7 +81,7 @@ export function ChatInterface({ query, onNewChat }: ChatInterfaceProps) {
   const handleNewSearch = (searchParams: {
     query: string
     filters?: {
-      area: string[]
+      area: string
       categoria: string[]
       fuente: string[]
       anio: string[]
@@ -96,7 +96,7 @@ export function ChatInterface({ query, onNewChat }: ChatInterfaceProps) {
     async (
       userQuery: string,
       filters?: {
-        area: string[]
+        area: string
         categoria: string[]
         fuente: string[]
         anio: string[]

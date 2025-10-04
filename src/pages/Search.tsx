@@ -10,7 +10,7 @@ const Search = () => {
   const handleSearch = (searchParams: {
     query: string
     filters?: {
-      area: string[]
+      area: string
       categoria: string[]
       fuente: string[]
       anio: string[]

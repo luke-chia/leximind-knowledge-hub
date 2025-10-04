@@ -6,6 +6,8 @@ export interface DocumentMetadata {
   id?: string
   original_name: string
   alias: string
+  description: string
+  URL_Reference?: string
   user_id: string
   uploaded_at?: string
   storage_path: string
@@ -20,6 +22,8 @@ export interface DocumentMetadata {
 export interface DocumentFormData {
   file: File
   alias: string
+  description: string
+  url_reference?: string
   areas: number[]
   categories: number[]
   sources: number[]
@@ -30,6 +34,7 @@ export interface DocumentUploadResponse {
   document: DocumentMetadata
   success: boolean
   error?: string
+  lexiMindWarning?: string
 }
 
 export interface UploadProgress {
@@ -39,9 +44,9 @@ export interface UploadProgress {
 }
 
 export const UPLOAD_STEPS = [
-  { step: 1, message: "Uploading Document...", progress: 20 },
-  { step: 2, message: "Document Sent...", progress: 40 },
-  { step: 3, message: "Generating Embeddings...", progress: 60 },
-  { step: 4, message: "Saving to Database...", progress: 80 },
-  { step: 5, message: "Saving to LexiMind Memory...", progress: 100 },
+  { step: 1, message: 'Uploading Document...', progress: 20 },
+  { step: 2, message: 'Document Sent...', progress: 40 },
+  { step: 3, message: 'Generating Embeddings...', progress: 60 },
+  { step: 4, message: 'Saving to Database...', progress: 80 },
+  { step: 5, message: 'Saving to LexiMind Memory...', progress: 100 },
 ]

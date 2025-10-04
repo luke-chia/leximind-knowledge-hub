@@ -72,5 +72,7 @@ To connect a domain, navigate to Project > Settings > Domains and click Connect 
 
 Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
 
-
 Puedes enriquecer el RAG combinando embeddings con búsquedas tradicionales (ej. BM25 vía Elastic o Weaviate). Útil si quieres queries con palabras exactas de leyes.
+
+Pdf worker
+cp node_modules/pdfjs-dist/build/pdf.worker.min.js public/
