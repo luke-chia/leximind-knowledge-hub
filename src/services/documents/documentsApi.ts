@@ -164,6 +164,8 @@ export const uploadDocument = async (
       alias: formData.alias,
       description: formData.description,
       URL_Reference: formData.url_reference || null,
+      file_size: formData.file.size,
+      content_type: formData.file.type,
       user_id: user.id,
       storage_path: storagePath,
       signed_url: urlData?.signedUrl,

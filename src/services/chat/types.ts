@@ -11,6 +11,7 @@ export interface SourceReference {
   page: string
   matchingText: string
   source: string
+  signedUrl: string
 }
 
 export interface ChatResponse {

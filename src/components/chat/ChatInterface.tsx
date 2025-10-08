@@ -271,12 +271,20 @@ export function ChatInterface({ query, onNewChat }: ChatInterfaceProps) {
     }))
   }
 
-  const handleOpenPDF = (documentName: string) => {
-    // URL fija como se especificó en los requerimientos
-    const pdfUrl =
-      'https://drive.google.com/file/d/1P3jePAbuqqp9jMNlrKKJ-5SjYWh19dCm/view?usp=drive_link'
-
-    openPDF(pdfUrl, documentName)
+  const handleOpenPDF = (sourceReference: SourceReference) => {
+    console.log(
+      'Opening PDF:',
+      sourceReference.signedUrl,
+      '-',
+      sourceReference.source,
+      'Page:',
+      sourceReference.page
+    )
+    openPDF(
+      sourceReference.signedUrl,
+      sourceReference.source,
+      sourceReference.page
+    )
   }
 
   // Función para formatear texto matching (primeros 80 caracteres)
@@ -409,9 +417,7 @@ export function ChatInterface({ query, onNewChat }: ChatInterfaceProps) {
                                         <Button
                                           variant="ghost"
                                           size="sm"
-                                          onClick={() =>
-                                            handleOpenPDF(source.source)
-                                          }
+                                          onClick={() => handleOpenPDF(source)}
                                           className="h-6 w-6 p-0 hover:bg-banking-primary/20 ml-2"
                                           title={t('actions.view_document')}
                                         >

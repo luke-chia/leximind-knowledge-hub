@@ -9,7 +9,7 @@ import {
   Info,
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-import { Dialog, DialogContent } from '@/components/ui/dialog'
+import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog'
 import { useTranslation } from 'react-i18next'
 
 // Importaciones de react-pdf-viewer
@@ -35,6 +35,12 @@ export function PDFViewerModal({
   const [scale, setScale] = useState(1)
   const [currentPage, setCurrentPage] = useState(1)
   const [totalPages, setTotalPages] = useState(0)
+  const [isIframeLoaded, setIsIframeLoaded] = useState(false)
+
+  // Reset loading state when PDF URL changes
+  React.useEffect(() => {
+    setIsIframeLoaded(false)
+  }, [pdfUrl])
 
   // Detectar tipo de URL
   const isGoogleDriveUrl = (url: string) => url.includes('drive.google.com')
@@ -74,12 +80,32 @@ export function PDFViewerModal({
     return url
   }
 
-  // URL para el visor de PDF
+  // Función para construir URL del iframe con página específica
+  const getIframeUrl = (url: string, targetPage?: string) => {
+    if (isGoogleDriveUrl(url)) {
+      const embedUrl = getGoogleDriveEmbedUrl(url)
+      // Google Drive no soporta fragmentos de página directamente en embed
+      return embedUrl
+    }
+
+    if (isSupabaseUrl(url) && targetPage) {
+      // Para Supabase, agregar fragmento de página al final de la URL
+      const pageNumber = parseInt(targetPage)
+      if (pageNumber && pageNumber > 0) {
+        return `${url}#page=${pageNumber}`
+      }
+    }
+
+    return url
+  }
+
+  // URL para el visor de PDF (react-pdf-viewer)
   const getPDFViewerUrl = (url: string) => {
+    console.log('Original PDF URL:', url)
     if (isGoogleDriveUrl(url)) {
       return convertGoogleDriveUrl(url)
     }
-    // Para Supabase y S3, usar URL directa
+    // Para otros servicios, usar URL directa
     return url
   }
 
@@ -117,6 +143,7 @@ export function PDFViewerModal({
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="max-w-[95vw] max-h-[95vh] w-full h-full p-0">
+        <DialogTitle className="sr-only">{documentName}</DialogTitle>
         <div className="flex flex-col h-full">
           {/* Header con controles */}
           <div className="flex items-center justify-between p-4 border-b bg-background">
@@ -201,11 +228,11 @@ export function PDFViewerModal({
 
           {/* Contenedor del PDF */}
           <div className="flex-1 overflow-hidden">
-            {isGoogleDriveUrl(pdfUrl) ? (
-              /* Usar iframe para Google Drive (temporal) */
-              <div className="w-full h-full">
+            {isGoogleDriveUrl(pdfUrl) || isSupabaseUrl(pdfUrl) ? (
+              /* Usar iframe para Google Drive y Supabase */
+              <div className="w-full h-full relative">
                 <iframe
-                  src={getGoogleDriveEmbedUrl(pdfUrl)}
+                  src={getIframeUrl(pdfUrl, page)}
                   className="w-full h-full border-0"
                   title={documentName}
                   loading="lazy"
@@ -216,11 +243,33 @@ export function PDFViewerModal({
                     width: `${100 / scale}%`,
                     height: `${100 / scale}%`,
                   }}
+                  onError={(e) => {
+                    console.error('Error loading PDF in iframe:', e)
+                    setIsIframeLoaded(true) // Ocultar loading aunque haya error
+                  }}
+                  onLoad={() => {
+                    console.log('PDF iframe loaded successfully')
+                    if (page) {
+                      console.log(`PDF opened at page ${page}`)
+                    }
+                    setIsIframeLoaded(true)
+                  }}
                 />
+                {/* Mensaje de carga */}
+                {!isIframeLoaded && (
+                  <div className="absolute inset-0 flex items-center justify-center bg-background/80">
+                    <div className="text-center">
+                      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-banking-primary mx-auto mb-2"></div>
+                      <p className="text-sm text-muted-foreground">
+                        Cargando PDF...
+                      </p>
+                    </div>
+                  </div>
+                )}
               </div>
             ) : (
-              /* Usar react-pdf-viewer para Supabase/S3 y otros */
-              <Worker workerUrl="/pdf.worker.min.js">
+              /* Usar react-pdf-viewer solo para S3 y otros servicios */
+              <Worker workerUrl="https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.worker.min.js">
                 <div
                   style={{
                     height: '100%',
@@ -230,6 +279,11 @@ export function PDFViewerModal({
                     fileUrl={getPDFViewerUrl(pdfUrl)}
                     plugins={[defaultLayoutPluginInstance]}
                     onDocumentLoad={(e) => {
+                      console.log(
+                        'PDF loaded successfully:',
+                        e.doc.numPages,
+                        'pages'
+                      )
                       setTotalPages(e.doc.numPages)
                       if (page) {
                         // Navegar a la página específica
@@ -244,6 +298,36 @@ export function PDFViewerModal({
                     onPageChange={(e) => {
                       setCurrentPage(e.currentPage + 1)
                     }}
+                    renderError={(error) => (
+                      <div className="flex flex-col items-center justify-center h-full p-8 text-center">
+                        <Info className="h-12 w-12 text-muted-foreground mb-4" />
+                        <h3 className="text-lg font-medium mb-2">
+                          Error al cargar el PDF
+                        </h3>
+                        <p className="text-sm text-muted-foreground mb-4">
+                          No se pudo cargar el documento. Intenta descargarlo o
+                          abrirlo en una nueva pestaña.
+                        </p>
+                        <div className="flex gap-2">
+                          <Button
+                            onClick={handleDownload}
+                            variant="outline"
+                            size="sm"
+                          >
+                            <Download className="h-4 w-4 mr-2" />
+                            Descargar
+                          </Button>
+                          <Button
+                            onClick={handleMaximize}
+                            variant="outline"
+                            size="sm"
+                          >
+                            <Maximize2 className="h-4 w-4 mr-2" />
+                            Abrir en nueva pestaña
+                          </Button>
+                        </div>
+                      </div>
+                    )}
                   />
                 </div>
               </Worker>

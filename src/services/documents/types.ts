@@ -8,6 +8,8 @@ export interface DocumentMetadata {
   alias: string
   description: string
   URL_Reference?: string
+  file_size: number
+  content_type: string
   user_id: string
   uploaded_at?: string
   storage_path: string
