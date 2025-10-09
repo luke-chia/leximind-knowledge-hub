@@ -13,6 +13,8 @@ import NotFound from './pages/NotFound'
 import { useEffect } from 'react'
 import { PDFViewerProvider } from '@/contexts/PDFViewerContext'
 import { AppInitializer } from '@/components/AppInitializer'
+import { AuthProvider } from '@/contexts/AuthContext'
+import { ProtectedRoute } from '@/components/ProtectedRoute'
 
 const queryClient = new QueryClient()
 
@@ -24,26 +26,64 @@ const App = () => {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <AppInitializer>
-        <TooltipProvider>
-          <PDFViewerProvider>
-            <Toaster />
-            <Sonner />
-            <BrowserRouter>
-              <Routes>
-                <Route path="/" element={<SignIn />} />
-                <Route path="/dashboard" element={<Index />} />
-                <Route path="/search" element={<Search />} />
-                <Route path="/documents" element={<Documents />} />
-                <Route path="/users" element={<Users />} />
-                <Route path="/profile" element={<Profile />} />
-                {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-                <Route path="*" element={<NotFound />} />
-              </Routes>
-            </BrowserRouter>
-          </PDFViewerProvider>
-        </TooltipProvider>
-      </AppInitializer>
+      <AuthProvider>
+        <AppInitializer>
+          <TooltipProvider>
+            <PDFViewerProvider>
+              <Toaster />
+              <Sonner />
+              <BrowserRouter>
+                <Routes>
+                  <Route path="/sign-in" element={<SignIn />} />
+                  <Route path="/" element={<SignIn />} />
+                  <Route 
+                    path="/dashboard" 
+                    element={
+                      <ProtectedRoute>
+                        <Index />
+                      </ProtectedRoute>
+                    } 
+                  />
+                  <Route 
+                    path="/search" 
+                    element={
+                      <ProtectedRoute>
+                        <Search />
+                      </ProtectedRoute>
+                    } 
+                  />
+                  <Route 
+                    path="/documents" 
+                    element={
+                      <ProtectedRoute>
+                        <Documents />
+                      </ProtectedRoute>
+                    } 
+                  />
+                  <Route 
+                    path="/users" 
+                    element={
+                      <ProtectedRoute>
+                        <Users />
+                      </ProtectedRoute>
+                    } 
+                  />
+                  <Route 
+                    path="/profile" 
+                    element={
+                      <ProtectedRoute>
+                        <Profile />
+                      </ProtectedRoute>
+                    } 
+                  />
+                  {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+                  <Route path="*" element={<NotFound />} />
+                </Routes>
+              </BrowserRouter>
+            </PDFViewerProvider>
+          </TooltipProvider>
+        </AppInitializer>
+      </AuthProvider>
     </QueryClientProvider>
   )
 }

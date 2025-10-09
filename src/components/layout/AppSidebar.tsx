@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { NavLink, useLocation, useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
-import { auth } from '@/lib/supabase'
+import { useAuth } from '@/contexts/AuthContext'
 import {
   Home,
   Search,
@@ -38,12 +38,13 @@ import {
   CollapsibleTrigger,
 } from '@/components/ui/collapsible'
 
-export function AppSidebar() {
+export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const { t } = useTranslation()
   const { state } = useSidebar()
   const location = useLocation()
   const navigate = useNavigate()
   const currentPath = location.pathname
+  const { signOut } = useAuth()
   const [isDarkMode, setIsDarkMode] = useState(true)
   const [openGroups, setOpenGroups] = useState<Record<string, boolean>>({
     chats: true,
@@ -53,20 +54,18 @@ export function AppSidebar() {
     historical: false,
     favorites: false,
   })
+  const [expandedSections, setExpandedSections] = useState<Record<string, boolean>>({
+    favorites: false,
+    history: false,
+    archived: false
+  })
 
   // Handle logout function
   const handleLogout = async () => {
     try {
-      const { error } = await auth.signOut()
-      if (error) {
-        console.error('Error logging out:', error.message)
-      } else {
-        navigate('/')
-      }
+      await signOut()
     } catch (err) {
       console.error('Logout error:', err)
-      // Even if there's an error, redirect to login
-      navigate('/')
     }
   }
 

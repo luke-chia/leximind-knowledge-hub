@@ -14,6 +14,7 @@ import { Badge } from '@/components/ui/badge'
 import { SidebarTrigger } from '@/components/ui/sidebar'
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useAuth } from '@/contexts/AuthContext'
 
 interface TopBarProps {
   onNewChat?: () => void
@@ -22,6 +23,7 @@ interface TopBarProps {
 export function TopBar({ onNewChat }: TopBarProps) {
   const [isDark, setIsDark] = useState(true)
   const navigate = useNavigate()
+  const { signOut } = useAuth()
 
   useEffect(() => {
     // Set dark mode on mount
@@ -38,6 +40,14 @@ export function TopBar({ onNewChat }: TopBarProps) {
     navigate('/search')
     // Call optional callback if provided
     onNewChat?.()
+  }
+
+  const handleLogout = async () => {
+    try {
+      await signOut()
+    } catch (err) {
+      console.error('Logout error:', err)
+    }
   }
 
   return (
@@ -129,7 +139,10 @@ export function TopBar({ onNewChat }: TopBarProps) {
               <DropdownMenuItem>Settings</DropdownMenuItem>
               <DropdownMenuItem>Preferences</DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem className="text-destructive">
+              <DropdownMenuItem
+                className="text-destructive"
+                onClick={handleLogout}
+              >
                 Logout
               </DropdownMenuItem>
             </DropdownMenuContent>
