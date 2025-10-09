@@ -100,5 +100,23 @@
     "saving_memory": "Guardando en Memoria de LexiMind...",
     "warning_message": "⚠️ Este paso puede tardar algunos minutos dependiendo del tamaño del archivo. Por favor, mantén la pestaña abierta",
     "complete": "% Completo"
+  },
+  "documents": {
+    "stats": {
+      "total_documents": "Total de Documentos",
+      "total_size": "Tamaño Total",
+      "average_size": "Tamaño Promedio",
+      "last_updated": "Última Actualización"
+    },
+    "list": {
+      "error_loading": "Error al cargar documentos",
+      "retry": "Reintentar",
+      "no_documents": "No hay documentos disponibles",
+      "showing": "Mostrando",
+      "of": "de",
+      "documents_text": "documentos",
+      "previous": "Anterior",
+      "next": "Siguiente"
+    }
   }
 }

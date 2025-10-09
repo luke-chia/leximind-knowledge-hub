@@ -100,5 +100,23 @@
     "saving_memory": "Saving to LexiMind Memory...",
     "warning_message": "⚠️ This step may take several minutes depending on file size. Please keep the tab open",
     "complete": "% Complete"
+  },
+  "documents": {
+    "stats": {
+      "total_documents": "Total Documents",
+      "total_size": "Total Size (MB)",
+      "average_size": "Average Size",
+      "last_updated": "Last Updated"
+    },
+    "list": {
+      "error_loading": "Error loading documents",
+      "retry": "Retry",
+      "no_documents": "No documents available",
+      "showing": "Showing",
+      "of": "of",
+      "documents_text": "documents",
+      "previous": "Previous",
+      "next": "Next"
+    }
   }
 }
