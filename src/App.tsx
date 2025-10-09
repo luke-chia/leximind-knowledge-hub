@@ -8,6 +8,7 @@ import Index from './pages/Index'
 import Search from './pages/Search'
 import Documents from './pages/Documents'
 import Users from './pages/Users'
+import Profile from './pages/Profile'
 import NotFound from './pages/NotFound'
 import { useEffect } from 'react'
 import { PDFViewerProvider } from '@/contexts/PDFViewerContext'
@@ -35,6 +36,7 @@ const App = () => {
                 <Route path="/search" element={<Search />} />
                 <Route path="/documents" element={<Documents />} />
                 <Route path="/users" element={<Users />} />
+                <Route path="/profile" element={<Profile />} />
                 {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                 <Route path="*" element={<NotFound />} />
               </Routes>
