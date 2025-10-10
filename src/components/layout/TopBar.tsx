@@ -15,6 +15,7 @@ import { SidebarTrigger } from '@/components/ui/sidebar'
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '@/contexts/AuthContext'
+import { useProfile } from '@/contexts/ProfileContext'
 
 interface TopBarProps {
   onNewChat?: () => void
@@ -24,6 +25,7 @@ export function TopBar({ onNewChat }: TopBarProps) {
   const [isDark, setIsDark] = useState(true)
   const navigate = useNavigate()
   const { signOut } = useAuth()
+  const { profile, imageVersion } = useProfile()
 
   useEffect(() => {
     // Set dark mode on mount
@@ -114,17 +116,27 @@ export function TopBar({ onNewChat }: TopBarProps) {
               >
                 <div className="flex items-center space-x-3">
                   <Avatar className="h-8 w-8 border-2 border-banking-primary/30">
-                    <AvatarImage src="/api/placeholder/32/32" alt="User" />
+                    <AvatarImage
+                      src={
+                        profile?.img_url
+                          ? `${profile.img_url}?v=${imageVersion}`
+                          : '/api/placeholder/32/32'
+                      }
+                      alt={profile?.name || 'User'}
+                      key={`${profile?.img_url}-${imageVersion}`} // Force re-render when img_url or version changes
+                    />
                     <AvatarFallback className="bg-banking-primary text-banking-primary-foreground">
-                      TC
+                      {profile?.nickname ||
+                        profile?.name?.charAt(0)?.toUpperCase() ||
+                        'U'}
                     </AvatarFallback>
                   </Avatar>
                   <div className="hidden md:block text-left">
                     <p className="text-sm font-medium text-sidebar-foreground">
-                      Tom Cook
+                      {profile?.name || 'Usuario'}
                     </p>
                     <p className="text-xs text-muted-foreground">
-                      Bank Analyst
+                      {profile?.rol || 'Sin rol'}
                     </p>
                   </div>
                 </div>

@@ -7,17 +7,26 @@ import { Label } from '@/components/ui/label'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { useToast } from '@/hooks/use-toast'
 import { profilesApi, Profile } from '@/services/profiles'
+import { useProfile } from '@/contexts/ProfileContext'
 import { Pencil, Save, Loader2 } from 'lucide-react'
 
 const ProfilePage = () => {
-  const [profile, setProfile] = useState<Profile | null>(null)
-  const [loading, setLoading] = useState(true)
+  const { profile, loading, updateProfile, refreshProfile, imageVersion } =
+    useProfile()
   const [saving, setSaving] = useState(false)
   const [uploading, setUploading] = useState(false)
   const [name, setName] = useState('')
   const [nickname, setNickname] = useState('')
   const fileInputRef = useRef<HTMLInputElement>(null)
   const { toast } = useToast()
+
+  // Update local state when profile changes
+  useEffect(() => {
+    if (profile) {
+      setName(profile.name || '')
+      setNickname(profile.nickname || '')
+    }
+  }, [profile])
 
   // Helper function to get status description
   const getStatusDescription = (status: string) => {
@@ -57,44 +66,20 @@ const ProfilePage = () => {
     return `${day} de ${month} ${year} ${hours}:${minutes}`
   }
 
-  useEffect(() => {
-    fetchProfile()
-  }, [])
-
-  const fetchProfile = async () => {
-    try {
-      setLoading(true)
-      const data = await profilesApi.getCurrentProfile()
-      setProfile(data)
-      if (data) {
-        setName(data.name || '')
-        setNickname(data.nickname || '')
-      }
-    } catch (error) {
-      console.error('Error fetching profile:', error)
-      toast({
-        title: 'Error',
-        description: 'Error al cargar el perfil',
-        variant: 'destructive',
-      })
-    } finally {
-      setLoading(false)
-    }
-  }
-
   const handleSave = async () => {
     try {
       setSaving(true)
-      const updated = await profilesApi.updateProfile({
+      await updateProfile({
         name: name || null,
         nickname: nickname || null,
       })
-      setProfile(updated)
       toast({
         title: 'Éxito',
         description: 'Perfil actualizado exitosamente',
         duration: 3000,
       })
+      // Refresh the profile to update TopBar
+      await refreshProfile()
     } catch (error) {
       console.error('Error updating profile:', error)
       toast({
@@ -136,12 +121,14 @@ const ProfilePage = () => {
     try {
       setUploading(true)
       const publicUrl = await profilesApi.uploadProfileImage(file)
-      setProfile((prev) => (prev ? { ...prev, img_url: publicUrl } : null))
+      await updateProfile({ img_url: publicUrl })
       toast({
         title: 'Éxito',
         description: 'Foto de perfil actualizada exitosamente',
         duration: 3000,
       })
+      // Refresh the profile to update TopBar
+      await refreshProfile()
     } catch (error) {
       console.error('Error uploading image:', error)
       toast({
@@ -289,8 +276,13 @@ const ProfilePage = () => {
                   <div className="relative w-48 h-48 mx-auto">
                     <Avatar className="w-full h-full border-4 border-banking-primary/20">
                       <AvatarImage
-                        src={profile?.img_url || undefined}
+                        src={
+                          profile?.img_url
+                            ? `${profile.img_url}?v=${imageVersion}`
+                            : undefined
+                        }
                         alt={profile?.name || 'User'}
+                        key={`${profile?.img_url}-${imageVersion}`} // Force re-render when img_url or version changes
                       />
                       <AvatarFallback className="bg-banking-primary text-banking-primary-foreground text-4xl">
                         {getInitials()}

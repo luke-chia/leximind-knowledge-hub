@@ -54,10 +54,12 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
     historical: false,
     favorites: false,
   })
-  const [expandedSections, setExpandedSections] = useState<Record<string, boolean>>({
+  const [expandedSections, setExpandedSections] = useState<
+    Record<string, boolean>
+  >({
     favorites: false,
     history: false,
-    archived: false
+    archived: false,
   })
 
   // Handle logout function

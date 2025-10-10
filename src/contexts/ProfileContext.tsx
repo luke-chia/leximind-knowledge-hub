@@ -1,504 +1,155 @@
-import React, { createContext, useState, useEffect, useCallback, ReactNode } from 'react';
-import { Profile } from '@/services/profiles/types';
-
-interface ProfileContextType {
-  profile: Profile | null;
-  loading: boolean;
-  error: string | null;
-  updateProfile: (data: Partial<Profile>) => Promise<void>;
-  uploadAvatar: (file: File) => Promise<string>;
-  refreshProfile: () => Promise<void>;
-}
-
-export const ProfileContext = createContext<ProfileContextType | undefined>(undefined);
-
-interface ProfileProviderProps {
-  children: ReactNode;
-}
-
-export const ProfileProvider: React.FC<ProfileProviderProps> = ({ children }) => {
-  const [profile, setProfile] = useState<Profile | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
-  // MOCK: carga de perfil
-  const loadProfile = useCallback(
-    async (userFromSession?: {
-      id: string;
-      email?: string;
-      user_metadata?: Record<string, unknown>;
-    }) => {
-      setLoading(true);
-      setError(null);
-      let user = userFromSession;
-      if (!user) {
-        setProfile(null);
-        setLoading(false);
-        return;
-      }
-      const mockProfile: Profile = {
-        id: user.id,
-        name:
-          (user.user_metadata?.full_name as string) ||
-          user.email?.split('@')[0] ||
-          'Usuario',
-        nickname:
-          (user.user_metadata?.name as string) ||
-          user.email?.split('@')[0] ||
-          'Usuario',
-        rol: 'User',
-        status: 'active',
-        img_url: (user.user_metadata?.avatar_url as string) || null,
-        created_at: new Date().toISOString(),
-      };
-      setProfile(mockProfile);
-      setLoading(false);
-    },
-    []
-  );
-
-  // MOCK: actualización de perfil
-  const updateProfile = async (data: Partial<Profile>) => {
-    setError(null);
-    if (!profile) return;
-    setProfile({ ...profile, ...data });
-  };
-
-  // MOCK: subida de avatar
-  const uploadAvatar = async (file: File): Promise<string> => {
-    setError(null);
-    if (!profile) throw new Error('No profile loaded');
-    const imageUrl = URL.createObjectURL(file);
-    setProfile({ ...profile, img_url: imageUrl });
-    return imageUrl;
-  };
-
-  const refreshProfile = async () => {
-    await loadProfile(profile || undefined);
-  };
-
-  useEffect(() => {
-    loadProfile();
-  }, [loadProfile]);
-
-  const value: ProfileContextType = {
-    profile,
-    loading,
-    error,
-    updateProfile,
-    uploadAvatar,
-    refreshProfile,
-  };
-
-  return (
-    <ProfileContext.Provider value={value}>{children}</ProfileContext.Provider>
-  );
-};
-import React, { createContext, useState, useEffect, useCallback, ReactNode } from 'react';
-import { Profile } from '@/services/profiles/types';
-
-interface ProfileContextType {
-  profile: Profile | null;
-  loading: boolean;
-  error: string | null;
-  updateProfile: (data: Partial<Profile>) => Promise<void>;
-  uploadAvatar: (file: File) => Promise<string>;
-  refreshProfile: () => Promise<void>;
-}
-
-export const ProfileContext = createContext<ProfileContextType | undefined>(undefined);
-
-interface ProfileProviderProps {
-  children: ReactNode;
-}
-
-export const ProfileProvider: React.FC<ProfileProviderProps> = ({ children }) => {
-  const [profile, setProfile] = useState<Profile | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
-  // MOCK: carga de perfil
-  const loadProfile = useCallback(
-    async (userFromSession?: {
-      id: string;
-      email?: string;
-      user_metadata?: Record<string, unknown>;
-    }) => {
-      setLoading(true);
-      setError(null);
-      let user = userFromSession;
-      if (!user) {
-        setProfile(null);
-        setLoading(false);
-        return;
-      }
-      const mockProfile: Profile = {
-        id: user.id,
-        name:
-          (user.user_metadata?.full_name as string) ||
-          user.email?.split('@')[0] ||
-          'Usuario',
-        nickname:
-          (user.user_metadata?.name as string) ||
-          user.email?.split('@')[0] ||
-          'Usuario',
-        rol: 'User',
-        status: 'active',
-        img_url: (user.user_metadata?.avatar_url as string) || null,
-        created_at: new Date().toISOString(),
-      };
-      setProfile(mockProfile);
-      setLoading(false);
-    },
-    []
-  );
-
-  // MOCK: actualización de perfil
-  const updateProfile = async (data: Partial<Profile>) => {
-    setError(null);
-    if (!profile) return;
-    setProfile({ ...profile, ...data });
-  };
-
-  // MOCK: subida de avatar
-  const uploadAvatar = async (file: File): Promise<string> => {
-    setError(null);
-    if (!profile) throw new Error('No profile loaded');
-    const imageUrl = URL.createObjectURL(file);
-    setProfile({ ...profile, img_url: imageUrl });
-    return imageUrl;
-  };
-
-  const refreshProfile = async () => {
-    await loadProfile(profile || undefined);
-  };
-
-  useEffect(() => {
-    loadProfile();
-  }, [loadProfile]);
-
-  const value: ProfileContextType = {
-    profile,
-    loading,
-    error,
-    updateProfile,
-    uploadAvatar,
-    refreshProfile,
-  };
-
-  return (
-    <ProfileContext.Provider value={value}>{children}</ProfileContext.Provider>
-  );
-};
-import React, { createContext, useState, useEffect, useCallback, ReactNode } from 'react';
-import { Profile } from '@/services/profiles/types';
-
-interface ProfileContextType {
-  profile: Profile | null;
-  loading: boolean;
-  error: string | null;
-  updateProfile: (data: Partial<Profile>) => Promise<void>;
-  uploadAvatar: (file: File) => Promise<string>;
-  refreshProfile: () => Promise<void>;
-}
-
-export const ProfileContext = createContext<ProfileContextType | undefined>(undefined);
-
-interface ProfileProviderProps {
-  children: ReactNode;
-}
-
-export const ProfileProvider: React.FC<ProfileProviderProps> = ({ children }) => {
-  const [profile, setProfile] = useState<Profile | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
-  // MOCK: carga de perfil
-  const loadProfile = useCallback(
-    async (userFromSession?: {
-      id: string;
-      email?: string;
-      user_metadata?: Record<string, unknown>;
-    }) => {
-      setLoading(true);
-      setError(null);
-      let user = userFromSession;
-      if (!user) {
-        setProfile(null);
-        setLoading(false);
-        return;
-      }
-      const mockProfile: Profile = {
-        id: user.id,
-        name:
-          (user.user_metadata?.full_name as string) ||
-          user.email?.split('@')[0] ||
-          'Usuario',
-        nickname:
-          (user.user_metadata?.name as string) ||
-          user.email?.split('@')[0] ||
-          'Usuario',
-        rol: 'User',
-        status: 'active',
-        img_url: (user.user_metadata?.avatar_url as string) || null,
-        created_at: new Date().toISOString(),
-      };
-      setProfile(mockProfile);
-      setLoading(false);
-    },
-    []
-  );
-
-  // MOCK: actualización de perfil
-  const updateProfile = async (data: Partial<Profile>) => {
-    setError(null);
-    if (!profile) return;
-    setProfile({ ...profile, ...data });
-  };
-
-  // MOCK: subida de avatar
-  const uploadAvatar = async (file: File): Promise<string> => {
-    setError(null);
-    if (!profile) throw new Error('No profile loaded');
-    const imageUrl = URL.createObjectURL(file);
-    setProfile({ ...profile, img_url: imageUrl });
-    return imageUrl;
-  };
-
-  const refreshProfile = async () => {
-    await loadProfile(profile || undefined);
-  };
-
-  useEffect(() => {
-    loadProfile();
-  }, [loadProfile]);
-
-  const value: ProfileContextType = {
-    profile,
-    loading,
-    error,
-    updateProfile,
-    uploadAvatar,
-    refreshProfile,
-  };
-
-  return (
-    <ProfileContext.Provider value={value}>{children}</ProfileContext.Provider>
-  );
-};
-import React, {
+import {
   createContext,
-  useState,
+  useContext,
   useEffect,
-  useCallback,
+  useState,
   ReactNode,
+  useCallback,
 } from 'react'
+import { Profile, profilesApi } from '@/services/profiles'
+import { useAuth } from './AuthContext'
 
-  const loadProfile = useCallback(
-    import React, { createContext, useState, useEffect, useCallback, ReactNode } from 'react';
-    import { Profile } from '@/services/profiles/types';
+interface ProfileContextType {
+  profile: Profile | null
+  loading: boolean
+  error: string | null
+  imageVersion: number
+  getProfile: () => Promise<Profile | null>
+  updateProfile: (data: {
+    name?: string | null
+    nickname?: string | null
+    img_url?: string | null
+  }) => Promise<Profile | null>
+  refreshProfile: () => Promise<void>
+  clearProfile: () => void
+}
 
-    interface ProfileContextType {
-      profile: Profile | null;
-      loading: boolean;
-      error: string | null;
-      updateProfile: (data: Partial<Profile>) => Promise<void>;
-      uploadAvatar: (file: File) => Promise<string>;
-      refreshProfile: () => Promise<void>;
-    }
+const ProfileContext = createContext<ProfileContextType | undefined>(undefined)
 
-    export const ProfileContext = createContext<ProfileContextType | undefined>(undefined);
-
-    interface ProfileProviderProps {
-      children: ReactNode;
-    }
-
-    export const ProfileProvider: React.FC<ProfileProviderProps> = ({ children }) => {
-      const [profile, setProfile] = useState<Profile | null>(null);
-      const [loading, setLoading] = useState(true);
-      const [error, setError] = useState<string | null>(null);
-
-      // MOCK: carga de perfil
-      const loadProfile = useCallback(
-        async (userFromSession?: {
-          id: string;
-          email?: string;
-          user_metadata?: Record<string, unknown>;
-        }) => {
-          setLoading(true);
-          setError(null);
-          let user = userFromSession;
-          if (!user) {
-            setProfile(null);
-            setLoading(false);
-            return;
-          }
-          const mockProfile: Profile = {
-            id: user.id,
-            name:
-              (user.user_metadata?.full_name as string) ||
-              user.email?.split('@')[0] ||
-              'Usuario',
-            nickname:
-              (user.user_metadata?.name as string) ||
-              user.email?.split('@')[0] ||
-              'Usuario',
-            rol: 'User',
-            status: 'active',
-            img_url: (user.user_metadata?.avatar_url as string) || null,
-            created_at: new Date().toISOString(),
-          };
-          setProfile(mockProfile);
-          setLoading(false);
-        },
-        []
-      );
-
-      // MOCK: actualización de perfil
-      const updateProfile = async (data: Partial<Profile>) => {
-        setError(null);
-        if (!profile) return;
-        setProfile({ ...profile, ...data });
-      };
-
-      // MOCK: subida de avatar
-      const uploadAvatar = async (file: File): Promise<string> => {
-        setError(null);
-        if (!profile) throw new Error('No profile loaded');
-        const imageUrl = URL.createObjectURL(file);
-        setProfile({ ...profile, img_url: imageUrl });
-        return imageUrl;
-      };
-
-      const refreshProfile = async () => {
-        await loadProfile(profile || undefined);
-      };
-
-      useEffect(() => {
-        loadProfile();
-      }, [loadProfile]);
-
-      const value: ProfileContextType = {
-        profile,
-        loading,
-        error,
-        updateProfile,
-        uploadAvatar,
-        refreshProfile,
-      };
-
-      return (
-        <ProfileContext.Provider value={value}>{children}</ProfileContext.Provider>
-      );
-    };
-                        created_at: new Date().toISOString(),
-                      }
-                      setProfile(mockProfile)
-                      console.log('✅ ProfileContext: Mock profile set:', mockProfile.name)
-        ...updatedProfile,
-        created_at: updatedProfile.created_at || new Date().toISOString(),
-      })
-      console.log('✅ ProfileContext: Profile updated successfully')
-    } catch (err) {
-      console.error('Error updating profile:', err)
-      setError(err instanceof Error ? err.message : 'Error updating profile')
-      throw err
-    }
+export const useProfile = () => {
+  const context = useContext(ProfileContext)
+  if (context === undefined) {
+    throw new Error('useProfile must be used within a ProfileProvider')
   }
+  return context
+}
 
-  const uploadAvatar = async (file: File): Promise<string> => {
+interface ProfileProviderProps {
+  children: ReactNode
+}
+
+export const ProfileProvider = ({ children }: ProfileProviderProps) => {
+  const [profile, setProfile] = useState<Profile | null>(null)
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+  const [imageVersion, setImageVersion] = useState<number>(Date.now()) // For cache busting
+  const { user, loading: authLoading } = useAuth()
+
+  // Clear profile when user logs out
+  const clearProfile = useCallback(() => {
+    setProfile(null)
+    setError(null)
+    setLoading(false)
+    setImageVersion(Date.now()) // Reset image version
+  }, [])
+
+  // Get profile from API
+  const getProfile = useCallback(async (): Promise<Profile | null> => {
+    if (!user) {
+      return null
+    }
+
     try {
+      setLoading(true)
       setError(null)
-
-      if (!profile) {
-        throw new Error('No profile loaded')
-      }
-
-      console.log('🔄 ProfileContext: Uploading avatar to Supabase storage...')
-
-      // Upload to Supabase storage
-      const fileExt = file.name.split('.').pop()
-      const fileName = `${profile.id}.${fileExt}`
-
-      const { data: uploadData, error: uploadError } = await supabase.storage
-        .from('avatars')
-        .upload(fileName, file, { upsert: true })
-
-      if (uploadError) {
-        console.error('❌ ProfileContext: Error uploading avatar:', uploadError)
-        throw uploadError
-      }
-
-      // Get public URL
-      const {
-        data: { publicUrl },
-      } = supabase.storage.from('avatars').getPublicUrl(fileName)
-
-      // Update profile with new image URL
-      await updateProfile({ img_url: publicUrl })
-
-      console.log('✅ ProfileContext: Avatar uploaded successfully')
-      return publicUrl
+      const profileData = await profilesApi.getCurrentProfile()
+      setProfile(profileData)
+      return profileData
     } catch (err) {
-      console.error('Error uploading avatar:', err)
-      setError(err instanceof Error ? err.message : 'Error uploading avatar')
-      throw err
+      const errorMessage =
+        err instanceof Error ? err.message : 'Error fetching profile'
+      setError(errorMessage)
+      console.error('Error fetching profile:', err)
+      return null
+    } finally {
+      setLoading(false)
     }
-  }
+  }, [user])
 
-  const refreshProfile = async () => {
-    await loadProfile()
-  }
-
-  useEffect(() => {
-    console.log(
-      '🔄 ProfileContext: useEffect started - setting up auth listener only'
-    )
-
-    // Initial load - run once
-    loadProfile()
-
-    // Listen for auth state changes
-    const {
-      data: { subscription },
-    } = supabase.auth.onAuthStateChange(async (event, session) => {
-      console.log(
-        '🔄 ProfileContext: Auth state change detected:',
-        event,
-        session ? 'Session exists' : 'No session'
-      )
-
-      if (event === 'SIGNED_IN' && session && session.user) {
-        console.log(
-          '🔄 ProfileContext: SIGNED_IN event - calling loadProfile() with session user'
-        )
-        // User signed in, load profile using the user from session
-        await loadProfile(session.user)
-        console.log('✅ ProfileContext: SIGNED_IN loadProfile() completed')
-      } else if (event === 'SIGNED_OUT') {
-        console.log('🔄 ProfileContext: SIGNED_OUT event - clearing profile')
-        // User signed out, clear profile
-        setProfile(null)
-        setLoading(false)
-        console.log('✅ ProfileContext: SIGNED_OUT profile cleared')
-      } else {
-        console.log('🔄 ProfileContext: Other auth event ignored:', event)
+  // Update profile
+  const updateProfile = useCallback(
+    async (data: {
+      name?: string | null
+      nickname?: string | null
+      img_url?: string | null
+    }): Promise<Profile | null> => {
+      if (!user) {
+        throw new Error('User not authenticated')
       }
-    })
 
-    return () => subscription.unsubscribe()
-  }, [loadProfile]) // Add loadProfile as dependency
+      try {
+        setLoading(true)
+        setError(null)
+        const updatedProfile = await profilesApi.updateProfile(data)
 
-  const value = {
+        // If we're updating the image, update the image version for cache busting
+        if (data.img_url) {
+          setImageVersion(Date.now())
+        }
+
+        setProfile(updatedProfile)
+        return updatedProfile
+      } catch (err) {
+        const errorMessage =
+          err instanceof Error ? err.message : 'Error updating profile'
+        setError(errorMessage)
+        console.error('Error updating profile:', err)
+        throw err
+      } finally {
+        setLoading(false)
+      }
+    },
+    [user]
+  )
+
+  // Refresh profile (re-fetch from API)
+  const refreshProfile = useCallback(async (): Promise<void> => {
+    await getProfile()
+  }, [getProfile])
+
+  // Effect to handle auth state changes
+  useEffect(() => {
+    if (authLoading) {
+      // Auth is still loading, don't do anything yet
+      return
+    }
+
+    if (!user) {
+      // User logged out, clear profile
+      clearProfile()
+      return
+    }
+
+    // User is authenticated and we don't have a profile yet, fetch it
+    if (user && !profile && !loading) {
+      getProfile()
+    }
+  }, [user, authLoading, profile, loading, getProfile, clearProfile])
+
+  const contextValue: ProfileContextType = {
     profile,
     loading,
     error,
+    imageVersion,
+    getProfile,
     updateProfile,
-    uploadAvatar,
     refreshProfile,
+    clearProfile,
   }
 
   return (
-    <ProfileContext.Provider value={value}>{children}</ProfileContext.Provider>
+    <ProfileContext.Provider value={contextValue}>
+      {children}
+    </ProfileContext.Provider>
   )
 }
