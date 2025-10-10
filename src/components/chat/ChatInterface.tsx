@@ -6,7 +6,7 @@ import {
   Copy,
   Eye,
   Link,
-  Infinity as InfinityIcon, // No change needed here
+  Infinity as InfinityIcon,
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { useTranslation } from 'react-i18next'
@@ -17,6 +17,9 @@ import { SearchInterface } from './SearchInterface'
 import { useChat } from '@/hooks/useChat'
 import { SourceReference } from '@/services/chat/types'
 import { usePDFViewer } from '@/hooks/usePDFViewer'
+import { AddOpinionDrawer } from './AddOpinionDrawer'
+import { ViewOpinionsModal } from './ViewOpinionsModal'
+import { OpinionsApi } from '@/services/opinions'
 
 interface Message {
   id: string
@@ -45,6 +48,7 @@ export function ChatInterface({ query, onNewChat }: ChatInterfaceProps) {
   const [expandedReferences, setExpandedReferences] = useState<
     Record<string, boolean>
   >({})
+  const [opinionCounts, setOpinionCounts] = useState<Record<string, number>>({})
   const { toast } = useToast()
   const { openPDF } = usePDFViewer()
   const scrollAreaRef = useRef<HTMLDivElement>(null)
@@ -292,6 +296,37 @@ export function ChatInterface({ query, onNewChat }: ChatInterfaceProps) {
     return text.length > 80 ? text.substring(0, 80) + '.....' : text
   }
 
+  // Load opinion counts for messages
+  useEffect(() => {
+    const loadOpinionCounts = async () => {
+      const counts: Record<string, number> = {}
+      for (const message of messages) {
+        if (message.type === 'assistant' && !message.isLoading) {
+          try {
+            const count = await OpinionsApi.getOpinionCount(message.id)
+            counts[message.id] = count
+          } catch (error) {
+            console.error('Error loading opinion count:', error)
+          }
+        }
+      }
+      setOpinionCounts(counts)
+    }
+
+    if (messages.length > 0) {
+      loadOpinionCounts()
+    }
+  }, [messages.length])
+
+  const handleOpinionAdded = async (messageId: string) => {
+    try {
+      const count = await OpinionsApi.getOpinionCount(messageId)
+      setOpinionCounts(prev => ({ ...prev, [messageId]: count }))
+    } catch (error) {
+      console.error('Error updating opinion count:', error)
+    }
+  }
+
   return (
     <div className="flex-1 flex flex-col h-full max-w-4xl mx-auto px-6">
       <ScrollArea ref={scrollAreaRef} className="flex-1 py-6">
@@ -381,6 +416,20 @@ export function ChatInterface({ query, onNewChat }: ChatInterfaceProps) {
                             >
                               <Copy className="h-4 w-4" />
                             </Button>
+                            
+                            {/* Add Expert Opinion */}
+                            <AddOpinionDrawer
+                              messageId={message.id}
+                              onOpinionAdded={() => handleOpinionAdded(message.id)}
+                            />
+                            
+                            {/* View Expert Opinions */}
+                            <ViewOpinionsModal
+                              messageId={message.id}
+                              opinionCount={opinionCounts[message.id] || 0}
+                              onCountChange={(count) => setOpinionCounts(prev => ({ ...prev, [message.id]: count }))}
+                            />
+                            
                             {/* Solo mostrar el botón si hay sources */}
                             {message.sources && message.sources.length > 0 && (
                               <Button
