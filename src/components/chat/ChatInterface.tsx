@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback } from 'react'
+import { useState, useEffect, useRef, useCallback, useMemo } from 'react'
 import {
   ThumbsUp,
   ThumbsDown,
@@ -20,6 +20,8 @@ import { usePDFViewer } from '@/hooks/usePDFViewer'
 import { AddOpinionDrawer } from './AddOpinionDrawer'
 import { ViewOpinionsModal } from './ViewOpinionsModal'
 import { OpinionsApi } from '@/services/opinions'
+import { ConversationsApi, MessagesApi } from '@/services/conversations'
+import type { Conversation } from '@/services/conversations/types'
 
 interface Message {
   id: string
@@ -49,12 +51,105 @@ export function ChatInterface({ query, onNewChat }: ChatInterfaceProps) {
     Record<string, boolean>
   >({})
   const [opinionCounts, setOpinionCounts] = useState<Record<string, number>>({})
+  const [currentConversation, setCurrentConversation] =
+    useState<Conversation | null>(null)
   const { toast } = useToast()
   const { openPDF } = usePDFViewer()
   const scrollAreaRef = useRef<HTMLDivElement>(null)
   const activeMessageRef = useRef<HTMLDivElement>(null)
   const { processMessage, isLoading: apiLoading, error: apiError } = useChat()
   const hasProcessedQuery = useRef(false)
+
+  // Helper function to save user message immediately
+  const saveUserMessage = useCallback(
+    async (userQuery: string, resumeQuestion?: string) => {
+      try {
+        let conversation = currentConversation
+
+        // Create conversation if it's the first message
+        if (!conversation) {
+          conversation = await ConversationsApi.createConversation({
+            title: resumeQuestion || userQuery.substring(0, 100),
+          })
+          setCurrentConversation(conversation)
+        }
+
+        // Save user message to database
+        const savedUserMessage = await MessagesApi.createMessage({
+          conversation_id: conversation.id,
+          role: 'user',
+          content: userQuery,
+        })
+
+        console.log('✅ User message saved successfully')
+        return { conversation, userMessage: savedUserMessage }
+      } catch (error) {
+        console.error('❌ Error saving user message:', error)
+        throw error
+      }
+    },
+    [currentConversation]
+  )
+
+  // Helper function to handle post-animation actions
+  const handleAnimationComplete = useCallback(
+    async (
+      assistantResponse: string,
+      tempAssistantId: string,
+      userMessageId: string,
+      conversation: Conversation // Pass conversation directly instead of relying on state
+    ) => {
+      try {
+        // Use the conversation passed as parameter instead of state
+        if (!conversation) {
+          console.error('No conversation provided for saving assistant message')
+          return
+        }
+
+        console.log('💾 Saving assistant message to database...')
+
+        // 1. Save assistant message to database
+        const savedAssistantMessage = await MessagesApi.createMessage({
+          conversation_id: conversation.id,
+          role: 'assistant',
+          content: assistantResponse,
+        })
+
+        console.log(
+          '✅ Assistant message saved successfully with ID:',
+          savedAssistantMessage.id
+        )
+
+        // 2. Update local messages with real database IDs
+        setMessages((prev) =>
+          prev.map((msg) => {
+            if (msg.id === tempAssistantId && msg.type === 'assistant') {
+              return { ...msg, id: savedAssistantMessage.id }
+            }
+            return msg
+          })
+        )
+
+        // 3. Load opinion counts for the new assistant message
+        try {
+          const count = await OpinionsApi.getOpinionCount(
+            savedAssistantMessage.id
+          )
+          setOpinionCounts((prev) => ({
+            ...prev,
+            [savedAssistantMessage.id]: count,
+          }))
+        } catch (error) {
+          console.error('Error loading opinion count:', error)
+        }
+
+        console.log('✅ Animation completion actions finished successfully')
+      } catch (error) {
+        console.error('❌ Error in post-animation actions:', error)
+      }
+    },
+    [] // Remove currentConversation dependency since we pass it as parameter
+  )
 
   // Helper function to scroll to the active message
   const scrollToActiveMessage = useCallback(() => {
@@ -107,15 +202,24 @@ export function ChatInterface({ query, onNewChat }: ChatInterfaceProps) {
         tags: string[]
       }
     ) => {
-      // Add user message
+      // 1. Save user message immediately to database
+      let savedData
+      try {
+        savedData = await saveUserMessage(userQuery, undefined)
+      } catch (error) {
+        console.error('Failed to save user message:', error)
+        return
+      }
+
+      // 2. Add user message to local state with real database ID
       const userMessage: Message = {
-        id: generateId(),
+        id: savedData.userMessage.id, // Use real database ID
         type: 'user',
         content: userQuery,
         timestamp: new Date(),
       }
 
-      // Add loading message
+      // 3. Add loading message with temporary ID
       const loadingMessage: Message = {
         id: generateId(),
         type: 'assistant',
@@ -128,14 +232,14 @@ export function ChatInterface({ query, onNewChat }: ChatInterfaceProps) {
       setActiveResponseId(loadingMessage.id)
 
       try {
-        // Call the API
+        // 4. Call the API
         const response = await processMessage(userQuery, filters)
 
-        // Remove loading message and start typing animation
+        // 5. Remove loading message and start typing animation
         setMessages((prev) => prev.slice(0, -1))
         setIsTyping(true)
 
-        // Create a single ID for the typing message
+        // 6. Create a single temporary ID for the typing message
         const typingMessageId = generateId()
         setActiveResponseId(typingMessageId)
 
@@ -172,9 +276,17 @@ export function ChatInterface({ query, onNewChat }: ChatInterfaceProps) {
           )
         }
 
-        // Stop typing animation
+        // 8. Stop typing animation
         setIsTyping(false)
         setActiveResponseId(null)
+
+        // 9. Handle post-animation actions: save assistant message, update IDs, load opinions
+        await handleAnimationComplete(
+          response.response,
+          typingMessageId,
+          userMessage.id,
+          savedData.conversation // Pass the conversation object
+        )
       } catch (error) {
         // Remove loading message
         setMessages((prev) => prev.slice(0, -1))
@@ -201,7 +313,15 @@ export function ChatInterface({ query, onNewChat }: ChatInterfaceProps) {
         })
       }
     },
-    [processMessage, apiError, toast, t, scrollToActiveMessage]
+    [
+      processMessage,
+      apiError,
+      toast,
+      t,
+      scrollToActiveMessage,
+      saveUserMessage,
+      handleAnimationComplete,
+    ]
   )
 
   // Initialize with the query only on first mount
@@ -296,32 +416,45 @@ export function ChatInterface({ query, onNewChat }: ChatInterfaceProps) {
     return text.length > 80 ? text.substring(0, 80) + '.....' : text
   }
 
-  // Load opinion counts for messages
+  // NOTE: Opinion counts are now loaded in handleAnimationComplete for new messages
+  // This eliminates the performance issue of 114+ API calls during typing animation
+
+  // Load opinion counts for existing messages only once when messages are available
+  const hasLoadedInitialCounts = useRef(false)
   useEffect(() => {
-    const loadOpinionCounts = async () => {
+    const loadExistingOpinionCounts = async () => {
+      if (hasLoadedInitialCounts.current || isTyping || messages.length === 0)
+        return
+
+      const finalizedAssistantMessages = messages.filter(
+        (message) => message.type === 'assistant' && !message.isLoading
+      )
+
+      if (finalizedAssistantMessages.length === 0) return
+
       const counts: Record<string, number> = {}
-      for (const message of messages) {
-        if (message.type === 'assistant' && !message.isLoading) {
-          try {
-            const count = await OpinionsApi.getOpinionCount(message.id)
-            counts[message.id] = count
-          } catch (error) {
-            console.error('Error loading opinion count:', error)
-          }
+      for (const message of finalizedAssistantMessages) {
+        try {
+          const count = await OpinionsApi.getOpinionCount(message.id)
+          counts[message.id] = count
+        } catch (error) {
+          console.error('Error loading existing opinion count:', error)
         }
       }
-      setOpinionCounts(counts)
+
+      if (Object.keys(counts).length > 0) {
+        setOpinionCounts(counts)
+        hasLoadedInitialCounts.current = true
+      }
     }
 
-    if (messages.length > 0) {
-      loadOpinionCounts()
-    }
-  }, [messages.length])
+    loadExistingOpinionCounts()
+  }, [messages, isTyping])
 
   const handleOpinionAdded = async (messageId: string) => {
     try {
       const count = await OpinionsApi.getOpinionCount(messageId)
-      setOpinionCounts(prev => ({ ...prev, [messageId]: count }))
+      setOpinionCounts((prev) => ({ ...prev, [messageId]: count }))
     } catch (error) {
       console.error('Error updating opinion count:', error)
     }
@@ -416,20 +549,27 @@ export function ChatInterface({ query, onNewChat }: ChatInterfaceProps) {
                             >
                               <Copy className="h-4 w-4" />
                             </Button>
-                            
+
                             {/* Add Expert Opinion */}
                             <AddOpinionDrawer
                               messageId={message.id}
-                              onOpinionAdded={() => handleOpinionAdded(message.id)}
+                              onOpinionAdded={() =>
+                                handleOpinionAdded(message.id)
+                              }
                             />
-                            
+
                             {/* View Expert Opinions */}
                             <ViewOpinionsModal
                               messageId={message.id}
                               opinionCount={opinionCounts[message.id] || 0}
-                              onCountChange={(count) => setOpinionCounts(prev => ({ ...prev, [message.id]: count }))}
+                              onCountChange={(count) =>
+                                setOpinionCounts((prev) => ({
+                                  ...prev,
+                                  [message.id]: count,
+                                }))
+                              }
                             />
-                            
+
                             {/* Solo mostrar el botón si hay sources */}
                             {message.sources && message.sources.length > 0 && (
                               <Button

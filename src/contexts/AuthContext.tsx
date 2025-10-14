@@ -56,13 +56,18 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange(async (event, session) => {
-      console.log('Auth state changed:', event, session)
+      // Only log significant auth events to reduce console spam
+      if (event === 'SIGNED_IN' || event === 'SIGNED_OUT') {
+        console.log('Auth state changed:', event)
+      }
       setSession(session)
       setUser(session?.user ?? null)
       setLoading(false)
     })
 
-    return () => subscription.unsubscribe()
+    return () => {
+      subscription.unsubscribe()
+    }
   }, [])
 
   const signOut = async () => {

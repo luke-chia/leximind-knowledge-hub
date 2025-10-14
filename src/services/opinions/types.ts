@@ -5,6 +5,7 @@ export interface ExpertOpinion {
   expert_name: string
   expert_avatar?: string
   opinion_text: string
+  document_url?: string
   created_at: string
   rating?: number
   helpful_votes: number

@@ -1,0 +1,40 @@
+@startuml
+!define RECTANGLE class
+
+RECTANGLE Frontend {
+	React
+	TypeScript
+	TailwindCSS
+	shadcn-ui
+}
+
+RECTANGLE Backend {
+	Node.js
+	Express
+	TypeScript
+	RAG Pipeline
+}
+
+
+RECTANGLE Database {
+	Supabase_PostgreSQL
+	Pinecone_VectorDB
+}
+
+RECTANGLE AI_Services {
+	OpenAI_GPT
+	OpenAI_Embeddings
+}
+
+RECTANGLE Auth {
+	Supabase_Auth
+	Row_Level_Security
+}
+
+Frontend -- Backend : REST API
+Backend -- Database : ORM / SQL
+Backend -- Supabase_Storage : REST API
+Backend -- AI_Services : API
+Backend -- Auth : JWT
+Frontend -- Auth : OAuth
+@enduml

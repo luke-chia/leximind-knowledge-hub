@@ -1,0 +1,160 @@
+erDiagram
+    %% Renglón 1 - User authentication
+    auth_users {
+        uuid id PK
+        text email
+        text name
+        timestamptz created_at
+    }
+
+    profiles {
+        uuid id PK,FK
+        text name
+        text nickname
+        text rol
+        text status
+        text img_url
+        timestamptz created_at
+    }
+
+    %% Renglón 2 - Catalogs
+    areas {
+        serial id PK
+        text name
+        timestamptz created_at
+        timestamptz updated_at
+        uuid created_by FK
+        uuid updated_by FK
+    }
+
+    categories {
+        serial id PK
+        text name
+        timestamptz created_at
+        timestamptz updated_at
+        uuid created_by FK
+        uuid updated_by FK
+    }
+
+    sources {
+        serial id PK
+        text name
+        timestamptz created_at
+        timestamptz updated_at
+        uuid created_by FK
+        uuid updated_by FK
+    }
+
+    tags {
+        serial id PK
+        text name
+        timestamptz created_at
+        timestampz updated_at
+        uuid created_by FK
+        uuid updated_by FK
+    }
+
+    %% Renglón 3 - CENTRO: DOCUMENTS
+    documents {
+        uuid id PK
+        text original_name
+        text alias
+        uuid user_id FK
+        text storage_path
+        text signed_url
+        timestamptz uploaded_at
+        timestamptz signed_url_expires_at
+        numeric file_size
+        varchar content_type
+        text description
+        text URL_Reference
+        timestamptz created_at
+        timestamptz updated_at
+        uuid created_by FK
+        uuid updated_by FK
+    }
+
+    %% Renglón 4 - Junctions and Conversations
+    document_areas {
+        uuid document_id PK,FK
+        int area_id PK,FK
+        timestamptz created_at
+        timestamptz updated_at
+        uuid created_by FK
+        uuid updated_by FK
+    }
+
+    document_categories {
+        uuid document_id PK,FK
+        int category_id PK,FK
+        timestamptz created_at
+        timestamptz updated_at
+        uuid created_by FK
+        uuid updated_by FK
+    }
+
+    document_sources {
+        uuid document_id PK,FK
+        int source_id PK,FK
+        timestamptz created_at
+        timestamptz updated_at
+        uuid created_by FK
+        uuid updated_by FK
+    }
+
+    document_tags {
+        uuid document_id PK,FK
+        int tag_id PK,FK
+        timestamptz created_at
+        timestamptz updated_at
+        uuid created_by FK
+        uuid updated_by FK
+    }
+
+    conversations {
+        uuid id PK
+        uuid user_id FK
+        text title
+        timestamptz created_at
+    }
+
+    %% Renglón 5 - Chat system details
+    messages {
+        uuid id PK
+        uuid conversation_id FK
+        uuid user_id FK
+        text role
+        text content
+        int tokens
+        timestamptz created_at
+    }
+
+    expert_opinions {
+        uuid id PK
+        uuid message_id FK
+        uuid expert_user_id FK
+        text opinion
+        text document_url
+        timestamptz created_at
+    }
+
+    %% Relaciones
+    auth_users ||--|| profiles : "extends"
+    auth_users ||--o{ documents : "uploads"
+    documents ||--o{ document_areas : "categorized_in"
+    documents ||--o{ document_categories : "belongs_to"
+    documents ||--o{ document_sources : "sourced_from"
+    documents ||--o{ document_tags : "tagged_with"
+    documents ||--o{ conversations : "discusses"
+    conversations ||--o{ messages : "contains"
+    messages ||--o{ expert_opinions : "reviewed_by"
+
+    areas ||--o{ document_areas : "contains"
+    categories ||--o{ document_categories : "groups"
+    sources ||--o{ document_sources : "provides"
+    tags ||--o{ document_tags : "labels"
+
+    auth_users ||--o{ areas : "created_by"
+    auth_users ||--o{ categories : "created_by"
+    auth_users ||--o{ sources : "created_by"
+    auth_users ||--o{ tags : "created_by"

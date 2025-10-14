@@ -118,5 +118,20 @@
       "previous": "Anterior",
       "next": "Siguiente"
     }
+  },
+  "opinion": {
+    "title": "Opinión Experta",
+    "description": "Comparte tu análisis experto e ideas sobre esta respuesta",
+    "placeholder": "Escribe tu opinión experta aquí... Puedes proporcionar análisis, comentarios o contexto adicional.",
+    "submit": "Enviar Opinión",
+    "submitting": "Enviando...",
+    "cancel": "Cancelar",
+    "add_tooltip": "Agregar Opinión Experta",
+    "required": "Opinión requerida",
+    "required_description": "Por favor escribe tu opinión experta antes de enviar.",
+    "success": "Opinión agregada exitosamente",
+    "success_description": "Tu opinión experta ha sido compartida.",
+    "error": "Error",
+    "error_description": "Error al enviar la opinión. Por favor intenta de nuevo."
   }
 }

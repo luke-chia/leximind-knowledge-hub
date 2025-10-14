@@ -1,0 +1,133 @@
+
+Dado el objetivo de producto de leximind y las funcionalidades principales, descritas en el archivo readme.md, define los títulos de 3 historias de usuario principales de acuerdo al siguiente el formato estándar:
+
+
+Estructura basica de una User Story:
+Formato estándar: "Como [tipo de usuario], quiero [realizar una acción] para [obtener un beneficio]".
+Descripción: Una descripción concisa y en lenguaje natural de la funcionalidad que el usuario desea.
+Criterios de Aceptación: Condiciones específicas que deben cumplirse para considerar la User Story como "terminada", éstos deberian de seguir un formato similar a "Dado que" [contexto inicial], "cuando" [acción realizada], "entonces" [resultado esperado].
+Notas adicionales: Notas que puedan ayudar al desarrollo de la historia
+Tareas: Lista de tareas y subtareas para que esta historia pueda ser completada
+
+---
+
+## HISTORIAS DE USUARIO PRINCIPALES - LEXIMIND
+
+### **Historia de Usuario 1: Búsqueda Conversacional Inteligente**
+
+**Formato estándar:** Como empleado bancario, quiero realizar consultas en lenguaje natural sobre documentos corporativos para obtener respuestas precisas e inmediatas sin tener que navegar manualmente por múltiples sistemas.
+
+**Descripción:** Los empleados bancarios necesitan acceder rápidamente a información específica contenida en documentos corporativos, normativas, procedimientos y políticas internas utilizando consultas conversacionales naturales, recibiendo respuestas contextualizadas con referencias a las fuentes originales.
+
+**Criterios de Aceptación:**
+- Dado que soy un empleado autenticado en LexiMind, cuando escribo una pregunta en lenguaje natural en la interfaz de chat, entonces el sistema debe procesar mi consulta y generar una respuesta relevante en menos de 5 segundos.
+- Dado que realizo una consulta sobre normativas específicas, cuando el sistema genera una respuesta, entonces debe incluir referencias exactas a los documentos fuente con enlaces directos a las secciones relevantes.
+- Dado que formulo una pregunta ambigua, cuando el sistema no encuentra información suficiente, entonces debe solicitar aclaraciones específicas o sugerir consultas relacionadas.
+- Dado que estoy conversando con el asistente, cuando realizo preguntas de seguimiento, entonces el sistema debe mantener el contexto de la conversación anterior para proporcionar respuestas coherentes.
+
+**Notas adicionales:**
+- Implementar pipeline RAG (Retrieval-Augmented Generation) con OpenAI GPT-3.5-turbo
+- Utilizar embeddings de text-embedding-3-small para búsqueda semántica en Pinecone
+- Considerar límites de tokens y optimización de costos en las consultas
+- Incluir sistema de fallback para consultas no resueltas
+
+**Tareas:**
+1. **Frontend - Interfaz de Chat:**
+   - Crear componente ChatInterface con entrada de texto y área de respuestas
+   - Implementar animación de "typing" durante procesamiento
+   - Agregar sistema de historial conversacional
+   - Integrar manejo de estados de carga y error
+
+2. **Backend - Pipeline RAG:**
+   - Desarrollar endpoint POST /api/v1/chat/query para procesamiento de consultas
+   - Implementar servicio de vectorización con OpenAI embeddings
+   - Crear servicio de búsqueda semántica en Pinecone
+   - Desarrollar servicio de generación de respuestas con GPT-3.5-turbo
+
+3. **Base de Datos:**
+   - Crear tabla conversations para almacenar sesiones de chat
+   - Crear tabla messages para almacenar preguntas y respuestas
+   - Implementar índices para optimizar consultas de historial
+
+### **Historia de Usuario 2: Gestión Centralizada de Documentos Corporativos**
+
+**Formato estándar:** Como administrador de contenido bancario, quiero cargar, organizar y actualizar documentos corporativos de forma masiva para mantener la base de conocimiento actualizada y accesible para todos los empleados.
+
+**Descripción:** Los administradores necesitan una plataforma centralizada donde puedan subir documentos en múltiples formatos (PDF, Word, texto), organizarlos mediante categorías y etiquetas, y mantener un control de versiones para asegurar que la información disponible esté siempre actualizada.
+
+**Criterios de Aceptación:**
+- Dado que soy un administrador de contenido, cuando subo un documento a la plataforma, entonces el sistema debe procesarlo automáticamente, extraer su contenido y generar embeddings para búsqueda semántica.
+- Dado que cargo múltiples documentos simultáneamente, cuando el proceso de carga masiva se ejecuta, entonces debo recibir un reporte detallado del estado de cada archivo (exitoso, error, duplicado).
+- Dado que un documento ya existe en el sistema, cuando subo una versión actualizada, entonces el sistema debe reemplazar la versión anterior manteniendo el historial de cambios.
+- Dado que organizo documentos, cuando asigno categorías, áreas, fuentes y etiquetas, entonces estos metadatos deben estar disponibles para filtrar búsquedas posteriores.
+
+**Notas adicionales:**
+- Implementar validación de formatos de archivo soportados
+- Considerar límites de tamaño de archivo y optimización de storage
+- Incluir sistema de preview de documentos antes de procesamiento
+- Implementar auditoría completa de cambios (created_by, updated_by)
+
+**Tareas:**
+1. **Frontend - Interfaz de Gestión:**
+   - Crear página Documents con tabla de documentos existentes
+   - Implementar componente de drag-and-drop para carga de archivos
+   - Agregar formularios para asignación de metadatos (categorías, tags, áreas)
+   - Crear sistema de filtros y búsqueda avanzada de documentos
+
+2. **Backend - Procesamiento de Documentos:**
+   - Desarrollar endpoint POST /api/v1/documents/upload para carga individual
+   - Implementar endpoint POST /api/v1/documents/bulk-upload para carga masiva
+   - Crear servicio de extracción de texto (PDF, Word, TXT)
+   - Desarrollar servicio de vectorización y almacenamiento en Pinecone
+
+3. **Base de Datos y Storage:**
+   - Configurar Supabase Storage buckets (documents, public-assets)
+   - Crear tablas de catálogos (areas, categories, sources, tags)
+   - Implementar tablas de unión (document_areas, document_categories, etc.)
+   - Configurar políticas de Row Level Security (RLS)
+
+### **Historia de Usuario 3: Sistema de Retroalimentación y Mejora Continua**
+
+**Formato estándar:** Como empleado bancario, quiero evaluar la calidad de las respuestas del asistente y proporcionar retroalimentación para contribuir a la mejora continua del sistema y aumentar la precisión de futuras consultas.
+
+**Descripción:** Los usuarios necesitan un mecanismo para calificar las respuestas recibidas, reportar información incorrecta o incompleta, y sugerir mejoras, mientras que los expertos del banco pueden revisar estas evaluaciones y proporcionar opiniones especializadas para enriquecer la base de conocimiento.
+
+**Criterios de Aceptación:**
+- Dado que recibo una respuesta del asistente, cuando la evaluó, entonces debo poder asignar una calificación (1-5 estrellas) y opcionalmente agregar comentarios explicativos.
+- Dado que una respuesta es marcada como incorrecta o incompleta, cuando un experto bancario revisa el caso, entonces debe poder agregar una opinión especializada con referencias a documentación adicional.
+- Dado que soy administrador del sistema, cuando accedo al panel de analíticas, entonces debo ver métricas de satisfacción, consultas más frecuentes y áreas de mejora identificadas.
+- Dado que el sistema recibe retroalimentación negativa consistente sobre un tema específico, cuando se alcanza un umbral definido, entonces debe generar alertas automáticas para revisión de contenido.
+
+**Notas adicionales:**
+- Implementar sistema de gamificación para incentivar retroalimentación
+- Considerar anonimización de datos para análisis de patrones
+- Incluir dashboard de métricas para administradores
+- Planificar integración futura con sistemas de machine learning para auto-mejora
+
+**Tareas:**
+1. **Frontend - Sistema de Evaluación:**
+   - Agregar componente de calificación (estrellas) en cada respuesta del chat
+   - Crear modal de retroalimentación detallada con campos de texto
+   - Implementar panel de administrador con métricas y reportes
+   - Desarrollar interfaz para expertos para agregar opiniones especializadas
+
+2. **Backend - Gestión de Retroalimentación:**
+   - Crear endpoint POST /api/v1/feedback para capturar evaluaciones
+   - Desarrollar endpoint GET /api/v1/analytics/feedback para métricas
+   - Implementar sistema de alertas basado en umbrales de calidad
+   - Crear servicio de notificaciones para expertos
+
+3. **Base de Datos - Análisis y Auditoría:**
+   - Crear tabla message_feedback para almacenar calificaciones
+   - Implementar tabla expert_opinions para opiniones especializadas
+   - Desarrollar vistas agregadas para análisis de tendencias
+   - Configurar triggers para alertas automáticas basadas en feedback negativobjetivo de producto de leximind y las funcionalidades principales, descritas en el archivo readme.md, define los títulos de 3 historias de usuario principales de acuerdo al siguiente el formato estándar:
+
+
+Estructura basica de una User Story:
+Formato estándar: "Como [tipo de usuario], quiero [realizar una acción] para [obtener un beneficio]".
+Descripción: Una descripción concisa y en lenguaje natural de la funcionalidad que el usuario desea.
+Criterios de Aceptación: Condiciones específicas que deben cumplirse para considerar la User Story como "terminada", éstos deberian de seguir un formato similar a “Dado que” [contexto inicial], "cuando” [acción realizada], “entonces” [resultado esperado].
+Notas adicionales: Notas que puedan ayudar al desarrollo de la historia
+Tareas: Lista de tareas y subtareas para que esta historia pueda ser completada
+

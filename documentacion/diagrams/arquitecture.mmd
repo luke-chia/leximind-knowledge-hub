@@ -1,0 +1,33 @@
+graph TB
+	A[React_TypeScript_App]
+	B[shadcn_ui_Components]
+	C[React_Query_Cache]
+	D[Express_API]
+	E[Domain_Layer]
+	F[Infrastructure_Layer]
+	G[Presentation_Layer]
+	H[OpenAI_GPT]
+	I[OpenAI_Embeddings]
+	J[RAG_Pipeline]
+	K[Supabase_PostgreSQL]
+	L[Pinecone_Vector_DB]
+	M[Supabase_Storage]
+	N[Supabase_Auth]
+	O[Row_Level_Security]
+	A --> D
+	B --> A
+	C --> A
+	D --> E
+	D --> F
+	D --> G
+	F --> H
+	F --> I
+	F --> J
+	F --> K
+	F --> L
+	F --> M
+	N --> K
+	O --> K
+	J --> H
+	J --> I
+	J --> L

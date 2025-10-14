@@ -1,0 +1,464 @@
+Mostrando los últimos 100 commits con archivos modificados:
+--------------------------------------------------------------
+
+🔹 Commit: 944df4d
+📄 Mensaje: Add expert opinion features
+📂 Archivos modificados:
+   •  documentacion/expert_opinions_setup.sql   |  66 ++++++++
+   •  src/components/chat/AddOpinionDrawer.tsx  | 116 ++++++++++++++
+   •  src/components/chat/ChatInterface.tsx     |  51 +++++-
+   •  src/components/chat/ViewOpinionsModal.tsx | 248 ++++++++++++++++++++++++++++++
+   •  src/services/opinions/index.ts            |   2 +
+   •  src/services/opinions/opinionsApi.ts      | 111 +++++++++++++
+   •  src/services/opinions/types.ts            |  27 ++++
+   •  7 files changed, 620 insertions(+), 1 deletion(-)
+
+🔹 Commit: 3270ccf
+📄 Mensaje: Actualziacion del Avatar y Perfil
+📂 Archivos modificados:
+   •  src/App.tsx                          | 115 +++----
+   •  src/components/ProtectedRoute.tsx    |   2 +-
+   •  src/components/layout/AppSidebar.tsx |   6 +-
+   •  src/components/layout/TopBar.tsx     |  20 +-
+   •  src/contexts/AuthContext.tsx         |  37 ++-
+   •  src/contexts/ProfileContext.tsx      | 589 +++++++----------------------------
+   •  src/pages/Profile.tsx                |  54 ++--
+   •  7 files changed, 244 insertions(+), 579 deletions(-)
+
+🔹 Commit: e27aa93
+📄 Mensaje: Funcionalidad de Logout
+📂 Archivos modificados:
+   •  src/App.tsx                          | 80 +++++++++++++++++++++++--------
+   •  src/components/ProtectedRoute.tsx    | 30 ++++++++++++
+   •  src/components/layout/AppSidebar.tsx | 19 ++++----
+   •  src/components/layout/TopBar.tsx     | 15 +++++-
+   •  src/contexts/AuthContext.tsx         | 92 ++++++++++++++++++++++++++++++++++++
+   •  5 files changed, 205 insertions(+), 31 deletions(-)
+
+🔹 Commit: f902b11
+📄 Mensaje: Modificaciones a la sección de Perfil
+📂 Archivos modificados:
+   •  src/contexts/ProfileContext.tsx | 504 ++++++++++++++++++++++++++++++++++++++++
+   •  src/pages/Profile.tsx           | 318 ++++++++++++++++---------
+   •  src/services/profiles/types.ts  |  20 +-
+   •  3 files changed, 726 insertions(+), 116 deletions(-)
+
+🔹 Commit: 52923e0
+📄 Mensaje: feat: Implement user profile screen
+📂 Archivos modificados:
+   •  src/App.tsx                          |   2 +
+   •  src/components/layout/TopBar.tsx     |   4 +-
+   •  src/pages/Profile.tsx                | 252 +++++++++++++++++++++++++++++++++++
+   •  src/services/profiles/index.ts       |   2 +
+   •  src/services/profiles/profilesApi.ts |  79 +++++++++++
+   •  src/services/profiles/types.ts       |  15 +++
+   •  6 files changed, 353 insertions(+), 1 deletion(-)
+
+🔹 Commit: 6b58445
+📄 Mensaje: general refactoring
+📂 Archivos modificados:
+   •  src/components/documents/DocumentPagination.tsx | 141 +++++++++++++
+   •  src/hooks/useDocumentStats.ts                   |  86 ++++++++
+   •  src/hooks/useDocuments.ts                       | 202 ++++++++++++++++++
+   •  src/locales/en/translation.json                 |  18 ++
+   •  src/locales/es/translation.json                 |  18 ++
+   •  src/pages/Documents.tsx                         | 263 ++++++++++++++++--------
+   •  6 files changed, 640 insertions(+), 88 deletions(-)
+
+🔹 Commit: 7ee1bd3
+📄 Mensaje: feat: added users page
+📂 Archivos modificados:
+   •  src/components/chat/ChatInterface.tsx  |  24 +++++---
+   •  src/components/pdf/PDFViewerModal.tsx  | 102 ++++++++++++++++++++++++++++++---
+   •  src/services/chat/types.ts             |   1 +
+   •  src/services/documents/documentsApi.ts |   2 +
+   •  src/services/documents/types.ts        |   2 +
+   •  5 files changed, 113 insertions(+), 18 deletions(-)
+
+🔹 Commit: dfc809a
+📄 Mensaje: Add Users section
+📂 Archivos modificados:
+   •  src/App.tsx                    |   2 +
+   •  src/pages/Users.tsx            | 189 +++++++++++++++++++++++++++++++++++++++++
+   •  src/services/users/index.ts    |   2 +
+   •  src/services/users/types.ts    |  14 +++
+   •  src/services/users/usersApi.ts |  31 +++++++
+   •  5 files changed, 238 insertions(+)
+
+🔹 Commit: aae5a9c
+📄 Mensaje: upload file:
+📂 Archivos modificados:
+   •  README.md                                        |   4 +-
+   •  documentacion/api_uplodas_spec.txt               | 244 ++++++++++++++++
+   •  package-lock.json                                | 128 +--------
+   •  package.json                                     |   1 +
+   •  src/components/chat/ChatInterface.tsx            |   4 +-
+   •  src/components/chat/FilterPanel.tsx              |  48 ++--
+   •  src/components/chat/SearchInterface.tsx          |   4 +-
+   •  src/components/documents/DocumentUploadPanel.tsx | 336 ++++++++++++++++-------
+   •  src/hooks/useChat.ts                             |   6 +-
+   •  src/hooks/useDocumentUpload.ts                   | 163 +++++++++--
+   •  src/locales/en/translation.json                  |  30 ++
+   •  src/locales/es/translation.json                  |  30 ++
+   •  src/pages/Index.tsx                              |  52 ++--
+   •  src/pages/Search.tsx                             |   2 +-
+   •  src/services/documents/documentsApi.ts           | 251 ++++++++++++-----
+   •  src/services/documents/types.ts                  |  17 +-
+   •  16 files changed, 957 insertions(+), 363 deletions(-)
+
+🔹 Commit: 14ddb94
+📄 Mensaje: Implement document upload form
+📂 Archivos modificados:
+   •  package-lock.json                                | 131 +++++-
+   •  package.json                                     |   1 +
+   •  src/components/documents/DocumentUploadPanel.tsx | 482 +++++++++++++++++++++++
+   •  src/hooks/useDocumentUpload.ts                   |  82 ++++
+   •  src/hooks/useFilterEntities.ts                   |  50 +++
+   •  src/pages/Documents.tsx                          |  15 +-
+   •  src/services/documents/documentsApi.ts           | 147 +++++++
+   •  src/services/documents/index.ts                  |   5 +
+   •  src/services/documents/types.ts                  |  47 +++
+   •  9 files changed, 955 insertions(+), 5 deletions(-)
+
+🔹 Commit: 78130fd
+📄 Mensaje: La ventana de Filtros es ahora un SideBar
+📂 Archivos modificados:
+   •  src/components/chat/FilterPanel.tsx            | 380 +++++++++++++------------
+   •  src/components/chat/SearchInterface.tsx        |  99 +++----
+   •  src/components/chat/SearchInterface.tsx.backup |  22 +-
+   •  src/locales/en/translation.json                |  13 +-
+   •  src/locales/es/translation.json                |  13 +-
+   •  5 files changed, 270 insertions(+), 257 deletions(-)
+
+🔹 Commit: 7ed4967
+📄 Mensaje: feature:Implementacion de Api Funcional para el Chat
+📂 Archivos modificados:
+   •  .env                                    |   1 +
+   •  README.md                               |   3 +
+   •  package-lock.json                       | 993 +++++++++++++++++++++++++++++++-
+   •  package.json                            |   4 +
+   •  public/pdf.worker.min.js                |  22 +
+   •  public/todelete/ChatInterface_Back.tsx  | 269 +++++++++
+   •  src/App.tsx                             |  34 +-
+   •  src/components/AppInitializer.tsx       |  32 +
+   •  src/components/chat/ChatInterface.tsx   | 351 ++++++++---
+   •  src/components/chat/FilterPanel.tsx     | 204 +++++--
+   •  src/components/chat/SearchInterface.tsx |   4 +-
+   •  src/components/layout/MainLayout.tsx    |   4 +
+   •  src/components/pdf/PDFViewerManager.tsx |  17 +
+   •  src/components/pdf/PDFViewerModal.tsx   | 256 ++++++++
+   •  src/contexts/PDFViewerContext.tsx       |  57 ++
+   •  src/hooks/useApi.ts                     |  52 ++
+   •  src/hooks/useChat.ts                    |  97 ++++
+   •  src/hooks/useFilters.ts                 | 107 ++++
+   •  src/hooks/usePDFViewer.ts               |  10 +
+   •  src/index.css                           | 115 ++--
+   •  src/locales/en/translation.json         |  11 +-
+   •  src/locales/es/translation.json         |  11 +-
+   •  src/pages/Index.tsx                     |   4 +-
+   •  src/services/chat/chatApi.ts            |  37 ++
+   •  src/services/chat/chatService.ts        |  75 +++
+   •  src/services/chat/index.ts              |   3 +
+   •  src/services/chat/types.ts              |  32 +
+   •  src/services/filters/filtersApi.ts      | 136 +++++
+   •  src/services/filters/filtersService.ts  | 103 ++++
+   •  src/services/filters/index.ts           |   3 +
+   •  src/services/filters/types.ts           |  56 ++
+   •  src/services/index.ts                   |   2 +
+   •  src/utils/api.ts                        |  97 ++++
+   •  src/utils/errors.ts                     |  73 +++
+   •  src/utils/types.ts                      |  16 +
+   •  35 files changed, 3070 insertions(+), 221 deletions(-)
+
+🔹 Commit: 1380354
+📄 Mensaje: feature:Implementacion de Funcionalidad de Login
+📂 Archivos modificados:
+   •  .env                                               |     3 +
+   •  package-lock.json                                  |   135 +-
+   •  package.json                                       |     1 +
+   •  public/cover.jpg                                   |   Bin 0 -> 123714 bytes
+   •  public/logo.svg                                    |    13 +
+   •  public/metamask.png                                |   Bin 0 -> 1318 bytes
+   •  public/todelete/Login_Supabase_Example.jsx         |   220 +
+   •  public/todelete/index.html                         |   316 +
+   •  public/todelete/sign-in.html                       |    92 +
+   •  public/todelete/src/assets/css/bootstrap.min.css   |     7 +
+   •  .../src/assets/css/materialdesignicons.css         |     3 +
+   •  public/todelete/src/assets/css/preview.css         |  1025 +
+   •  public/todelete/src/assets/css/style.css           |   337 +
+   •  .../assets/fonts/materialdesignicons-webfont.eot   |   Bin 0 -> 1307880 bytes
+   •  .../assets/fonts/materialdesignicons-webfont.ttf   |   Bin 0 -> 1307660 bytes
+   •  .../assets/fonts/materialdesignicons-webfont.woff  |   Bin 0 -> 587984 bytes
+   •  .../assets/fonts/materialdesignicons-webfont.woff2 |   Bin 0 -> 403216 bytes
+   •  public/todelete/src/assets/img/buy-now.png         |   Bin 0 -> 32111 bytes
+   •  public/todelete/src/assets/img/cover.jpg           |   Bin 0 -> 123714 bytes
+   •  public/todelete/src/assets/img/cross-browser.png   |   Bin 0 -> 16067 bytes
+   •  public/todelete/src/assets/img/favicon.ico         |   Bin 0 -> 15086 bytes
+   •  .../todelete/src/assets/img/features/bootstrap.png |   Bin 0 -> 6782 bytes
+   •  .../todelete/src/assets/img/features/browser.png   |   Bin 0 -> 2503 bytes
+   •  public/todelete/src/assets/img/features/code.png   |   Bin 0 -> 2022 bytes
+   •  public/todelete/src/assets/img/features/css3.png   |   Bin 0 -> 2833 bytes
+   •  .../todelete/src/assets/img/features/customize.png |   Bin 0 -> 4446 bytes
+   •  public/todelete/src/assets/img/features/design.png |   Bin 0 -> 3058 bytes
+   •  .../src/assets/img/features/google-font.png        |   Bin 0 -> 3016 bytes
+   •  .../src/assets/img/features/material-icons.png     |   Bin 0 -> 2040 bytes
+   •  public/todelete/src/assets/img/features/modern.png |   Bin 0 -> 2792 bytes
+   •  .../src/assets/img/features/responsive.png         |   Bin 0 -> 3076 bytes
+   •  public/todelete/src/assets/img/features/scss.png   |   Bin 0 -> 6561 bytes
+   •  .../todelete/src/assets/img/features/support.png   |   Bin 0 -> 3244 bytes
+   •  .../src/assets/img/features/w3c-validation.png     |   Bin 0 -> 2115 bytes
+   •  .../todelete/src/assets/img/follow-themeforest.png |   Bin 0 -> 7764 bytes
+   •  public/todelete/src/assets/img/happy.png           |   Bin 0 -> 837 bytes
+   •  public/todelete/src/assets/img/logo.svg            |    13 +
+   •  public/todelete/src/assets/img/metamask.png        |   Bin 0 -> 1318 bytes
+   •  public/todelete/src/assets/img/rate.png            |   Bin 0 -> 6063 bytes
+   •  public/todelete/src/assets/img/star.png            |   Bin 0 -> 355 bytes
+   •  public/todelete/src/assets/img/support.png         |   Bin 0 -> 6339 bytes
+   •  .../src/assets/img/support/24-hours-support.png    |   Bin 0 -> 6533 bytes
+   •  .../todelete/src/assets/img/support/document.png   |   Bin 0 -> 1925 bytes
+   •  public/todelete/src/assets/img/user.jpg            |   Bin 0 -> 14655 bytes
+   •  .../todelete/src/assets/js/bootstrap.bundle.min.js |     7 +
+   •  public/todelete/src/assets/js/index.js             |    24 +
+   •  public/todelete/src/assets/sass/bootstrap.min.sass |  9582 ++++++++
+   •  .../src/assets/sass/materialdesignicons.sass       | 22461 +++++++++++++++++++
+   •  public/todelete/src/assets/sass/preview.sass       |   872 +
+   •  public/todelete/src/assets/sass/style.sass         |   342 +
+   •  src/App.tsx                                        |    36 +-
+   •  src/assets/css/bootstrap.min.css                   |     7 +
+   •  src/assets/css/style.css                           |   337 +
+   •  src/components/layout/AppSidebar.tsx               |    35 +-
+   •  src/lib/supabase.ts                                |    53 +
+   •  src/locales/en/translation.json                    |    16 +
+   •  src/locales/es/translation.json                    |    16 +
+   •  src/pages/SignIn.tsx                               |   317 +
+   •  58 files changed, 36245 insertions(+), 25 deletions(-)
+
+🔹 Commit: 1668549
+📄 Mensaje: feature:se agrego internacionalizacion y locales primo
+📂 Archivos modificados:
+   •  package-lock.json                          |  99 ++++++++++++++++++++++++-
+   •  package.json                               |   4 +
+   •  src/components/chat/ChatInterface.tsx      |  18 +++--
+   •  src/components/chat/FilterPanel.tsx        |  20 ++---
+   •  src/components/chat/SearchInterface.tsx    | 114 +++++++++++++++++------------
+   •  src/components/layout/AppSidebar.tsx       |  82 +++++++++++++--------
+   •  src/components/layout/LanguageSwitcher.tsx |  24 ++++++
+   •  src/components/layout/TopBar.tsx           |   4 +
+   •  src/lib/i18n.ts                            |  20 +++++
+   •  src/locales/en/translation.json            |  48 ++++++++++++
+   •  src/locales/es/translation.json            |  48 ++++++++++++
+   •  src/main.tsx                               |   9 ++-
+   •  12 files changed, 391 insertions(+), 99 deletions(-)
+
+🔹 Commit: 39771a1
+📄 Mensaje: fix: boton nuwvo chat siempre carga un nuevo chat
+📂 Archivos modificados:
+   •  src/components/chat/FilterPanel.tsx     | 201 +++++++++++++++++
+   •  src/components/chat/SearchInterface.tsx | 379 ++++----------------------------
+   •  src/components/layout/MainLayout.tsx    |  20 +-
+   •  src/components/layout/TopBar.tsx        |  66 ++++--
+   •  4 files changed, 292 insertions(+), 374 deletions(-)
+
+🔹 Commit: 199366b
+📄 Mensaje: se agrego el panel de filtros
+📂 Archivos modificados:
+   •  .github/copilot-instructions.md                    |  96 +++
+   •  public/Logo_Lexi_710.png                           | Bin 0 -> 23542 bytes
+   •  public/Logo_Lexi_710_MClaro.png                    | Bin 0 -> 86845 bytes
+   •  public/todelete/Arq_Tecnica_PlanyUML.puml          |  28 +
+   •  public/todelete/Arquitectura_IA_Creditos.md        |  94 +++
+   •  ...2025-09-19 a la(s) 4.19.49\342\200\257p.m..png" | Bin 0 -> 625585 bytes
+   •  src/components/chat/ChatInterface.tsx              | 193 +++---
+   •  src/components/chat/SearchInterface.tsx            | 667 ++++++++++++++++---
+   •  src/components/chat/SearchInterface.tsx.backup     | 727 +++++++++++++++++++++
+   •  src/components/layout/AppSidebar.tsx               | 193 ++++--
+   •  src/pages/Search.tsx                               |  45 +-
+   •  11 files changed, 1804 insertions(+), 239 deletions(-)
+
+🔹 Commit: 4c12392
+📄 Mensaje: Remove purple input effect
+📂 Archivos modificados:
+   •  src/components/chat/SearchInterface.tsx | 41 ++++++++++++++++++++++++---------
+   •  src/index.css                           |  2 +-
+   •  2 files changed, 31 insertions(+), 12 deletions(-)
+
+🔹 Commit: 3bbcd14
+📄 Mensaje: Add dynamic search suggestions
+📂 Archivos modificados:
+   •  src/components/chat/SearchInterface.tsx | 32 +++++++++++++++++++++++++++-----
+   •  1 file changed, 27 insertions(+), 5 deletions(-)
+
+🔹 Commit: 143f9ff
+📄 Mensaje: Remove search focus border
+📂 Archivos modificados:
+   •  src/index.css | 2 +-
+   •  1 file changed, 1 insertion(+), 1 deletion(-)
+
+🔹 Commit: 422bb61
+📄 Mensaje: Fix search focus and remove buttons
+📂 Archivos modificados:
+   •  src/components/chat/SearchInterface.tsx | 22 ----------------------
+   •  src/index.css                           |  1 +
+   •  2 files changed, 1 insertion(+), 22 deletions(-)
+
+🔹 Commit: a50ddbe
+📄 Mensaje: Refine search input and chat behavior
+📂 Archivos modificados:
+   •  src/components/chat/ChatInterface.tsx | 20 +++++++++++++++++---
+   •  src/index.css                         |  1 -
+   •  2 files changed, 17 insertions(+), 4 deletions(-)
+
+🔹 Commit: 92c4953
+📄 Mensaje: Adjust search focus and chat display
+📂 Archivos modificados:
+   •  src/components/chat/ChatInterface.tsx | 10 ++++++++--
+   •  src/index.css                         |  2 +-
+   •  2 files changed, 9 insertions(+), 3 deletions(-)
+
+🔹 Commit: 5a2d5f7
+📄 Mensaje: Adjust action buttons visibility
+📂 Archivos modificados:
+   •  src/components/chat/ChatInterface.tsx | 100 ++++++++++++++++++----------------
+   •  1 file changed, 52 insertions(+), 48 deletions(-)
+
+🔹 Commit: 30fb282
+📄 Mensaje: Refine chat interface display
+📂 Archivos modificados:
+   •  src/components/chat/ChatInterface.tsx | 12 +++++++-----
+   •  1 file changed, 7 insertions(+), 5 deletions(-)
+
+🔹 Commit: 4e1bdd7
+📄 Mensaje: Refine chat interface
+📂 Archivos modificados:
+   •  src/components/chat/ChatInterface.tsx   |  2 +-
+   •  src/components/chat/SearchInterface.tsx | 50 ++++++++++++++++++++++++++++++++-
+   •  2 files changed, 50 insertions(+), 2 deletions(-)
+
+🔹 Commit: 5467fbd
+📄 Mensaje: Add continue search option
+📂 Archivos modificados:
+   •  src/components/chat/ChatInterface.tsx | 8 ++------
+   •  1 file changed, 2 insertions(+), 6 deletions(-)
+
+🔹 Commit: b3c28fe
+📄 Mensaje: Fix dark mode and search persistence
+📂 Archivos modificados:
+   •  src/components/chat/ChatInterface.tsx | 20 +++++++++++++++++---
+   •  src/index.css                         | 21 +++------------------
+   •  2 files changed, 20 insertions(+), 21 deletions(-)
+
+🔹 Commit: 8ee36f8
+📄 Mensaje: Refine UI and chat experience
+📂 Archivos modificados:
+   •  src/components/chat/ChatInterface.tsx | 202 ++++++++++++++++++++++++++++++++++
+   •  src/components/layout/AppSidebar.tsx  |  57 +++++++++-
+   •  src/components/layout/MainLayout.tsx  |   5 +-
+   •  src/components/layout/TopBar.tsx      |  12 +-
+   •  src/index.css                         |  35 +++++-
+   •  src/pages/Search.tsx                  |  51 ++++-----
+   •  6 files changed, 319 insertions(+), 43 deletions(-)
+
+🔹 Commit: 09f7f8c
+📄 Mensaje: Refactor sidebar and header
+📂 Archivos modificados:
+   •  src/components/layout/AppSidebar.tsx | 35 +++++++++++++++++++++++++----------
+   •  src/components/layout/TopBar.tsx     | 28 +++++++++++-----------------
+   •  src/index.css                        | 20 ++++++++++----------
+   •  3 files changed, 46 insertions(+), 37 deletions(-)
+
+🔹 Commit: 3426fed
+📄 Mensaje: Implement dashboard home page
+📂 Archivos modificados:
+   •  index.html                              |  17 ++-
+   •  src/App.tsx                             |  42 ++++---
+   •  src/components/chat/SearchInterface.tsx | 149 +++++++++++++++++++++++++
+   •  src/components/layout/AppSidebar.tsx    | 189 ++++++++++++++++++++++++++++++++
+   •  src/components/layout/MainLayout.tsx    |  32 ++++++
+   •  src/components/layout/TopBar.tsx        | 113 +++++++++++++++++++
+   •  src/index.css                           | 158 +++++++++++++++++---------
+   •  src/pages/Documents.tsx                 | 142 ++++++++++++++++++++++++
+   •  src/pages/Index.tsx                     |  39 +++++--
+   •  src/pages/Search.tsx                    |  44 ++++++++
+   •  tailwind.config.ts                      |  39 ++++++-
+   •  11 files changed, 881 insertions(+), 83 deletions(-)
+
+🔹 Commit: 89ee703
+📄 Mensaje: [skip lovable] Use tech stack vite_react_shadcn_ts_20250728_minor
+📂 Archivos modificados:
+   •  .gitignore                            |   24 +
+   •  README.md                             |   73 +
+   •  bun.lockb                             |  Bin 0 -> 197327 bytes
+   •  components.json                       |   20 +
+   •  eslint.config.js                      |   26 +
+   •  index.html                            |   24 +
+   •  package-lock.json                     | 6766 +++++++++++++++++++++++++++++++++
+   •  package.json                          |   83 +
+   •  postcss.config.js                     |    6 +
+   •  public/favicon.ico                    |  Bin 0 -> 7645 bytes
+   •  public/placeholder.svg                |    1 +
+   •  public/robots.txt                     |   14 +
+   •  src/App.css                           |   42 +
+   •  src/App.tsx                           |   27 +
+   •  src/components/ui/accordion.tsx       |   52 +
+   •  src/components/ui/alert-dialog.tsx    |  104 +
+   •  src/components/ui/alert.tsx           |   43 +
+   •  src/components/ui/aspect-ratio.tsx    |    5 +
+   •  src/components/ui/avatar.tsx          |   38 +
+   •  src/components/ui/badge.tsx           |   29 +
+   •  src/components/ui/breadcrumb.tsx      |   90 +
+   •  src/components/ui/button.tsx          |   47 +
+   •  src/components/ui/calendar.tsx        |   54 +
+   •  src/components/ui/card.tsx            |   43 +
+   •  src/components/ui/carousel.tsx        |  224 ++
+   •  src/components/ui/chart.tsx           |  303 ++
+   •  src/components/ui/checkbox.tsx        |   26 +
+   •  src/components/ui/collapsible.tsx     |    9 +
+   •  src/components/ui/command.tsx         |  132 +
+   •  src/components/ui/context-menu.tsx    |  178 +
+   •  src/components/ui/dialog.tsx          |   95 +
+   •  src/components/ui/drawer.tsx          |   87 +
+   •  src/components/ui/dropdown-menu.tsx   |  179 +
+   •  src/components/ui/form.tsx            |  129 +
+   •  src/components/ui/hover-card.tsx      |   27 +
+   •  src/components/ui/input-otp.tsx       |   61 +
+   •  src/components/ui/input.tsx           |   22 +
+   •  src/components/ui/label.tsx           |   17 +
+   •  src/components/ui/menubar.tsx         |  207 +
+   •  src/components/ui/navigation-menu.tsx |  120 +
+   •  src/components/ui/pagination.tsx      |   81 +
+   •  src/components/ui/popover.tsx         |   29 +
+   •  src/components/ui/progress.tsx        |   23 +
+   •  src/components/ui/radio-group.tsx     |   36 +
+   •  src/components/ui/resizable.tsx       |   37 +
+   •  src/components/ui/scroll-area.tsx     |   38 +
+   •  src/components/ui/select.tsx          |  143 +
+   •  src/components/ui/separator.tsx       |   20 +
+   •  src/components/ui/sheet.tsx           |  107 +
+   •  src/components/ui/sidebar.tsx         |  637 ++++
+   •  src/components/ui/skeleton.tsx        |    7 +
+   •  src/components/ui/slider.tsx          |   23 +
+   •  src/components/ui/sonner.tsx          |   27 +
+   •  src/components/ui/switch.tsx          |   27 +
+   •  src/components/ui/table.tsx           |   72 +
+   •  src/components/ui/tabs.tsx            |   53 +
+   •  src/components/ui/textarea.tsx        |   21 +
+   •  src/components/ui/toast.tsx           |  111 +
+   •  src/components/ui/toaster.tsx         |   24 +
+   •  src/components/ui/toggle-group.tsx    |   49 +
+   •  src/components/ui/toggle.tsx          |   37 +
+   •  src/components/ui/tooltip.tsx         |   28 +
+   •  src/components/ui/use-toast.ts        |    3 +
+   •  src/hooks/use-mobile.tsx              |   19 +
+   •  src/hooks/use-toast.ts                |  186 +
+   •  src/index.css                         |  105 +
+   •  src/lib/utils.ts                      |    6 +
+   •  src/main.tsx                          |    5 +
+   •  src/pages/Index.tsx                   |   14 +
+   •  src/pages/NotFound.tsx                |   24 +
+   •  src/vite-env.d.ts                     |    1 +
+   •  tailwind.config.ts                    |   91 +
+   •  tsconfig.app.json                     |   30 +
+   •  tsconfig.json                         |   16 +
+   •  tsconfig.node.json                    |   22 +
+   •  vite.config.ts                        |   18 +
+   •  76 files changed, 11597 insertions(+)

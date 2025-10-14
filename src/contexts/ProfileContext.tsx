@@ -76,6 +76,41 @@ export const ProfileProvider = ({ children }: ProfileProviderProps) => {
     }
   }, [user])
 
+  // Effect to handle auth state changes - separate from getProfile to prevent loops
+  useEffect(() => {
+    if (authLoading) {
+      // Auth is still loading, don't do anything yet
+      return
+    }
+
+    if (!user) {
+      // User logged out, clear profile
+      clearProfile()
+      return
+    }
+
+    // User is authenticated and we don't have a profile yet, fetch it
+    if (user && !profile && !loading) {
+      // Call getProfile directly to avoid dependency issues
+      const fetchProfile = async () => {
+        try {
+          setLoading(true)
+          setError(null)
+          const profileData = await profilesApi.getCurrentProfile()
+          setProfile(profileData)
+        } catch (err) {
+          const errorMessage =
+            err instanceof Error ? err.message : 'Error fetching profile'
+          setError(errorMessage)
+          console.error('Error fetching profile:', err)
+        } finally {
+          setLoading(false)
+        }
+      }
+      fetchProfile()
+    }
+  }, [user, authLoading, profile, loading, clearProfile])
+
   // Update profile
   const updateProfile = useCallback(
     async (data: {
@@ -116,25 +151,6 @@ export const ProfileProvider = ({ children }: ProfileProviderProps) => {
   const refreshProfile = useCallback(async (): Promise<void> => {
     await getProfile()
   }, [getProfile])
-
-  // Effect to handle auth state changes
-  useEffect(() => {
-    if (authLoading) {
-      // Auth is still loading, don't do anything yet
-      return
-    }
-
-    if (!user) {
-      // User logged out, clear profile
-      clearProfile()
-      return
-    }
-
-    // User is authenticated and we don't have a profile yet, fetch it
-    if (user && !profile && !loading) {
-      getProfile()
-    }
-  }, [user, authLoading, profile, loading, getProfile, clearProfile])
 
   const contextValue: ProfileContextType = {
     profile,

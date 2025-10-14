@@ -2,6 +2,7 @@
  * Custom hook for filters using React Query
  * Provides caching, background updates, and global state management
  */
+import { useCallback } from 'react'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 import {
   getFilterOptions,
@@ -70,13 +71,13 @@ export const useFilters = (): FiltersQueryState => {
 export const usePrefetchFilters = () => {
   const queryClient = useQueryClient()
 
-  const prefetchFilters = async () => {
+  const prefetchFilters = useCallback(async () => {
     await queryClient.prefetchQuery({
       queryKey: FILTERS_QUERY_KEY,
       queryFn: getFilterOptions,
       ...QUERY_CONFIG,
     })
-  }
+  }, [queryClient])
 
   return { prefetchFilters }
 }

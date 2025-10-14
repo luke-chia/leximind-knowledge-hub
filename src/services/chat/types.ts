@@ -17,6 +17,7 @@ export interface SourceReference {
 export interface ChatResponse {
   response: string
   timestamp: string
+  resumeQuestion?: string
   sources?: SourceReference[]
 }
 

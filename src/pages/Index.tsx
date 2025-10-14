@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { MainLayout } from '@/components/layout/MainLayout'
 import { SearchInterface } from '@/components/chat/SearchInterface'
 import { useToast } from '@/hooks/use-toast'

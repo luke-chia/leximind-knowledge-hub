@@ -1,7 +1,7 @@
 import { MainLayout } from '@/components/layout/MainLayout'
 import { SearchInterface } from '@/components/chat/SearchInterface'
 import { ChatInterface } from '@/components/chat/ChatInterface'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 const Search = () => {
   const [currentQuery, setCurrentQuery] = useState('')

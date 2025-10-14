@@ -118,5 +118,20 @@
       "previous": "Previous",
       "next": "Next"
     }
+  },
+  "opinion": {
+    "title": "Expert Opinion",
+    "description": "Share your expert analysis and insights on this response",
+    "placeholder": "Write your expert opinion here... You can provide analysis, commentary, or additional context.",
+    "submit": "Submit Opinion",
+    "submitting": "Submitting...",
+    "cancel": "Cancel",
+    "add_tooltip": "Add Expert Opinion",
+    "required": "Opinion required",
+    "required_description": "Please write your expert opinion before submitting.",
+    "success": "Opinion added successfully",
+    "success_description": "Your expert opinion has been shared.",
+    "error": "Error",
+    "error_description": "Failed to submit opinion. Please try again."
   }
 }

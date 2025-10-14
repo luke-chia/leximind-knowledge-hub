@@ -1,3 +1,7 @@
+# Carpeta de salida
+out/
+# Archivos de entorno
+.env
 # Logs
 logs
 *.log
