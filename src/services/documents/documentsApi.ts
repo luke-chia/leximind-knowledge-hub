@@ -62,7 +62,7 @@ const sendToLexiMindMemory = async (
     lexiFormData.append('file', file)
     lexiFormData.append('userId', userId)
     lexiFormData.append('documentId', documentId)
-    lexiFormData.append('savepdf', 'true')
+    lexiFormData.append('savepdf', 'false')
 
     // Add arrays as JSON strings (as per spec)
     if (areaNames.length > 0) {
