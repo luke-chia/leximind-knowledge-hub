@@ -1,0 +1,13 @@
+graph TD
+    A[👤 Cliente] --> B{Tipo de Crédito}
+    B -->|Grupal| C[🔢 Referencia Grupal]
+    B -->|Individual| D[🔢 Referencia Individual]
+
+    C --> E[💳 Misma referencia por ciclos]
+    D --> F[💳 Misma referencia por ciclos]
+
+    style A fill:#e1f5fe
+    style C fill:#f3e5f5
+    style D fill:#e8f5e8
+    style E fill:#fff3e0
+    style F fill:#fff3e0
