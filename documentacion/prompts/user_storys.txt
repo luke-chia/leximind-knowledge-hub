@@ -131,3 +131,6 @@ Criterios de Aceptación: Condiciones específicas que deben cumplirse para cons
 Notas adicionales: Notas que puedan ayudar al desarrollo de la historia
 Tareas: Lista de tareas y subtareas para que esta historia pueda ser completada
 
+
+
+https://vercel.com/super-chias-projects/leximind/UiRfdhvr1fysRVQdEeeGiajM6Cnq

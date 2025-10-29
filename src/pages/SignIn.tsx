@@ -52,7 +52,7 @@ const SignIn = () => {
         data: { session },
       } = await auth.getSession()
       if (session) {
-        navigate('/dashboard')
+        navigate('/search') // Redirect to search instead of dashboard
       }
     }
 
@@ -60,6 +60,14 @@ const SignIn = () => {
   }, [navigate])
 
   const handleSocialLogin = async (provider) => {
+    // Show "coming soon" message for social login
+    setError(
+      '🚧 Próximamente: Inicio de sesión con redes sociales en construcción'
+    )
+    setTimeout(() => setError(''), 3000) // Clear message after 3 seconds
+    return
+
+    /* Original social login code - commented out for now
     try {
       setLoading(true)
       const { error } = await auth.signInWithOAuth({
@@ -74,6 +82,19 @@ const SignIn = () => {
     } finally {
       setLoading(false)
     }
+    */
+  }
+
+  const handleSignUpClick = (e) => {
+    e.preventDefault()
+    setError('🚧 Próximamente: Registro de nuevos usuarios en construcción')
+    setTimeout(() => setError(''), 3000) // Clear message after 3 seconds
+  }
+
+  const handleForgotPasswordClick = (e) => {
+    e.preventDefault()
+    setError('🚧 Próximamente: Recuperación de contraseña en construcción')
+    setTimeout(() => setError(''), 3000) // Clear message after 3 seconds
   }
 
   const handleSignIn = async (e) => {
@@ -87,8 +108,8 @@ const SignIn = () => {
       if (error) {
         setError(error.message)
       } else if (data.user) {
-        // Success - navigate to dashboard
-        navigate('/dashboard')
+        // Success - navigate to search page instead of dashboard
+        navigate('/search')
       }
     } catch (err) {
       setError('An unexpected error occurred. Please try again.')
@@ -132,7 +153,25 @@ const SignIn = () => {
           </h2>
 
           {error && (
-            <div className="alert alert-danger mb-4" role="alert">
+            <div
+              className={`alert mb-4 ${
+                error.includes('🚧 Próximamente')
+                  ? 'alert-info'
+                  : 'alert-danger'
+              }`}
+              role="alert"
+              style={{
+                backgroundColor: error.includes('🚧 Próximamente')
+                  ? 'rgba(13, 202, 240, 0.1)'
+                  : undefined,
+                borderColor: error.includes('🚧 Próximamente')
+                  ? '#0dcaf0'
+                  : undefined,
+                color: error.includes('🚧 Próximamente')
+                  ? '#0dcaf0'
+                  : undefined,
+              }}
+            >
               {error}
             </div>
           )}
@@ -293,19 +332,23 @@ const SignIn = () => {
                 <p className="text-sm mb-0 text-white">
                   {t('auth.noAccount', "Don't have an account?")}
                 </p>
-                <a
-                  href="/sign-up"
-                  className="text-sm no-underline text-cyan-400 hover:text-cyan-500"
+                <button
+                  type="button"
+                  onClick={handleSignUpClick}
+                  className="btn btn-link text-sm no-underline text-cyan-400 hover:text-cyan-500 p-0 border-0"
+                  style={{ background: 'none' }}
                 >
                   {t('auth.signUp', 'Sign up')}
-                </a>
+                </button>
               </div>
-              <a
-                href="/forgot-password"
-                className="text-sm no-underline text-cyan-400 hover:text-cyan-500"
+              <button
+                type="button"
+                onClick={handleForgotPasswordClick}
+                className="btn btn-link text-sm no-underline text-cyan-400 hover:text-cyan-500 p-0 border-0"
+                style={{ background: 'none' }}
               >
                 {t('auth.forgotPassword', 'Forgot Password?')}
-              </a>
+              </button>
             </div>
           </form>
         </div>

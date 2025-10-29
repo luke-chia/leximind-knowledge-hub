@@ -73,7 +73,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 
   // Dynamic navigation items with translations
   const navigationItems = [
-    { title: t('sidebar.dashboard'), url: '/', icon: Home },
+    // { title: t('sidebar.dashboard'), url: '/', icon: Home }, // Commented out - Dashboard temporarily disabled
     { title: t('sidebar.search'), url: '/search', icon: Search },
   ]
 
