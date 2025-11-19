@@ -44,6 +44,7 @@
   "sidebar": {
     "dashboard": "Dashboard",
     "search": "Buscar",
+    "cliente_360": "Cliente 360",
     "documents": "Documentos",
     "users": "Usuarios",
     "reports": "Reportes",

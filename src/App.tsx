@@ -6,6 +6,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import SignIn from './pages/SignIn'
 import Index from './pages/Index'
 import Search from './pages/Search'
+import Cliente360 from './pages/Cliente360'
 import Documents from './pages/Documents'
 import Users from './pages/Users'
 import Profile from './pages/Profile'
@@ -51,6 +52,14 @@ const App = () => {
                       element={
                         <ProtectedRoute>
                           <Search />
+                        </ProtectedRoute>
+                      }
+                    />
+                    <Route
+                      path="/cliente-360"
+                      element={
+                        <ProtectedRoute>
+                          <Cliente360 />
                         </ProtectedRoute>
                       }
                     />

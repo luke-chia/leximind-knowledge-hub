@@ -16,6 +16,7 @@ import {
   Clock,
   Calendar,
   Archive,
+  UserCircle,
 } from 'lucide-react'
 
 import {
@@ -75,6 +76,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const navigationItems = [
     // { title: t('sidebar.dashboard'), url: '/', icon: Home }, // Commented out - Dashboard temporarily disabled
     { title: t('sidebar.search'), url: '/search', icon: Search },
+    { title: t('sidebar.cliente_360'), url: '/cliente-360', icon: UserCircle },
   ]
 
   const chatHistoryItems = [
