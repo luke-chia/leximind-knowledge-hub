@@ -14,9 +14,11 @@ export default function Cliente360() {
   return (
     <MainLayout>
       <div className="container mx-auto p-6 max-w-7xl">
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold tracking-tight">{t('sidebar.cliente_360')}</h1>
-          <p className="text-muted-foreground mt-2">
+        <div className="text-center mb-12 animate-fade-in">
+          <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-4">
+            {t('sidebar.cliente_360')}
+          </h1>
+          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
             Consulta información de clientes y créditos usando lenguaje natural
           </p>
         </div>
