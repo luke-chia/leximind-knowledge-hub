@@ -14,14 +14,11 @@ export default function Cliente360() {
   return (
     <MainLayout>
       <div className="container mx-auto p-6 max-w-7xl">
-        <div className="flex items-center gap-3 mb-6">
-          <Database className="h-8 w-8 text-primary" />
-          <div>
-            <h1 className="text-3xl font-bold">{t('sidebar.cliente_360')}</h1>
-            <p className="text-sm text-muted-foreground mt-1">
-              Consulta información de clientes y créditos usando lenguaje natural
-            </p>
-          </div>
+        <div className="mb-8">
+          <h1 className="text-3xl font-bold tracking-tight">{t('sidebar.cliente_360')}</h1>
+          <p className="text-muted-foreground mt-2">
+            Consulta información de clientes y créditos usando lenguaje natural
+          </p>
         </div>
 
         <NLSQLInterface onQuery={handleQuery} />
