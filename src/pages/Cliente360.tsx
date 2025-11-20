@@ -13,8 +13,8 @@ export default function Cliente360() {
 
   return (
     <MainLayout>
-      <div className="container mx-auto p-6 max-w-7xl">
-        <div className="text-center mb-12 animate-fade-in">
+      <div className="container mx-auto px-6 pt-8 pb-6 max-w-7xl">
+        <div className="text-center mb-8 animate-fade-in">
           <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-4">
             {t('sidebar.cliente_360')}
           </h1>
